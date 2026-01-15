@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 interface JWTPayload {
   id: string;
   email: string;
+  clinicId?: string;
 }
 
 interface TokenPair {
