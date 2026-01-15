@@ -5,6 +5,10 @@ export const connect = async () => {
     console.info("[DATABASE] Connecting...");
 
     await SassDataSource.initialize();
+    console.log(
+      "[TODAS ENTIDADES]",
+      SassDataSource.entityMetadatas.map((m) => m.name)
+    );
     await SassDataSource.runMigrations();
 
     console.info("[DATABASE] Connected.");

@@ -8,8 +8,8 @@ import {
 
 @Entity("users")
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column({ name: "name", type: "varchar", nullable: false })
   name: string;

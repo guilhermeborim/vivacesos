@@ -11,6 +11,6 @@ export const SassDataSource = new DataSource({
   database: process.env.DATABASE_NAME,
   synchronize: false,
   logging: false,
-  entities: ["src/infra/database/typeorm/entities/*.{ts,js}"],
-  migrations: ["src/infra/database/typeorm/migrations/*.{ts,js}"],
+  entities: ["src/infra/database/typeorm/sass/entities/*.{ts,js}"],
+  migrations: ["src/infra/database/typeorm/sass/migrations/*.{ts,js}"],
 });
