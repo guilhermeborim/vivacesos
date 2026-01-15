@@ -5,14 +5,14 @@ import { RefreshToken } from "../entities/RefreshToken";
 
 export interface CreateRefreshTokenRequest {
   token: string;
-  userId: number;
+  userId: string;
   expiresAt: Date;
 }
 
 export interface RefreshTokenRepositoryInterface {
   create(data: CreateRefreshTokenRequest): Promise<RefreshToken>;
   findByToken(token: string): Promise<RefreshToken | null>;
-  revokeByUserId(userId: number): Promise<void>;
+  revokeByUserId(userId: string): Promise<void>;
   revokeByToken(token: string): Promise<void>;
   deleteExpired(): Promise<void>;
 }
@@ -44,7 +44,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
     }
   }
 
-  async revokeByUserId(userId: number): Promise<void> {
+  async revokeByUserId(userId: string): Promise<void> {
     try {
       await this.repository.update(
         { userId, isRevoked: false },

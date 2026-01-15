@@ -2,7 +2,7 @@ import { randomBytes } from "crypto";
 import jwt from "jsonwebtoken";
 
 interface JWTPayload {
-  id: number;
+  id: string;
   email: string;
 }
 
