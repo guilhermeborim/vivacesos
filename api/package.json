@@ -7,7 +7,8 @@
     "dev": "tsx watch src/server.ts",
     "start": "ts-node src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migration:run": "yarn typeorm migration:run -d src/infra/database/typeorm/sass/data-source.ts"
+    "migration:run": "yarn typeorm migration:run -d src/infra/database/typeorm/sass/data-source.ts",
+    "migration:reverse": "yarn typeorm migration:revert -d src/infra/database/typeorm/sass/data-source.ts"
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",
