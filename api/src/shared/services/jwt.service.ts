@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 interface JWTPayload {
   id: string;
   email: string;
-  clinicId?: string;
 }
 
 interface TokenPair {
@@ -22,7 +21,7 @@ export class JWTService {
     this.accessTokenSecret = process.env.JWT_SECRET || "default-secret";
     this.refreshTokenSecret =
       process.env.JWT_REFRESH_SECRET || "default-refresh-secret";
-    this.accessTokenExpiry = process.env.JWT_EXPIRY || "15m";
+    this.accessTokenExpiry = process.env.JWT_EXPIRY || "7d";
     this.refreshTokenExpiry = process.env.JWT_REFRESH_EXPIRY || "7d";
   }
 
