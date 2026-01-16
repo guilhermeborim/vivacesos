@@ -1,7 +1,7 @@
-import { ClinicUsersTypeormRepository } from "../../infra/database/typeorm/sass/repositories/clinic-users.repository";
-import { BindClinicUsersParams } from "../../infra/database/typeorm/sass/repositories/interfaces/clinic-users-repository.interface";
-import { UnauthenticatedError } from "../../shared/errors/unauthenticated.error";
-import { ClinicUserResponse } from "./interfaces/clinicUserBinded";
+import { ClinicUsersTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
+import { BindClinicUsersParams } from "../../../infra/database/typeorm/sass/repositories/interfaces/clinic-users-repository.interface";
+import { ConflictError } from "../../../shared/errors/conflict.error";
+import { ClinicUserResponse } from "../interfaces/clinicUserBinded";
 
 export class BindClinicUserService {
   private clinicUserRepository: ClinicUsersTypeormRepository;
@@ -20,7 +20,7 @@ export class BindClinicUserService {
       );
 
     if (userBindedClinic) {
-      throw new UnauthenticatedError("Usuário já está vinculado a clínica!");
+      throw new ConflictError("Usuário já está vinculado a clínica!");
     }
 
     const clinicUserBinded = await this.clinicUserRepository.bindClinicUser(

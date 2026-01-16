@@ -1,3 +1,4 @@
+import { FindUsersByClinic } from "../../../../../../domain/clinicUser/interfaces/clinicUserBinded";
 import {
   ClinicUser,
   ClinicUserRole,
@@ -18,4 +19,5 @@ export interface ClinicUsersRepositoryInterface {
     userId: string
   ): Promise<ClinicUser | null>;
   findUserBindedAnyClinics(userId: string): Promise<ClinicUser[] | null>;
+  findUsersByClinic(clinicId: string): Promise<FindUsersByClinic[]>;
 }

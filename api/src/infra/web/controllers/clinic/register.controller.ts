@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { RegisterClinicService } from "../../../../domain/clinic/register";
+import { RegisterClinicService } from "../../../../domain/clinic/services/register";
 import { CreateClinicParams } from "../../../database/typeorm/sass/repositories/interfaces/clinic-repository.interface";
 import { registerClinicBodySchema } from "../../routes/schemas/clinic/register.schema";
 

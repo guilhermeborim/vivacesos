@@ -1,7 +1,7 @@
-import { ClinicTypeormRepository } from "../../infra/database/typeorm/sass/repositories/clinic.repository";
-import { CreateClinicParams } from "../../infra/database/typeorm/sass/repositories/interfaces/clinic-repository.interface";
-import { UnauthenticatedError } from "../../shared/errors/unauthenticated.error";
-import { ClinicResponse } from "./interfaces/clinicResponse";
+import { ClinicTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/clinic.repository";
+import { CreateClinicParams } from "../../../infra/database/typeorm/sass/repositories/interfaces/clinic-repository.interface";
+import { ConflictError } from "../../../shared/errors/conflict.error";
+import { ClinicResponse } from "../interfaces/clinicResponse";
 
 export class RegisterClinicService {
   private clinicRepository: ClinicTypeormRepository;
@@ -16,7 +16,7 @@ export class RegisterClinicService {
     );
 
     if (clinicExistsByCnpj) {
-      throw new UnauthenticatedError("CNPJ já está cadastrado!");
+      throw new ConflictError("CNPJ já está cadastrado!");
     }
 
     const clinicExistsByPhone = await this.clinicRepository.findByPhone(
@@ -24,7 +24,7 @@ export class RegisterClinicService {
     );
 
     if (clinicExistsByPhone) {
-      throw new UnauthenticatedError("Telefone já está cadastrado!");
+      throw new ConflictError("Telefone já está cadastrado!");
     }
 
     const clinicCreated = await this.clinicRepository.createClinic(clinic);

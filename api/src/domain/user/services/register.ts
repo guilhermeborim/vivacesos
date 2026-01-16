@@ -2,7 +2,7 @@ import { hashSync } from "bcrypt";
 import { CreateUserParams } from "../../../infra/database/typeorm/sass/repositories/interfaces/user-repository.interface";
 import { RefreshTokenRepository } from "../../../infra/database/typeorm/sass/repositories/refresh-token.repository";
 import { UserTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/user.repository";
-import { UnauthenticatedError } from "../../../shared/errors/unauthenticated.error";
+import { ConflictError } from "../../../shared/errors/conflict.error";
 import { JWTService } from "../../../shared/services/jwt.service";
 import { AuthReponse } from "../interfaces/authResponse";
 
@@ -21,7 +21,7 @@ export class RegisterService {
     const userExists = await this.authRepository.findByEmail(user.email);
 
     if (userExists) {
-      throw new UnauthenticatedError("E-mail já está cadastrado!");
+      throw new ConflictError("E-mail já está cadastrado!");
     }
 
     const encryptedPassword = hashSync(user.password, 10);

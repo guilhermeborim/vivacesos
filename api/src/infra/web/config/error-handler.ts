@@ -1,6 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { ZodError } from "zod";
 import { AppError } from "../../../shared/errors/app.error";
+import { ConflictError } from "../../../shared/errors/conflict.error";
 import { DatabaseError } from "../../../shared/errors/database.error";
 import { ForbiddenError } from "../../../shared/errors/forbidden.error";
 import { HttpError } from "../../../shared/errors/http.error";
@@ -40,6 +41,12 @@ export const configure = (fastify: FastifyInstance) => {
 
     if (error instanceof ForbiddenError) {
       return reply.status(403).send({
+        message: error.message,
+      });
+    }
+
+    if (error instanceof ConflictError) {
+      return reply.status(409).send({
         message: error.message,
       });
     }

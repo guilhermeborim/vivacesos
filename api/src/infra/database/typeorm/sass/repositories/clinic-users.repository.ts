@@ -1,4 +1,5 @@
 import { Repository } from "typeorm";
+import { FindUsersByClinic } from "../../../../../domain/clinicUser/interfaces/clinicUserBinded";
 import { DatabaseError } from "../../../../../shared/errors/database.error";
 import { SassDataSource } from "../data-source";
 import {
@@ -65,6 +66,33 @@ export class ClinicUsersTypeormRepository
     } catch (error) {
       throw new DatabaseError(
         "Falha ao buscar usuário vinculado a clínicas!",
+        error
+      );
+    }
+  }
+
+  async findUsersByClinic(clinicId: string): Promise<FindUsersByClinic[]> {
+    try {
+      const clinicUsers = await this.clinicUsersRepository.query(
+        `
+          SELECT
+          cu.id,
+          cu.role,
+          cu.status,
+          u.id AS "id_user",
+          u.name,
+          u.email
+          FROM clinic_users cu
+          INNER JOIN users u ON cu.user_id = u.id
+          WHERE cu.clinic_id = $1
+        `,
+        [clinicId]
+      );
+
+      return clinicUsers;
+    } catch (error) {
+      throw new DatabaseError(
+        "Falha ao buscar usuários vinculados à clínica!",
         error
       );
     }

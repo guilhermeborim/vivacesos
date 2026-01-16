@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { BindClinicUserService } from "../../../../domain/clinicUser/bind";
+import { BindClinicUserService } from "../../../../domain/clinicUser/services/bind";
 import {
   ClinicUserRole,
   ClinicUserStatus,
