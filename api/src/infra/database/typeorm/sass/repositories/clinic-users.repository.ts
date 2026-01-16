@@ -89,7 +89,16 @@ export class ClinicUsersTypeormRepository
         [clinicId]
       );
 
-      return clinicUsers;
+      return clinicUsers.map((clinicUser: any) => ({
+        id: clinicUser.id,
+        role: clinicUser.role,
+        status: clinicUser.status,
+        user: {
+          id_user: clinicUser.id_user,
+          name: clinicUser.name,
+          email: clinicUser.email,
+        },
+      }));
     } catch (error) {
       throw new DatabaseError(
         "Falha ao buscar usuários vinculados à clínica!",

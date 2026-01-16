@@ -9,14 +9,12 @@ export interface ClinicUserResponse {
 }
 
 export interface FindUsersByClinic {
+  id: string;
+  role: ClinicUserRole;
+  status: ClinicUserStatus;
   user: {
     id_user: string;
     name: string;
     email: string;
-  };
-  clinicUser: {
-    id: string;
-    role: ClinicUserRole;
-    status: ClinicUserStatus;
   };
 }

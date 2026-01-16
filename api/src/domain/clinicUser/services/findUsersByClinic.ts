@@ -12,6 +12,7 @@ export class FindUsersByClinicService {
     const clinicUsers = await this.clinicUserRepository.findUsersByClinic(
       clinicId
     );
+
     return clinicUsers;
   }
 }
