@@ -31,4 +31,18 @@ export class ProfessionalTypeormRepository
       throw new DatabaseError("Falha ao criar profissional!", error);
     }
   }
+
+  async findProfessionalByClinicId(clinicId: string): Promise<Professional[]> {
+    try {
+      const professionals = await this.professionalRepository.find({
+        where: {
+          clinicId,
+        },
+      });
+
+      return professionals;
+    } catch (error) {
+      throw new DatabaseError("Falha ao buscar profissionais!", error);
+    }
+  }
 }

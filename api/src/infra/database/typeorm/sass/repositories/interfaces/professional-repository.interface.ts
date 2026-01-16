@@ -13,4 +13,5 @@ export interface ProfessionalRepositoryInterface {
     clinicId: string,
     data: CreateProfessionalParams
   ): Promise<Professional>;
+  findProfessionalByClinicId(clinicId: string): Promise<Professional[]>;
 }

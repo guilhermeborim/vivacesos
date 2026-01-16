@@ -3,3 +3,7 @@ import { Professional } from "../../../infra/database/typeorm/sass/entities/Prof
 export interface ProfessionalResponse {
   professional: Professional;
 }
+
+export interface ProfessionalsResponse {
+  professionals: Professional[];
+}
