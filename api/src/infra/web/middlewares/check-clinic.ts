@@ -18,15 +18,16 @@ export class CheckClinicUserMiddleware {
 
     const clinicUSer = await this.clinicUserRepository.findUserBindedClinic(
       clinicAuthorizationHeader as string,
-      request.user.id
+      request.user.id,
     );
 
     if (!clinicUSer) {
       throw new UnauthenticatedError(
-        "Usuário não autorizado para acessar esta clínica!"
+        "Usuário não autorizado para acessar esta clínica!",
       );
     }
 
     request.clinicId = clinicAuthorizationHeader as string;
+    request.userRole = clinicUSer.role;
   };
 }
