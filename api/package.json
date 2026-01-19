@@ -11,6 +11,7 @@
     "migration:reverse": "yarn typeorm migration:revert -d src/infra/database/typeorm/sass/data-source.ts"
   },
   "dependencies": {
+    "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.2.0",
     "@fastify/jwt": "^10.0.0",
     "bcrypt": "^6.0.0",

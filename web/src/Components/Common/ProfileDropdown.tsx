@@ -1,3 +1,4 @@
+import { useAuth } from "context/auth/hooks/use-auth";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -9,6 +10,7 @@ import {
 
 //import images
 const ProfileDropdown = () => {
+  const { signOut } = useAuth();
   //Dropdown Toggle
   const [isProfileDropdown, setIsProfileDropdown] = useState(false);
   const toggleProfileDropdown = () => {
@@ -55,7 +57,7 @@ const ProfileDropdown = () => {
           </DropdownItem>
           <div className="dropdown-divider"></div>
           <DropdownItem className="p-0">
-            <Link to="/login" className="dropdown-item">
+            <Link to="#" className="dropdown-item" onClick={signOut}>
               <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{" "}
               <span className="align-middle" data-key="t-logout">
                 Desconectar

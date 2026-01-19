@@ -72,7 +72,7 @@ const HorizontalLayout = (props: any) => {
       parentCollapseDiv.parentElement.children[0].classList.add("active");
       parentCollapseDiv.parentElement.children[0].setAttribute(
         "aria-expanded",
-        "true"
+        "true",
       );
       if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")) {
         parentCollapseDiv.parentElement
@@ -80,7 +80,7 @@ const HorizontalLayout = (props: any) => {
           .classList.add("show");
         var parentElementDiv =
           parentCollapseDiv.parentElement.closest(
-            ".collapse"
+            ".collapse",
           ).previousElementSibling;
         if (parentElementDiv)
           if (parentElementDiv.closest(".collapse"))
@@ -183,7 +183,7 @@ const HorizontalLayout = (props: any) => {
                                     </Col>
                                   )}
                                 </React.Fragment>
-                              )
+                              ),
                             )}
                         </Row>
                       </React.Fragment>
@@ -224,7 +224,7 @@ const HorizontalLayout = (props: any) => {
                                           (subItem.childItems || []).map(
                                             (
                                               subChildItem: any,
-                                              key: number
+                                              key: number,
                                             ) => (
                                               <React.Fragment key={key}>
                                                 {!subChildItem.isChildItem ? (
@@ -238,7 +238,7 @@ const HorizontalLayout = (props: any) => {
                                                       className="nav-link"
                                                     >
                                                       {props.t(
-                                                        subChildItem.label
+                                                        subChildItem.label,
                                                       )}
                                                     </Link>
                                                   </li>
@@ -254,7 +254,7 @@ const HorizontalLayout = (props: any) => {
                                                     >
                                                       {" "}
                                                       {props.t(
-                                                        subChildItem.label
+                                                        subChildItem.label,
                                                       )}
                                                     </Link>
                                                     <Collapse
@@ -273,7 +273,7 @@ const HorizontalLayout = (props: any) => {
                                                           ).map(
                                                             (
                                                               subSubChildItem: any,
-                                                              key: number
+                                                              key: number,
                                                             ) => (
                                                               <li
                                                                 className="nav-item apex"
@@ -288,25 +288,25 @@ const HorizontalLayout = (props: any) => {
                                                                   className="nav-link"
                                                                 >
                                                                   {props.t(
-                                                                    subSubChildItem.label
+                                                                    subSubChildItem.label,
                                                                   )}
                                                                 </Link>
                                                               </li>
-                                                            )
+                                                            ),
                                                           )}
                                                       </ul>
                                                     </Collapse>
                                                   </li>
                                                 )}
                                               </React.Fragment>
-                                            )
+                                            ),
                                           )}
                                       </ul>
                                     </Collapse>
                                   </li>
                                 )}
                               </React.Fragment>
-                            )
+                            ),
                           )}
                       </ul>
                     )}

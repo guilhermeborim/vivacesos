@@ -5,7 +5,6 @@ import { Collapse } from "reactstrap";
 // Import Data
 import navdata from "../LayoutMenuData";
 //i18n
-import { withTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import withRouter from "../../Components/Common/withRouter";
@@ -25,11 +24,11 @@ const VerticalLayout = (props: any) => {
       leftsidbarSizeType: layout.leftsidbarSizeType,
       sidebarVisibilitytype: layout.sidebarVisibilitytype,
       layoutType: layout.layoutType,
-    })
+    }),
   );
   // Inside your component
   const { leftsidbarSizeType, sidebarVisibilitytype, layoutType } = useSelector(
-    selectLayoutProperties
+    selectLayoutProperties,
   );
 
   //vertical and semibox resize events
@@ -41,13 +40,13 @@ const VerticalLayout = (props: any) => {
       if (document.documentElement.getAttribute("data-layout") === "vertical") {
         document.documentElement.setAttribute(
           "data-sidebar-size",
-          leftsidbarSizeType
+          leftsidbarSizeType,
         );
       }
       if (document.documentElement.getAttribute("data-layout") === "semibox") {
         document.documentElement.setAttribute(
           "data-sidebar-size",
-          leftsidbarSizeType
+          leftsidbarSizeType,
         );
       }
       if (
@@ -123,7 +122,7 @@ const VerticalLayout = (props: any) => {
       parentCollapseDiv.parentElement.children[0].classList.add("active");
       parentCollapseDiv.parentElement.children[0].setAttribute(
         "aria-expanded",
-        "true"
+        "true",
       );
       if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")) {
         parentCollapseDiv.parentElement
@@ -304,7 +303,7 @@ const VerticalLayout = (props: any) => {
                                                   {childItem.childItems.map(
                                                     (
                                                       subChildItem: any,
-                                                      key: number
+                                                      key: number,
                                                     ) => (
                                                       <li
                                                         className="nav-item"
@@ -316,18 +315,18 @@ const VerticalLayout = (props: any) => {
                                                           data-key="t-basic-action"
                                                         >
                                                           {props.t(
-                                                            subChildItem.label
+                                                            subChildItem.label,
                                                           )}{" "}
                                                         </Link>
                                                       </li>
-                                                    )
+                                                    ),
                                                   )}
                                                 </ul>
                                               </Collapse>
                                             </li>
                                           )}
                                         </React.Fragment>
-                                      )
+                                      ),
                                     )}
                                 </ul>
                               </Collapse>
@@ -369,4 +368,4 @@ VerticalLayout.propTypes = {
   t: PropTypes.any,
 };
 
-export default withRouter(withTranslation()(VerticalLayout));
+export default withRouter(VerticalLayout);

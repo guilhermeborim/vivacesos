@@ -7,6 +7,7 @@ import NonAuthLayout from "../Layouts/NonAuthLayout";
 
 //routes
 import { authProtectedRoutes, publicRoutes } from "./allRoutes";
+import AuthProtected from "./AuthProtected";
 
 const Index = () => {
   return (
@@ -27,9 +28,9 @@ const Index = () => {
             <Route
               path={route.path}
               element={
-                // <AuthProtected permissions={route.permissions}>
-                <VerticalLayout>{route.component}</VerticalLayout>
-                // </AuthProtected>
+                <AuthProtected>
+                  <VerticalLayout>{route.component}</VerticalLayout>
+                </AuthProtected>
               }
               key={idx}
             />

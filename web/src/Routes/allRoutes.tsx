@@ -13,10 +13,10 @@ const authProtectedRoutes = [
     path: "/dashboard",
     component: <Dashboard />,
   },
-  // {
-  //   path: "/",
-  //   component: <Navigate to={"/dashboard"} />,
-  // },
+  {
+    path: "/",
+    component: <Navigate to={"/dashboard"} />,
+  },
   { path: "*", component: <Navigate to="/error-404" /> },
 ];
 

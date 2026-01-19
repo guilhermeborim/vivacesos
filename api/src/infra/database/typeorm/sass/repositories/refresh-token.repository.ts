@@ -15,6 +15,7 @@ export interface RefreshTokenRepositoryInterface {
   revokeByUserId(userId: string): Promise<void>;
   revokeByToken(token: string): Promise<void>;
   deleteExpired(): Promise<void>;
+  deleteByRefreshToken(token: string): Promise<void>;
 }
 
 export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
@@ -48,7 +49,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
     try {
       await this.repository.update(
         { userId, isRevoked: false },
-        { isRevoked: true }
+        { isRevoked: true },
       );
     } catch (error) {
       throw new DatabaseError("Falha ao revogar tokens do usuário", error);
@@ -75,6 +76,16 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
         .execute();
     } catch (error) {
       throw new DatabaseError("Falha ao deletar tokens expirados", error);
+    }
+  }
+
+  async deleteByRefreshToken(refreshToken: string): Promise<void> {
+    try {
+      await this.repository.delete({
+        token: refreshToken,
+      });
+    } catch (error) {
+      throw new DatabaseError("Falha ao deletar refresh token", error);
     }
   }
 }

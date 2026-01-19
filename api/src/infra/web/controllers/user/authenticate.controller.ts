@@ -12,12 +12,18 @@ export class AuthenticateController {
 
   execute = async (
     request: FastifyRequest<{ Body: AuthLoginRequest }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) => {
     const userData = authenticateBodySchema.parse(request.body);
 
-    const user = await this.authLogic.execute(userData);
+    const { refreshToken, ...user } = await this.authLogic.execute(userData);
 
-    reply.send(user);
+    reply
+      .setCookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        path: "/auth/refresh",
+        sameSite: "strict",
+      })
+      .send(user);
   };
 }

@@ -28,6 +28,5 @@ export class CheckClinicUserMiddleware {
     }
 
     request.clinicId = clinicAuthorizationHeader as string;
-    request.userRole = clinicUSer.role;
   };
 }

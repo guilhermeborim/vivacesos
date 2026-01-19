@@ -1,4 +1,5 @@
 import { compare } from "bcrypt";
+import { ClinicUsersTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
 import { RefreshTokenRepository } from "../../../infra/database/typeorm/sass/repositories/refresh-token.repository";
 import { UserTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/user.repository";
 import { NotFoundError } from "../../../shared/errors/not-found.error";
@@ -10,11 +11,13 @@ export class AuthenticateService {
   private authRepository: UserTypeormRepository;
   private refreshTokenRepository: RefreshTokenRepository;
   private jwtService: JWTService;
+  private clinicsUserRepository: ClinicUsersTypeormRepository;
 
   constructor() {
     this.authRepository = new UserTypeormRepository();
     this.refreshTokenRepository = new RefreshTokenRepository();
     this.jwtService = new JWTService();
+    this.clinicsUserRepository = new ClinicUsersTypeormRepository();
   }
 
   async execute({ email, password }: AuthLoginRequest) {
@@ -29,6 +32,10 @@ export class AuthenticateService {
     if (!checkPassword) {
       throw new UnauthenticatedError("A senha está inválida!");
     }
+
+    const clinics = await this.clinicsUserRepository.findUserBindedAnyClinics(
+      user.id,
+    );
 
     await this.refreshTokenRepository.revokeByUserId(user.id);
 
@@ -48,7 +55,7 @@ export class AuthenticateService {
     return {
       token: accessToken,
       refreshToken,
-      user,
+      clinics,
     };
   }
 }

@@ -13,19 +13,19 @@ import {
   Row,
 } from "reactstrap";
 import { useAuth } from "../hooks/use-auth";
-import { type SignFormSchema, signFormSchema } from "../schemas";
+import { type LoginFormSchema, loginFormSchema } from "../schemas";
 
-export default function Sign() {
-  const { signIn } = useAuth();
+export default function Login() {
+  const { login } = useAuth();
   const [connectingUser, setConnectingUser] = React.useTransition();
 
-  const form = useForm<SignFormSchema>({
-    resolver: zodResolver(signFormSchema),
+  const form = useForm<LoginFormSchema>({
+    resolver: zodResolver(loginFormSchema),
   });
 
-  function handleSubmit(payload: SignFormSchema) {
+  function handleSubmit(payload: LoginFormSchema) {
     setConnectingUser(async () => {
-      await signIn(payload);
+      await login(payload);
     });
   }
 
@@ -38,7 +38,7 @@ export default function Sign() {
             <CardBody className="p-4">
               <div className="text-center text-white-50"></div>
               <div className="text-center mt-2">
-                <h5 className="text-primary">Bem-vindo de volta!</h5>
+                <h5 className="text-primary">Seja bem-vindo!</h5>
                 <p className="text-muted">Faça login para continuar.</p>
               </div>
               <div className="p-2 mt-4">

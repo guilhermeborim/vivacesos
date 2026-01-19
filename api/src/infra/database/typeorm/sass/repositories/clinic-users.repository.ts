@@ -12,9 +12,7 @@ import {
   ClinicUsersRepositoryInterface,
 } from "./interfaces/clinic-users-repository.interface";
 
-export class ClinicUsersTypeormRepository
-  implements ClinicUsersRepositoryInterface
-{
+export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterface {
   private clinicUsersRepository: Repository<ClinicUser>;
 
   constructor() {
@@ -36,7 +34,7 @@ export class ClinicUsersTypeormRepository
 
   async findUserBindedClinic(
     clinicId: string,
-    userId: string
+    userId: string,
   ): Promise<ClinicUser | null> {
     try {
       const clinicUser = await this.clinicUsersRepository.findOne({
@@ -44,29 +42,37 @@ export class ClinicUsersTypeormRepository
           clinicId,
           userId,
         },
+        relations: ["user", "clinic"],
       });
       return clinicUser;
     } catch (error) {
       throw new DatabaseError(
         "Falha ao buscar usuário vinculado à clínica!",
-        error
+        error,
       );
     }
   }
 
-  async findUserBindedAnyClinics(userId: string): Promise<ClinicUser[] | null> {
+  async findUserBindedAnyClinics(userId: string): Promise<ClinicUser[]> {
     try {
-      const clinicUsers = await this.clinicUsersRepository.find({
-        where: {
-          userId,
-        },
-      });
+      const clinicUsers = await this.clinicUsersRepository.query(
+        `
+          SELECT 
+          c.name,
+          c.id AS clinic_id,
+          cu.role
+          FROM clinic_users cu
+          INNER JOIN clinics c ON cu.clinic_id = c.id
+          WHERE cu.user_id = $1
+        `,
+        [userId],
+      );
 
       return clinicUsers;
     } catch (error) {
       throw new DatabaseError(
         "Falha ao buscar usuário vinculado a clínicas!",
-        error
+        error,
       );
     }
   }
@@ -86,7 +92,7 @@ export class ClinicUsersTypeormRepository
           INNER JOIN users u ON cu.user_id = u.id
           WHERE cu.clinic_id = $1
         `,
-        [clinicId]
+        [clinicId],
       );
 
       return clinicUsers.map((clinicUser: any) => ({
@@ -102,7 +108,7 @@ export class ClinicUsersTypeormRepository
     } catch (error) {
       throw new DatabaseError(
         "Falha ao buscar usuários vinculados à clínica!",
-        error
+        error,
       );
     }
   }

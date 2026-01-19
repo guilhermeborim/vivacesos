@@ -18,11 +18,10 @@ export class JWTService {
   private readonly refreshTokenExpiry: string;
 
   constructor() {
-    this.accessTokenSecret = process.env.JWT_SECRET || "default-secret";
-    this.refreshTokenSecret =
-      process.env.JWT_REFRESH_SECRET || "default-refresh-secret";
-    this.accessTokenExpiry = process.env.JWT_EXPIRY || "7d";
-    this.refreshTokenExpiry = process.env.JWT_REFRESH_EXPIRY || "7d";
+    this.accessTokenSecret = process.env.JWT_SECRET;
+    this.refreshTokenSecret = process.env.JWT_REFRESH_SECRET;
+    this.accessTokenExpiry = process.env.JWT_EXPIRY;
+    this.refreshTokenExpiry = process.env.JWT_REFRESH_EXPIRY;
   }
 
   generateAccessToken(payload: JWTPayload): string {
