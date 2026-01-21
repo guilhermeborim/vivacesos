@@ -19,7 +19,6 @@
     "primereact": "^10.9.7",
     "prismjs": "^1.29.0",
     "react": "19.1.1",
-    "react-cookie": "^8.0.1",
     "react-dom": "19.1.1",
     "react-hook-form": "^7.65.0",
     "react-i18next": "^16.5.3",
