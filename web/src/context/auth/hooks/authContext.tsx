@@ -1,13 +1,5 @@
 import { AxiosError } from "axios";
 import {
-  getToken,
-  removeClinic,
-  removeToken,
-  saveClinic,
-  saveToken,
-  setAuthTokenHeader,
-} from "helpers/api_helper";
-import {
   getSession,
   postLogin,
   postLogout,
@@ -17,7 +9,7 @@ import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Permission } from "../../../../../shared/permissions";
-import type { LoginFormSchema } from "../schemas";
+import type { LoginFormSchema, RegisterFormSchema } from "../schemas";
 
 interface User {
   id: string;
@@ -38,10 +30,11 @@ export interface Session {
 }
 
 interface AuthContextProps {
-  token: string | null;
+  loading: boolean;
   session: Session | null;
   login: (payload: LoginFormSchema) => Promise<void>;
-  register: (payload: any) => Promise<void>;
+  register: (payload: RegisterFormSchema) => Promise<void>;
+  loadSession: () => Promise<void>;
   signOut: () => void;
   hasPermission: (permission: Permission) => boolean;
 }
@@ -52,38 +45,30 @@ export const AuthContext = createContext<AuthContextProps | undefined>(
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
-  const token = getToken();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) {
-      try {
-        setAuthTokenHeader(token);
-        loadSession();
-      } catch (error) {
-        console.error("Token inválido:", error);
-      }
-    }
-  }, [token]);
+    loadSession();
+  }, []);
 
   async function loadSession() {
-    const session = await getSession();
-    setSession(session.data);
+    setLoading(true);
+    try {
+      const response = await getSession();
+      setSession(response.data);
+    } catch {
+      setSession(null);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function login(payload: LoginFormSchema) {
     try {
-      const response = await postLogin(payload);
-      const token = response.data.token;
-      const clinics = response.data.clinics;
-
-      saveToken(token);
-      saveClinic(clinics[0].clinic_id);
-
+      await postLogin(payload);
       await loadSession();
-
       toast.success("Conectado com sucesso!");
-      navigate("/dashboard");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message || "Erro ao autenticar");
@@ -95,7 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const response = await postRegister(payload);
       if (response.status === 201) {
-        toast.success("Cadastro com sucesso!");
+        toast.success("Cadastrado com sucesso!");
         navigate("/login");
       }
     } catch (error) {
@@ -107,25 +92,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   async function signOut() {
     await postLogout();
-    removeToken();
-    removeClinic();
     setSession(null);
-    navigate("/login");
   }
 
   function hasPermission(permission: Permission): boolean {
-    return session?.permissions.includes(permission) || false;
+    return session?.permissions?.includes(permission) || false;
   }
 
   return (
     <AuthContext.Provider
       value={{
-        token,
         login,
         signOut,
         register,
         session,
         hasPermission,
+        loadSession,
+        loading,
       }}
     >
       {children}

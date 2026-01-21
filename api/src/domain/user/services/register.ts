@@ -4,7 +4,7 @@ import { RefreshTokenRepository } from "../../../infra/database/typeorm/sass/rep
 import { UserTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/user.repository";
 import { ConflictError } from "../../../shared/errors/conflict.error";
 import { JWTService } from "../../../shared/services/jwt.service";
-import { AuthReponse } from "../interfaces/authResponse";
+import { RegisterResponse } from "../interfaces/authResponse";
 
 export class RegisterService {
   private authRepository: UserTypeormRepository;
@@ -17,7 +17,7 @@ export class RegisterService {
     this.jwtService = new JWTService();
   }
 
-  async execute(user: CreateUserParams): Promise<AuthReponse> {
+  async execute(user: CreateUserParams): Promise<RegisterResponse> {
     const userExists = await this.authRepository.findByEmail(user.email);
 
     if (userExists) {
@@ -31,22 +31,9 @@ export class RegisterService {
       password: encryptedPassword,
     });
 
-    const { accessToken, refreshToken } = this.jwtService.generateTokenPair({
-      id: userCreated.id,
-      email: userCreated.email,
-    });
-
-    await this.refreshTokenRepository.create({
-      token: refreshToken,
-      userId: userCreated.id,
-      expiresAt: this.jwtService.getRefreshTokenExpiryDate(),
-    });
-
     delete userCreated.password;
 
     return {
-      token: accessToken,
-      refreshToken,
       user: userCreated,
     };
   }

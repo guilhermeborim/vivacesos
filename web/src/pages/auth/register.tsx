@@ -2,10 +2,10 @@ import React from "react";
 import { Col, Container, Row } from "reactstrap";
 import ParticlesAuth from "../../Components/constants/footer-auth";
 
-import Sign from "context/auth/components/login";
+import SignUp from "context/auth/components/register";
 import withRouter from "../../Components/Common/withRouter";
 
-const Login = () => {
+const Register = () => {
   return (
     <React.Fragment>
       <ParticlesAuth>
@@ -17,14 +17,14 @@ const Login = () => {
                   <div>
                     <span
                       className=" d-block"
-                      style={{ height: "180px", opacity: 0 }}
+                      style={{ height: "100px", opacity: 0 }}
                     />
                   </div>
                 </div>
               </Col>
             </Row>
 
-            <Sign />
+            <SignUp />
           </Container>
         </div>
       </ParticlesAuth>
@@ -32,4 +32,4 @@ const Login = () => {
   );
 };
 
-export default withRouter(Login);
+export default withRouter(Register);

@@ -58,9 +58,7 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
       const clinicUsers = await this.clinicUsersRepository.query(
         `
           SELECT 
-          c.name,
-          c.id AS clinic_id,
-          cu.role
+          cu.clinic_id AS "clinicId"
           FROM clinic_users cu
           INNER JOIN clinics c ON cu.clinic_id = c.id
           WHERE cu.user_id = $1

@@ -8,6 +8,7 @@ import logoLg from "../assets/images/logo_lg.png";
 //import Components
 import ProfileDropdown from "../Components/Common/ProfileDropdown";
 
+import LightDark from "Components/Common/LightDark";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { changeSidebarVisibility } from "../slices/thunks";
@@ -83,7 +84,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }: any) => {
                     <img src={logoLg} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img src={logoLg} alt="" height="17" />
+                    <img src={logoLg} alt="" height="100" />
                   </span>
                 </Link>
 
@@ -92,7 +93,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }: any) => {
                     <img src={logoLg} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img src={logoLg} alt="" height="17" />
+                    <img src={logoLg} alt="" height="100" />
                   </span>
                 </Link>
               </div>
@@ -143,14 +144,11 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }: any) => {
                 </DropdownMenu>
               </Dropdown>
 
-              {/* FullScreenDropdown */}
-              {/* <FullScreenDropdown /> */}
-
               {/* Dark/Light Mode set */}
-              {/* <LightDark
+              <LightDark
                 layoutMode={layoutModeType}
                 onChangeLayoutMode={onChangeLayoutMode}
-              /> */}
+              />
 
               {/* NotificationDropdown */}
               {/* <NotificationDropdown /> */}

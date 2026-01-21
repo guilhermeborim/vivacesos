@@ -2,8 +2,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "react-toastify/dist/ReactToastify.css";
 import "./assets/scss/themes.scss";
 
-import { useAuth } from "context/auth/hooks/use-auth";
-import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Route from "./Routes";
 
@@ -17,13 +15,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const navigate = useNavigate();
-  const { signOut } = useAuth();
-
-  // useEffect(() => {
-  //   checkAutoLogin(signOut);
-  // }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <ToastContainer

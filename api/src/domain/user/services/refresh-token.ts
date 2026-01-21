@@ -15,7 +15,7 @@ export class RefreshTokenService {
     const storedToken =
       await this.refreshTokenRepository.findByToken(refreshToken);
 
-    if (!storedToken) {
+    if (!storedToken || storedToken.isRevoked) {
       throw new UnauthenticatedError("Token inválido!");
     }
 

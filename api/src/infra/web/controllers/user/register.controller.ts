@@ -12,11 +12,11 @@ export class RegisterController {
 
   execute = async (
     request: FastifyRequest<{ Body: CreateUserParams }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) => {
     const userData = registerBodySchema.parse(request.body);
     const user = await this.authLogic.execute(userData);
 
-    reply.send(user);
+    reply.status(201).send(user);
   };
 }

@@ -5,3 +5,7 @@ export interface AuthReponse {
   token: string;
   refreshToken: string;
 }
+
+export interface RegisterResponse {
+  user: User;
+}

@@ -15,27 +15,12 @@ export class CheckAuthtenticationMiddleware {
   }
 
   execute = async (request: FastifyRequest) => {
-    const authorizationHeader = request.headers?.authorization;
-    if (!authorizationHeader) {
+    const token = request.cookies.token;
+
+    if (!token) {
       throw new JWTError(
         "Token de autorização não fornecido",
-        JWTErrorType.TOKEN_NOT_PROVIDED
-      );
-    }
-
-    const [bearer, token] = authorizationHeader.split(" ");
-
-    if (bearer !== "Bearer") {
-      throw new JWTError(
-        "Formato de token inválido. Use: Bearer <token>",
-        JWTErrorType.TOKEN_FORMAT_INVALID
-      );
-    }
-
-    if (!token || token === "") {
-      throw new JWTError(
-        "Token não fornecido",
-        JWTErrorType.TOKEN_NOT_PROVIDED
+        JWTErrorType.TOKEN_NOT_PROVIDED,
       );
     }
 
@@ -47,11 +32,12 @@ export class CheckAuthtenticationMiddleware {
       if (!user) {
         throw new JWTError(
           "Usuário não encontrado",
-          JWTErrorType.USER_NOT_FOUND
+          JWTErrorType.USER_NOT_FOUND,
         );
       }
 
       request.user = user;
+      request.clinicId = payload.clinicId || null;
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
         throw new JWTError("Token expirado", JWTErrorType.TOKEN_EXPIRED);
@@ -64,15 +50,11 @@ export class CheckAuthtenticationMiddleware {
       if (error instanceof jwt.NotBeforeError) {
         throw new JWTError(
           "Token ainda não é válido",
-          JWTErrorType.TOKEN_INVALID
+          JWTErrorType.TOKEN_INVALID,
         );
       }
 
-      if (error instanceof JWTError) {
-        throw error;
-      }
-
-      if (error instanceof UnauthenticatedError) {
+      if (error instanceof JWTError || error instanceof UnauthenticatedError) {
         throw error;
       }
 

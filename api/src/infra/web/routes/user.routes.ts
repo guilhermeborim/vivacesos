@@ -5,6 +5,7 @@ import { RefreshTokenController } from "../controllers/user/refresh-token.contro
 import { RegisterController } from "../controllers/user/register.controller";
 import { SessionController } from "../controllers/user/session.controller";
 import { CheckAuthtenticationMiddleware } from "../middlewares/check-authentication";
+import { CheckClinicUserMiddleware } from "../middlewares/check-clinic";
 
 export const configure = (fastify: FastifyInstance) => {
   const authenticateController = new AuthenticateController();
@@ -13,6 +14,7 @@ export const configure = (fastify: FastifyInstance) => {
   const refreshTokenController = new RefreshTokenController();
   const logoutController = new LogoutController();
   const checkAuthenticationMiddleware = new CheckAuthtenticationMiddleware();
+  const checkClinicMiddleware = new CheckClinicUserMiddleware();
 
   fastify.route({
     url: "/auth/register",

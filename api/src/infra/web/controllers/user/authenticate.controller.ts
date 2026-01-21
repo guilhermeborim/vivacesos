@@ -24,6 +24,11 @@ export class AuthenticateController {
         path: "/auth/refresh",
         sameSite: "strict",
       })
-      .send(user);
+      .setCookie("token", user.token, {
+        httpOnly: true,
+        path: "/",
+        sameSite: "strict",
+      })
+      .send();
   };
 }

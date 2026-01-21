@@ -36,4 +36,17 @@ export class UserTypeormRepository implements UserRepositoryInterface {
       throw new DatabaseError("Falha ao buscar usuário!", error);
     }
   }
+
+  async findById(id: string): Promise<User | null> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          id,
+        },
+      });
+      return user;
+    } catch (error) {
+      throw new DatabaseError("Falha ao buscar usuário!", error);
+    }
+  }
 }

@@ -17,6 +17,9 @@ export class LogoutController {
 
     reply
       .clearCookie("refreshToken", {
+        path: "/auth/refresh",
+      })
+      .clearCookie("token", {
         path: "/",
       })
       .status(200)

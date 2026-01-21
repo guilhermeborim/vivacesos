@@ -10,14 +10,14 @@ export class CheckClinicUserMiddleware {
   }
 
   execute = async (request: FastifyRequest) => {
-    const clinicAuthorizationHeader = request.headers["x-clinic-authorization"];
+    const clinicAuthorization = request.clinicId;
 
-    if (!clinicAuthorizationHeader) {
+    if (!clinicAuthorization) {
       throw new Error("Cabeçalho de autorização da clínica não fornecido");
     }
 
     const clinicUSer = await this.clinicUserRepository.findUserBindedClinic(
-      clinicAuthorizationHeader as string,
+      clinicAuthorization as string,
       request.user.id,
     );
 
@@ -26,7 +26,6 @@ export class CheckClinicUserMiddleware {
         "Usuário não autorizado para acessar esta clínica!",
       );
     }
-
-    request.clinicId = clinicAuthorizationHeader as string;
+    return;
   };
 }

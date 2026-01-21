@@ -9,7 +9,8 @@ export class SessionController {
   }
 
   execute = async (request: FastifyRequest, reply: FastifyReply) => {
-    const clinicId = request.headers["x-clinic-authorization"];
+    const clinicId = request.clinicId;
+
     const session = await this.sessionLogic.execute(
       clinicId as string,
       request.user.id,

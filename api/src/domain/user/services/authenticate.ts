@@ -42,6 +42,12 @@ export class AuthenticateService {
     const { accessToken, refreshToken } = this.jwtService.generateTokenPair({
       id: user.id,
       email: user.email,
+      clinicId:
+        clinics.length > 1
+          ? null
+          : clinics.length === 1
+            ? clinics[0].clinicId
+            : null,
     });
 
     await this.refreshTokenRepository.create({
@@ -55,7 +61,6 @@ export class AuthenticateService {
     return {
       token: accessToken,
       refreshToken,
-      clinics,
     };
   }
 }

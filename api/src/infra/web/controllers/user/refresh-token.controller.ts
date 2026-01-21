@@ -18,8 +18,13 @@ export class RefreshTokenController {
 
     const { accessToken } = await this.refreshTokenLogic.execute(refreshToken);
 
-    reply.send({
-      token: accessToken,
-    });
+    reply
+      .setCookie("token", accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        path: "/",
+      })
+      .send();
   };
 }

@@ -1,6 +1,6 @@
 import { FastifyRequest } from "fastify";
+import { Permission } from "../../../../../shared/permissions";
 import { ForbiddenError } from "../../../shared/errors/forbidden.error";
-import { Permission } from "../../../shared/permissions/permissions";
 import { ROLE_PERMISSIONS } from "../../../shared/permissions/role-permissions";
 import { ClinicUserRole } from "../../../shared/permissions/roles";
 
