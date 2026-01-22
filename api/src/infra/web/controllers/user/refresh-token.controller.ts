@@ -21,9 +21,10 @@ export class RefreshTokenController {
     reply
       .setCookie("token", accessToken, {
         httpOnly: true,
-        secure: true,
-        sameSite: "strict",
         path: "/",
+        sameSite: "lax",
+        secure: false,
+        maxAge: 60,
       })
       .send();
   };

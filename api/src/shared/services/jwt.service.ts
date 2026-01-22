@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 interface JWTPayload {
   id: string;
   email: string;
+  clinicId?: string;
 }
 
 interface TokenPair {
@@ -43,6 +44,10 @@ export class JWTService {
 
   verifyAccessToken(token: string): JWTPayload {
     return jwt.verify(token, this.accessTokenSecret) as JWTPayload;
+  }
+
+  verifyRefreshToken(refreshToken: string): JWTPayload {
+    return jwt.verify(refreshToken, this.refreshTokenSecret) as JWTPayload;
   }
 
   getRefreshTokenExpiryDate(): Date {

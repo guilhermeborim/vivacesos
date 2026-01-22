@@ -21,13 +21,17 @@ export class AuthenticateController {
     reply
       .setCookie("refreshToken", refreshToken, {
         httpOnly: true,
-        path: "/auth/refresh",
-        sameSite: "strict",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7, // 7 dias
+        sameSite: process.env.NODE_ENV === "PROD" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "PROD" ? true : false,
       })
       .setCookie("token", user.token, {
         httpOnly: true,
         path: "/",
-        sameSite: "strict",
+        maxAge: 60 * 15, // 15 minutos
+        sameSite: process.env.NODE_ENV === "PROD" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "PROD" ? true : false,
       })
       .send();
   };

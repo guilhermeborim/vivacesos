@@ -9,18 +9,14 @@ export const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
     if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      error.response.data.errorType === "TOKEN_EXPIRED"
+      (error.response?.status === 401 &&
+        error.response.data.errorType === "TOKEN_EXPIRED") ||
+      error.response.data.errorType === "TOKEN_INVALID"
     ) {
-      console.log("aqui");
-      originalRequest._retry = true;
-
       try {
         await postRefreshToken();
-        return api(originalRequest);
+        return api.request(error.config);
       } catch (error) {
         return Promise.reject(error);
       }

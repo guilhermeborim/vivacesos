@@ -2,7 +2,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import { AuthProvider } from "context/auth/hooks/authContext";
 import { PrimeReactProvider } from "primereact/api";
 import React from "react";
-import { CookiesProvider } from "react-cookie";
 import ReactDOM from "react-dom/client";
 import {
   Provider,
@@ -30,11 +29,9 @@ root.render(
     <PrimeReactProvider>
       <React.Fragment>
         <BrowserRouter>
-          <CookiesProvider>
-            <AuthProvider>
-              <App />
-            </AuthProvider>
-          </CookiesProvider>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
         </BrowserRouter>
       </React.Fragment>
     </PrimeReactProvider>

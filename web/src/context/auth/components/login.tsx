@@ -19,6 +19,11 @@ import { type LoginFormSchema, loginFormSchema } from "../schemas";
 export default function Login() {
   const { login } = useAuth();
   const [connectingUser, setConnectingUser] = React.useTransition();
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword((prevState) => !prevState);
+  };
 
   const form = useForm<LoginFormSchema>({
     resolver: zodResolver(loginFormSchema),
@@ -81,7 +86,7 @@ export default function Login() {
                           <>
                             <Input
                               {...field}
-                              type="password"
+                              type={showPassword ? "text" : "password"}
                               placeholder="******"
                               invalid={!!fieldState.error}
                             />
@@ -98,6 +103,7 @@ export default function Login() {
                           className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted"
                           type="button"
                           id="password-addon"
+                          onClick={toggleShowPassword}
                         >
                           <i className="ri-eye-fill align-middle"></i>
                         </button>

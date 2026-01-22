@@ -19,7 +19,11 @@ import { registerFormSchema, RegisterFormSchema } from "../schemas";
 export default function Register() {
   const { register } = useAuth();
   const [registerUser, setRegisterUser] = React.useTransition();
+  const [showPassword, setShowPassword] = React.useState(false);
 
+  const toggleShowPassword = () => {
+    setShowPassword((prevState) => !prevState);
+  };
   const form = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema),
   });
@@ -39,8 +43,10 @@ export default function Register() {
             <CardBody className="p-4">
               <div className="text-center text-white-50"></div>
               <div className="text-center mt-2">
-                <h5 className="text-primary">Seja bem-vindo!</h5>
-                <p className="text-muted">Faça o cadastro para continuar.</p>
+                <h5 className="text-primary">Realize seu cadastro!</h5>
+                <p className="text-muted">
+                  Crie sua conta para acessar a plataforma.
+                </p>
               </div>
               <div className="p-2 mt-4">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -105,7 +111,7 @@ export default function Register() {
                           <>
                             <Input
                               {...field}
-                              type="password"
+                              type={showPassword ? "text" : "password"}
                               placeholder="******"
                               invalid={!!fieldState.error}
                             />
@@ -122,6 +128,7 @@ export default function Register() {
                           className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted"
                           type="button"
                           id="password-addon"
+                          onClick={toggleShowPassword}
                         >
                           <i className="ri-eye-fill align-middle"></i>
                         </button>

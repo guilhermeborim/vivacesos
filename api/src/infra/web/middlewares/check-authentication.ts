@@ -17,13 +17,6 @@ export class CheckAuthtenticationMiddleware {
   execute = async (request: FastifyRequest) => {
     const token = request.cookies.token;
 
-    if (!token) {
-      throw new JWTError(
-        "Token de autorização não fornecido",
-        JWTErrorType.TOKEN_NOT_PROVIDED,
-      );
-    }
-
     try {
       const payload = this.jwtService.verifyAccessToken(token);
 

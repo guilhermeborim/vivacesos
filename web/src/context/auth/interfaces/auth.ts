@@ -1,23 +1,10 @@
-export interface LoginResponse {
-  token: string;
-  refreshToken: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
-  clinics: [
-    {
-      clinic_id: string;
-      name: string;
-    },
-  ];
+export interface LoginHttpParams {
+  email: string;
+  password: string;
 }
 
-export interface RegisterResponse {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
+export interface RegisterHttpParams {
+  name: string;
+  email: string;
+  password: string;
 }

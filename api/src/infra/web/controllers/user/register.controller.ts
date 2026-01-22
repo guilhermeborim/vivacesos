@@ -15,8 +15,8 @@ export class RegisterController {
     reply: FastifyReply,
   ) => {
     const userData = registerBodySchema.parse(request.body);
-    const user = await this.authLogic.execute(userData);
+    await this.authLogic.execute(userData);
 
-    reply.status(201).send(user);
+    reply.status(201).send();
   };
 }
