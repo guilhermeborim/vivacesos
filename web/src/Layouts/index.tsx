@@ -24,10 +24,12 @@ import {
 } from "../slices/thunks";
 
 //redux
+import { useAuth } from "context/auth/hooks/use-auth";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 const Layout = (props: any) => {
+  const { session } = useAuth();
   const [headerClass, setHeaderClass] = useState("");
   const dispatch: any = useDispatch();
 
@@ -157,7 +159,10 @@ const Layout = (props: any) => {
           layoutModeType={layoutModeType}
           onChangeLayoutMode={onChangeLayoutMode}
         />
-        <Sidebar layoutType={layoutType} />
+        {session?.activeClinic &&
+          session.user.onboardingStep === "FINISHED" && (
+            <Sidebar layoutType={layoutType} />
+          )}
         <div className="main-content">
           {props.children}
           <Footer />

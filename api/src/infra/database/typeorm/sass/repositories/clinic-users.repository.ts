@@ -2,11 +2,7 @@ import { Repository } from "typeorm";
 import { FindUsersByClinic } from "../../../../../domain/clinicUser/interfaces/clinicUserBinded";
 import { DatabaseError } from "../../../../../shared/errors/database.error";
 import { SassDataSource } from "../data-source";
-import {
-  ClinicUser,
-  ClinicUserRole,
-  ClinicUserStatus,
-} from "../entities/ClinicUsers";
+import { ClinicUser } from "../entities/ClinicUsers";
 import {
   BindClinicUsersParams,
   ClinicUsersRepositoryInterface,
@@ -23,8 +19,8 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
     try {
       const clinicUserBinded = await this.clinicUsersRepository.save({
         ...clinicUser,
-        role: ClinicUserRole.ADMIN,
-        status: ClinicUserStatus.ATIVO,
+        role: clinicUser.role,
+        status: clinicUser.status,
       });
       return clinicUserBinded;
     } catch (error) {
@@ -55,16 +51,10 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
 
   async findUserBindedAnyClinics(userId: string): Promise<ClinicUser[]> {
     try {
-      const clinicUsers = await this.clinicUsersRepository.query(
-        `
-          SELECT 
-          cu.clinic_id AS "clinicId"
-          FROM clinic_users cu
-          INNER JOIN clinics c ON cu.clinic_id = c.id
-          WHERE cu.user_id = $1
-        `,
-        [userId],
-      );
+      const clinicUsers = await this.clinicUsersRepository.find({
+        where: { userId },
+        relations: ["clinic"],
+      });
 
       return clinicUsers;
     } catch (error) {
@@ -87,8 +77,8 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
           u.name,
           u.email
           FROM clinic_users cu
-          INNER JOIN users u ON cu.user_id = u.id
-          WHERE cu.clinic_id = $1
+          INNER JOIN users u ON cu.userId = u.id
+          WHERE cu.clinicId = $1
         `,
         [clinicId],
       );

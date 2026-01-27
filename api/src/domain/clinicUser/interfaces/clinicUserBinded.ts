@@ -6,6 +6,7 @@ import {
 
 export interface ClinicUserResponse {
   clinicUser: ClinicUser;
+  token?: string;
 }
 
 export interface FindUsersByClinic {

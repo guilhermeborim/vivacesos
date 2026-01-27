@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Col, Collapse, Row } from "reactstrap";
 import withRouter from "../../Components/Common/withRouter";
@@ -10,9 +10,7 @@ import navdata from "../LayoutMenuData";
 import { withTranslation } from "react-i18next";
 
 const HorizontalLayout = (props: any) => {
-  const [isMoreMenu, setIsMoreMenu] = useState<boolean>(false);
   const navData = navdata().props.children;
-  let menuItems = [];
   let splitMenuItems: Array<any> = [];
   let menuSplitContainer = 6;
   navData.forEach(function (value: any, key: number) {
@@ -25,21 +23,7 @@ const HorizontalLayout = (props: any) => {
       val.isChildItem = value.subItems ? true : false;
       delete val.subItems;
       splitMenuItems.push(val);
-    } else {
-      menuItems.push(value);
     }
-  });
-  menuItems.push({
-    id: "more",
-    label: "More",
-    icon: "ri-briefcase-2-line",
-    link: "/#",
-    stateVariables: isMoreMenu,
-    subItems: splitMenuItems,
-    click: function (e: any) {
-      e.preventDefault();
-      setIsMoreMenu(!isMoreMenu);
-    },
   });
 
   const path = props.router.location.pathname;
@@ -122,7 +106,7 @@ const HorizontalLayout = (props: any) => {
 
   return (
     <React.Fragment>
-      {(menuItems || []).map((item: any, key: number) => {
+      {navData.map((item: any, key: number) => {
         return (
           <React.Fragment key={key}>
             {/* Main Header */}
@@ -152,39 +136,37 @@ const HorizontalLayout = (props: any) => {
                       <React.Fragment>
                         <Row>
                           {item.subItems &&
-                            (item.subItems || []).map(
-                              (subItem: any, key: number) => (
-                                <React.Fragment key={key}>
-                                  {key % 2 === 0 ? (
-                                    <Col lg={4}>
-                                      <ul className="nav nav-sm flex-column">
-                                        <li className="nav-item">
-                                          <Link
-                                            to={item.subItems[key].link}
-                                            className="nav-link"
-                                          >
-                                            {item.subItems[key].label}
-                                          </Link>
-                                        </li>
-                                      </ul>
-                                    </Col>
-                                  ) : (
-                                    <Col lg={4}>
-                                      <ul className="nav nav-sm flex-column">
-                                        <li className="nav-item">
-                                          <Link
-                                            to={item.subItems[key].link}
-                                            className="nav-link"
-                                          >
-                                            {item.subItems[key].label}
-                                          </Link>
-                                        </li>
-                                      </ul>
-                                    </Col>
-                                  )}
-                                </React.Fragment>
-                              ),
-                            )}
+                            item.subItems.map((subItem: any, key: number) => (
+                              <React.Fragment key={key}>
+                                {key % 2 === 0 ? (
+                                  <Col lg={4}>
+                                    <ul className="nav nav-sm flex-column">
+                                      <li className="nav-item">
+                                        <Link
+                                          to={subItem.link}
+                                          className="nav-link"
+                                        >
+                                          {subItem.label}
+                                        </Link>
+                                      </li>
+                                    </ul>
+                                  </Col>
+                                ) : (
+                                  <Col lg={4}>
+                                    <ul className="nav nav-sm flex-column">
+                                      <li className="nav-item">
+                                        <Link
+                                          to={subItem.link}
+                                          className="nav-link"
+                                        >
+                                          {item.subItems[key].label}
+                                        </Link>
+                                      </li>
+                                    </ul>
+                                  </Col>
+                                )}
+                              </React.Fragment>
+                            ))}
                         </Row>
                       </React.Fragment>
                     ) : (

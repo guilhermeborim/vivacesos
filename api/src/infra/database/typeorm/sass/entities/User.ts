@@ -6,6 +6,13 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
+export enum UserOnboardingStep {
+  CREATE_CLINIC = "CREATE_CLINIC",
+  LINK_PROFESSIONAL = "LINK_PROFESSIONAL",
+  DONE = "DONE",
+  FINISHED = "FINISHED",
+}
+
 @Entity("users")
 export class User {
   @PrimaryGeneratedColumn("uuid")
@@ -24,7 +31,16 @@ export class User {
   active: boolean;
 
   @Column({
-    name: "email_verified",
+    name: "onboardingStep",
+    type: "enum",
+    enum: UserOnboardingStep,
+    nullable: true,
+    default: UserOnboardingStep.CREATE_CLINIC,
+  })
+  onboardingStep: UserOnboardingStep;
+
+  @Column({
+    name: "emailVerified",
     type: "boolean",
     default: false,
     nullable: false,
@@ -32,14 +48,14 @@ export class User {
   emailVerified: boolean;
 
   @CreateDateColumn({
-    name: "created_at",
+    name: "createdAt",
     type: "timestamptz",
     nullable: false,
   })
   createdAt: Date;
 
   @UpdateDateColumn({
-    name: "updated_at",
+    name: "updatedAt",
     type: "timestamptz",
     nullable: false,
   })

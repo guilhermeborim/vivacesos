@@ -124,19 +124,9 @@ const Navdata = () => {
         },
       ],
     },
-    // {
-    //   id: "widgets",
-    //   label: "Prontuários",
-    //   icon: "ri-file-list-3-line",
-    //   link: "/medical-record",
-    //   click: function (e: any) {
-    //     e.preventDefault();
-    //     setIscurrentState("Widgets");
-    //   },
-    // },
     {
       id: "maps",
-      label: "Prontuários Eletrônicos",
+      label: "Prontuários",
       icon: "ri-file-list-3-line",
       link: "#",
       click: function (e: any) {
@@ -161,45 +151,6 @@ const Navdata = () => {
         },
       ],
     },
-    // {
-    //   id: "forms",
-    //   label: "Pilates",
-    //   icon: "ri-user-heart-line",
-    //   link: "#",
-    //   click: function (e: any) {
-    //     e.preventDefault();
-    //     setIsForms(!isForms);
-    //     setIscurrentState("Forms");
-    //     updateIconSidebar(e);
-    //   },
-    //   stateVariables: isForms,
-    //   subItems: [
-    //     {
-    //       id: "basicelements",
-    //       label: "Turmas",
-    //       link: "#",
-    //       parentId: "forms",
-    //     },
-    //     {
-    //       id: "formselect",
-    //       label: "Alunos",
-    //       link: "#",
-    //       parentId: "forms",
-    //     },
-    //     {
-    //       id: "checkboxsradios",
-    //       label: "Visão das Aulas",
-    //       link: "#",
-    //       parentId: "forms",
-    //     },
-    //     {
-    //       id: "inputmasks",
-    //       label: "Relatório de Aulas",
-    //       link: "#",
-    //       parentId: "forms",
-    //     },
-    //   ],
-    // },
     {
       id: "tables",
       label: "Financeiro",
@@ -242,18 +193,19 @@ const Navdata = () => {
       stateVariables: isCharts,
       subItems: [
         {
-          id: "chartjs",
-          label: "Profissionais",
+          id: "basicelements",
+          label: "Acessos",
+          link: "#",
+          parentId: "charts",
+        },
+        {
+          id: "formselect",
+          label: "Profissionais de Saúde",
           link: "#",
           parentId: "charts",
         },
         { id: "echarts", label: "Clínica", link: "#", parentId: "charts" },
-        { id: "echarts", label: "Permissões", link: "#", parentId: "charts" },
       ],
-    },
-    {
-      label: "Conectar",
-      isHeader: true,
     },
     {
       id: "icons",
@@ -272,72 +224,6 @@ const Navdata = () => {
         { id: "boxicons", label: "Google", link: "#", parentId: "icons" },
       ],
     },
-    // {
-    //   id: "maps",
-    //   label: "Maps",
-    //   icon: "ri-map-pin-line",
-    //   link: "#",
-    //   click: function (e: any) {
-    //     e.preventDefault();
-    //     setIsMaps(!isMaps);
-    //     setIscurrentState("Maps");
-    //     updateIconSidebar(e);
-    //   },
-    //   stateVariables: isMaps,
-    //   subItems: [
-    //     { id: "google", label: "Google", link: "#", parentId: "maps" },
-    //   ],
-    // },
-    // {
-    //   id: "multilevel",
-    //   label: "Multi Level",
-    //   icon: "ri-share-line",
-    //   link: "#",
-    //   click: function (e: any) {
-    //     e.preventDefault();
-    //     setIsMultiLevel(!isMultiLevel);
-    //     setIscurrentState("MuliLevel");
-    //     updateIconSidebar(e);
-    //   },
-    //   stateVariables: isMultiLevel,
-    //   subItems: [
-    //     {
-    //       id: "level1.1",
-    //       label: "Level 1.1",
-    //       link: "#",
-    //       parentId: "multilevel",
-    //     },
-    //     {
-    //       id: "level1.2",
-    //       label: "Level 1.2",
-    //       link: "#",
-    //       isChildItem: true,
-    //       click: function (e: any) {
-    //         e.preventDefault();
-    //         setIsLevel1(!isLevel1);
-    //       },
-    //       stateVariables: isLevel1,
-    //       childItems: [
-    //         { id: 1, label: "Level 2.1", link: "#" },
-    //         {
-    //           id: "level2.2",
-    //           label: "Level 2.2",
-    //           link: "#",
-    //           isChildItem: true,
-    //           click: function (e: any) {
-    //             e.preventDefault();
-    //             setIsLevel2(!isLevel2);
-    //           },
-    //           stateVariables: isLevel2,
-    //           childItems: [
-    //             { id: 1, label: "Level 3.1", link: "#" },
-    //             { id: 2, label: "Level 3.2", link: "#" },
-    //           ],
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };

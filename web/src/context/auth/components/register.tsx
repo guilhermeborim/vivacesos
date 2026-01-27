@@ -1,18 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { InputController } from "Components/Common/InputController";
 import { Loading } from "Components/Common/Loading";
 import React from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import {
-  Button,
-  Card,
-  CardBody,
-  Col,
-  FormFeedback,
-  Input,
-  Label,
-  Row,
-} from "reactstrap";
+import { Button, Card, CardBody, Col, Label, Row } from "reactstrap";
 import { useAuth } from "../hooks/use-auth";
 import { registerFormSchema, RegisterFormSchema } from "../schemas";
 
@@ -51,51 +43,21 @@ export default function Register() {
               <div className="p-2 mt-4">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
                   <div className="mb-3">
-                    <Label htmlFor="name" className="form-label">
-                      Nome
-                    </Label>
-                    <Controller
+                    <InputController
                       control={form.control}
                       name="name"
-                      render={({ field, fieldState }) => (
-                        <>
-                          <Input
-                            {...field}
-                            type="text"
-                            placeholder="Seu nome"
-                            invalid={!!fieldState.error}
-                          />
-                          {fieldState.error && (
-                            <FormFeedback>
-                              {fieldState.error.message}
-                            </FormFeedback>
-                          )}
-                        </>
-                      )}
+                      label="Nome"
+                      placeholder="Seu nome"
+                      errors={form.formState.errors}
                     />
                   </div>
                   <div className="mb-3">
-                    <Label htmlFor="email" className="form-label">
-                      Email
-                    </Label>
-                    <Controller
+                    <InputController
                       control={form.control}
                       name="email"
-                      render={({ field, fieldState }) => (
-                        <>
-                          <Input
-                            {...field}
-                            type="email"
-                            placeholder="example@example.com"
-                            invalid={!!fieldState.error}
-                          />
-                          {fieldState.error && (
-                            <FormFeedback>
-                              {fieldState.error.message}
-                            </FormFeedback>
-                          )}
-                        </>
-                      )}
+                      label="Email"
+                      placeholder="example@example.com"
+                      errors={form.formState.errors}
                     />
                   </div>
 
@@ -104,24 +66,12 @@ export default function Register() {
                       Senha
                     </Label>
                     <div className="position-relative auth-pass-inputgroup mb-3">
-                      <Controller
+                      <InputController
                         control={form.control}
                         name="password"
-                        render={({ field, fieldState }) => (
-                          <>
-                            <Input
-                              {...field}
-                              type={showPassword ? "text" : "password"}
-                              placeholder="******"
-                              invalid={!!fieldState.error}
-                            />
-                            {fieldState.error && (
-                              <FormFeedback>
-                                {fieldState.error.message}
-                              </FormFeedback>
-                            )}
-                          </>
-                        )}
+                        type={showPassword ? "text" : "password"}
+                        placeholder="******"
+                        errors={form.formState.errors}
                       />
                       {!form.formState.errors.password && (
                         <button

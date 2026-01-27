@@ -18,7 +18,7 @@ export class BindClinicUserController {
     request: FastifyRequest<{
       Body: BindClinicUsersParams;
     }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) => {
     const clinicUserData = bindClinicUserBodySchema.parse(request.body);
 
@@ -28,6 +28,7 @@ export class BindClinicUserController {
     }
 
     const clinicUser = await this.clinicUserLogic.execute(clinicUserData);
+
     reply.send(clinicUser);
   };
 }

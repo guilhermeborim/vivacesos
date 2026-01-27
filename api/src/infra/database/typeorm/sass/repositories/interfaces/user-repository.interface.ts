@@ -1,4 +1,4 @@
-import { User } from "../../entities/User";
+import { User, UserOnboardingStep } from "../../entities/User";
 
 export interface CreateUserParams {
   name: string;
@@ -10,6 +10,7 @@ export interface CreateUserParams {
 
 export interface UserRepositoryInterface {
   createUser(data: CreateUserParams): Promise<User>;
+  nextOnboardingStep(userId: string, step: UserOnboardingStep): Promise<void>;
   findByEmail(email: string): Promise<User | null>;
   findById(id: string): Promise<User | null>;
 }

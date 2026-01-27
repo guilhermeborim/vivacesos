@@ -12,12 +12,12 @@ export class RegisterProfessionalController {
 
   execute = async (
     request: FastifyRequest<{ Body: CreateProfessionalParams }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) => {
     const professionalData = registerProfessionalBodySchema.parse(request.body);
     const professional = await this.professionalLogic.execute(
       request.clinicId,
-      professionalData
+      professionalData,
     );
     reply.send(professional);
   };

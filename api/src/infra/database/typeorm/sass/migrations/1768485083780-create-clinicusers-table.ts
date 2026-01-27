@@ -20,12 +20,12 @@ export class CreateClinicusersTable1768485083780 implements MigrationInterface {
             generationStrategy: "uuid",
           },
           {
-            name: "user_id",
+            name: "userId",
             type: "uuid",
             isNullable: false,
           },
           {
-            name: "clinic_id",
+            name: "clinicId",
             type: "uuid",
             isNullable: false,
           },
@@ -44,7 +44,7 @@ export class CreateClinicusersTable1768485083780 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: "created_at",
+            name: "createdAt",
             type: "timestamptz",
             isNullable: false,
             default: "CURRENT_TIMESTAMP",
@@ -53,40 +53,40 @@ export class CreateClinicusersTable1768485083780 implements MigrationInterface {
         uniques: [
           new TableUnique({
             name: "UQ_clinic_users_user_clinic",
-            columnNames: ["user_id", "clinic_id"],
+            columnNames: ["userId", "clinicId"],
           }),
         ],
-      })
+      }),
     );
 
     await queryRunner.createForeignKey(
       "clinic_users",
       new TableForeignKey({
-        name: "FK_clinic_users_user_id",
-        columnNames: ["user_id"],
+        name: "FK_clinic_users_userId",
+        columnNames: ["userId"],
         referencedColumnNames: ["id"],
         referencedTableName: "users",
         onDelete: "CASCADE",
-      })
+      }),
     );
 
     await queryRunner.createForeignKey(
       "clinic_users",
       new TableForeignKey({
-        name: "FK_clinic_users_clinic_id",
-        columnNames: ["clinic_id"],
+        name: "FK_clinic_users_clinicId",
+        columnNames: ["clinicId"],
         referencedColumnNames: ["id"],
         referencedTableName: "clinics",
         onDelete: "CASCADE",
-      })
+      }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey("clinic_users", "FK_clinic_users_user_id");
+    await queryRunner.dropForeignKey("clinic_users", "FK_clinic_users_userId");
     await queryRunner.dropForeignKey(
       "clinic_users",
-      "FK_clinic_users_clinic_id"
+      "FK_clinic_users_clinicId",
     );
     await queryRunner.dropTable("clinic_users");
     await queryRunner.query(`DROP TYPE IF EXISTS clinic_user_role_enum`);

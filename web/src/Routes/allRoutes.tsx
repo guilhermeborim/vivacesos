@@ -6,7 +6,8 @@ import Error403 from "../pages/errors/Error403";
 import Error500 from "../pages/errors/Error500";
 
 import Register from "pages/auth/register";
-import Dashboard from "pages/dashboard";
+import ClinicList from "pages/clinic/list-clinic";
+import Dashboard from "pages/dashboard/dashboard";
 import Login from "../pages/auth/login";
 
 const authProtectedRoutes = [
@@ -17,6 +18,10 @@ const authProtectedRoutes = [
   {
     path: "/",
     component: <Navigate to={"/dashboard"} />,
+  },
+  {
+    path: "/patient",
+    component: <ClinicList />,
   },
   { path: "*", component: <Navigate to="/error-404" /> },
 ];

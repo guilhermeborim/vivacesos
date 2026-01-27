@@ -1,7 +1,7 @@
 import { Repository } from "typeorm";
 import { DatabaseError } from "../../../../../shared/errors/database.error";
 import { SassDataSource } from "../data-source";
-import { User } from "../entities/User";
+import { User, UserOnboardingStep } from "../entities/User";
 import {
   CreateUserParams,
   UserRepositoryInterface,
@@ -47,6 +47,20 @@ export class UserTypeormRepository implements UserRepositoryInterface {
       return user;
     } catch (error) {
       throw new DatabaseError("Falha ao buscar usuário!", error);
+    }
+  }
+
+  async nextOnboardingStep(
+    userId: string,
+    step: UserOnboardingStep,
+  ): Promise<void> {
+    try {
+      await this.userRepository.update(userId, { onboardingStep: step });
+    } catch (error) {
+      throw new DatabaseError(
+        "Falha ao atualizar passo de onboarding do usuário!",
+        error,
+      );
     }
   }
 }

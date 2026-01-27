@@ -6,9 +6,7 @@ import {
   TableUnique,
 } from "typeorm";
 
-export class CreateProfessionalTable1768503803439
-  implements MigrationInterface
-{
+export class CreateProfessionalTable1768503803439 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -22,12 +20,13 @@ export class CreateProfessionalTable1768503803439
             generationStrategy: "uuid",
           },
           {
-            name: "user_id",
+            name: "userId",
             type: "uuid",
-            isNullable: false,
+            isNullable: true,
+            default: null,
           },
           {
-            name: "clinic_id",
+            name: "clinicId",
             type: "uuid",
             isNullable: false,
           },
@@ -58,13 +57,13 @@ export class CreateProfessionalTable1768503803439
             default: true,
           },
           {
-            name: "created_at",
+            name: "createdAt",
             type: "timestamptz",
             isNullable: false,
             default: "CURRENT_TIMESTAMP",
           },
           {
-            name: "updated_at",
+            name: "updatedAt",
             type: "timestamptz",
             isNullable: false,
             default: "CURRENT_TIMESTAMP",
@@ -73,43 +72,43 @@ export class CreateProfessionalTable1768503803439
         uniques: [
           new TableUnique({
             name: "UQ_professionals_user_clinic",
-            columnNames: ["user_id", "clinic_id"],
+            columnNames: ["userId", "clinicId"],
           }),
         ],
-      })
+      }),
     );
 
     await queryRunner.createForeignKey(
       "professionals",
       new TableForeignKey({
-        name: "FK_professionals_user_id",
-        columnNames: ["user_id"],
+        name: "FK_professionals_userId",
+        columnNames: ["userId"],
         referencedColumnNames: ["id"],
         referencedTableName: "users",
         onDelete: "CASCADE",
-      })
+      }),
     );
 
     await queryRunner.createForeignKey(
       "professionals",
       new TableForeignKey({
-        name: "FK_professionals_clinic_id",
-        columnNames: ["clinic_id"],
+        name: "FK_professionals_clinicId",
+        columnNames: ["clinicId"],
         referencedColumnNames: ["id"],
         referencedTableName: "clinics",
         onDelete: "CASCADE",
-      })
+      }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey(
       "professionals",
-      "FK_professionals_user_id"
+      "FK_professionals_userId",
     );
     await queryRunner.dropForeignKey(
       "professionals",
-      "FK_professionals_clinic_id"
+      "FK_professionals_clinicId",
     );
     await queryRunner.dropTable("professionals");
     await queryRunner.query(`DROP TYPE IF EXISTS professional_type_enum`);

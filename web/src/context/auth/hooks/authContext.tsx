@@ -1,13 +1,9 @@
-import { AxiosError } from "axios";
-import {
-  getSession,
-  postLogin,
-  postLogout,
-  postRegister,
-} from "helpers/backend_helper";
-import { createContext, useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { postLogout } from "helpers/backend_helper";
+import { createContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useMutationLogin, useMutationRegister } from "shared/mutations/auth";
+import { useQuerySession } from "shared/queries/auth";
 import { Permission } from "../../../../../shared/permissions";
 import type { LoginFormSchema, RegisterFormSchema } from "../schemas";
 
@@ -15,16 +11,23 @@ interface User {
   id: string;
   name: string;
   email: string;
+  onboardingStep: "CREATE_CLINIC" | "LINK_PROFESSIONAL" | "DONE" | "FINISHED";
 }
 
-interface Clinic {
-  clinic_id: string;
+export interface Clinic {
+  clinicId: string;
+  name: string;
+}
+
+export interface activeClinic {
+  id: string;
   name: string;
 }
 
 export interface Session {
   user: User;
-  clinics: Clinic;
+  clinics: Clinic[];
+  activeClinic: activeClinic | null;
   role: string;
   permissions: string[];
 }
@@ -34,7 +37,6 @@ interface AuthContextProps {
   session: Session | null;
   login: (payload: LoginFormSchema) => Promise<void>;
   register: (payload: RegisterFormSchema) => Promise<void>;
-  loadSession: () => Promise<void>;
   signOut: () => void;
   hasPermission: (permission: Permission) => boolean;
 }
@@ -44,59 +46,38 @@ export const AuthContext = createContext<AuthContextProps | undefined>(
 );
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { data, isLoading, isError, refetch } = useQuerySession();
+  const mutationLogin = useMutationLogin();
+  const mutationRegister = useMutationRegister();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    loadSession();
-  }, []);
-
-  async function loadSession() {
-    setLoading(true);
-    try {
-      const response = await getSession();
-      setSession(response.data);
-    } catch {
-      setSession(null);
-    } finally {
-      setLoading(false);
+    if (isError) {
+      navigate("/login");
     }
-  }
+  }, [isError]);
 
   async function login(payload: LoginFormSchema) {
     try {
-      await postLogin(payload);
-      await loadSession();
-      toast.success("Conectado com sucesso!");
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message || "Erro ao autenticar");
-      }
-    }
+      await mutationLogin.mutateAsync(payload);
+      await refetch();
+    } catch (error) {}
   }
 
   async function register(payload: any) {
     try {
-      const response = await postRegister(payload);
-      if (response.status === 201) {
-        toast.success("Cadastrado com sucesso!");
-        navigate("/login");
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message || "Erro ao registrar");
-      }
-    }
+      await mutationRegister.mutateAsync(payload);
+    } catch (error) {}
   }
 
   async function signOut() {
     await postLogout();
-    setSession(null);
+    queryClient.setQueryData(["session"], null);
   }
 
   function hasPermission(permission: Permission): boolean {
-    return session?.permissions?.includes(permission) || false;
+    return data?.data?.permissions?.includes(permission) || false;
   }
 
   return (
@@ -105,10 +86,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         login,
         signOut,
         register,
-        session,
+        session: data?.data ?? null,
         hasPermission,
-        loadSession,
-        loading,
+        loading: isLoading,
       }}
     >
       {children}

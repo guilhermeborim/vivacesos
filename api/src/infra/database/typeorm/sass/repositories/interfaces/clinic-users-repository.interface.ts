@@ -16,7 +16,7 @@ export interface ClinicUsersRepositoryInterface {
   bindClinicUser(data: BindClinicUsersParams): Promise<ClinicUser>;
   findUserBindedClinic(
     clinicId: string,
-    userId: string
+    userId: string,
   ): Promise<ClinicUser | null>;
   findUserBindedAnyClinics(userId: string): Promise<ClinicUser[] | null>;
   findUsersByClinic(clinicId: string): Promise<FindUsersByClinic[]>;

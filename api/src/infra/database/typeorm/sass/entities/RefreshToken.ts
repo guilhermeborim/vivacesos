@@ -7,6 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Clinic } from "./Clinic";
 import { User } from "./User";
 
 @Entity("refresh_tokens")
@@ -17,22 +18,29 @@ export class RefreshToken {
   @Column({ name: "token", type: "varchar", nullable: false, unique: true })
   token: string;
 
-  @Column({ name: "user_id", type: "uuid", nullable: false })
+  @Column({ name: "userId", type: "uuid", nullable: false })
   userId: string;
 
-  @Column({ name: "expires_at", type: "timestamptz", nullable: false })
+  @Column({ name: "clinicId", type: "uuid", nullable: true, default: null })
+  clinicId: string;
+
+  @Column({ name: "expiresAt", type: "timestamptz", nullable: false })
   expiresAt: Date;
 
-  @Column({ name: "is_revoked", type: "boolean", default: false })
+  @Column({ name: "isRevoked", type: "boolean", default: false })
   isRevoked: boolean;
 
-  @CreateDateColumn({ name: "created_at" })
+  @CreateDateColumn({ name: "createdAt" })
   createdAt: Date;
 
-  @DeleteDateColumn({ name: "deleted_at" })
+  @DeleteDateColumn({ name: "deletedAt" })
   deletedAt: Date;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: "userId" })
   user: User;
+
+  @ManyToOne(() => Clinic)
+  @JoinColumn({ name: "clinicId" })
+  clinic: Clinic;
 }

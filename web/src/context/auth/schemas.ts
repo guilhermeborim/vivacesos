@@ -18,3 +18,9 @@ export const registerFormSchema = z.object({
 });
 
 export type RegisterFormSchema = z.infer<typeof registerFormSchema>;
+
+export const selectClinicFormSchema = z.object({
+  clinicId: z.string({ error: "Campo Obrigatório" }),
+});
+
+export type SelectClinicFormSchema = z.infer<typeof selectClinicFormSchema>;

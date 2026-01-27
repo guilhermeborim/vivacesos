@@ -52,6 +52,12 @@ export class AuthenticateService {
 
     await this.refreshTokenRepository.create({
       userId: user.id,
+      clinicId:
+        clinics.length > 1
+          ? null
+          : clinics.length === 1
+            ? clinics[0].clinicId
+            : null,
       token: refreshToken,
       expiresAt: this.jwtService.getRefreshTokenExpiryDate(),
     });

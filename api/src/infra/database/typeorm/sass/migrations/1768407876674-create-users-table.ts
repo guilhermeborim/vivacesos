@@ -36,25 +36,32 @@ export class CreateUsersTable1768407876674 implements MigrationInterface {
             default: true,
           },
           {
-            name: "email_verified",
+            name: "onboardingStep",
+            type: "enum",
+            enum: ["CREATE_CLINIC", "LINK_PROFESSIONAL", "DONE"],
+            isNullable: true,
+            default: "'CREATE_CLINIC'",
+          },
+          {
+            name: "emailVerified",
             type: "boolean",
             isNullable: false,
             default: false,
           },
           {
-            name: "created_at",
+            name: "createdAt",
             type: "timestamptz",
             isNullable: false,
             default: "CURRENT_TIMESTAMP",
           },
           {
-            name: "updated_at",
+            name: "updatedAt",
             type: "timestamptz",
             isNullable: false,
             default: "CURRENT_TIMESTAMP",
           },
         ],
-      })
+      }),
     );
   }
 

@@ -8,10 +8,17 @@ export interface CreateProfessionalParams {
   active?: boolean;
 }
 
+export interface CreateProfessionalOnboardingParams extends CreateProfessionalParams {
+  clinicId: string;
+}
+
 export interface ProfessionalRepositoryInterface {
   createProfessional(
     clinicId: string,
-    data: CreateProfessionalParams
+    data: CreateProfessionalParams,
+  ): Promise<Professional>;
+  createProfessionalOnboarding(
+    data: CreateProfessionalOnboardingParams,
   ): Promise<Professional>;
   findProfessionalByClinicId(clinicId: string): Promise<Professional[]>;
 }

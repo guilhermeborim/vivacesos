@@ -23,15 +23,38 @@ export class Clinic {
   @Column({ name: "active", type: "boolean", default: true, nullable: false })
   active: boolean;
 
+  @Column({ name: "cep", type: "varchar", nullable: false })
+  cep: string;
+
+  @Column({ name: "road", type: "varchar", nullable: false })
+  road: string;
+
+  @Column({ name: "number", type: "varchar", nullable: false })
+  number: string;
+
+  @Column({ name: "neighborhood", type: "varchar", nullable: false })
+  neighborhood: string;
+
+  @Column({ name: "city", type: "varchar", nullable: false })
+  city: string;
+
+  @Column({
+    name: "complement",
+    type: "varchar",
+    nullable: true,
+    default: null,
+  })
+  complement: string;
+
   @CreateDateColumn({
-    name: "created_at",
+    name: "createdAt",
     type: "timestamptz",
     nullable: false,
   })
   createdAt: Date;
 
   @UpdateDateColumn({
-    name: "updated_at",
+    name: "updatedAt",
     type: "timestamptz",
     nullable: false,
   })

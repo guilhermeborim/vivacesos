@@ -6,6 +6,7 @@ import { RefreshToken } from "../entities/RefreshToken";
 export interface CreateRefreshTokenRequest {
   token: string;
   userId: string;
+  clinicId?: string | null;
   expiresAt: Date;
 }
 
@@ -38,7 +39,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
     try {
       return await this.repository.findOne({
         where: { token, isRevoked: false },
-        relations: ["user"],
+        relations: ["user", "clinic"],
       });
     } catch (error) {
       throw new DatabaseError("Falha ao buscar refresh token", error);

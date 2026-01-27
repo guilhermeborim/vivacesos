@@ -5,9 +5,7 @@ import {
   TableForeignKey,
 } from "typeorm";
 
-export class CreateRefreshtokenTable1768481340605
-  implements MigrationInterface
-{
+export class CreateRefreshtokenTable1768481340605 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -27,45 +25,45 @@ export class CreateRefreshtokenTable1768481340605
             isUnique: true,
           },
           {
-            name: "user_id",
+            name: "userId",
             type: "uuid",
             isNullable: false,
           },
           {
-            name: "expires_at",
+            name: "expiresAt",
             type: "timestamptz",
             isNullable: false,
           },
           {
-            name: "is_revoked",
+            name: "isRevoked",
             type: "boolean",
             default: false,
             isNullable: false,
           },
           {
-            name: "created_at",
+            name: "createdAt",
             type: "timestamptz",
             isNullable: false,
             default: "CURRENT_TIMESTAMP",
           },
           {
-            name: "deleted_at",
+            name: "deletedAt",
             type: "timestamptz",
             isNullable: true,
           },
         ],
-      })
+      }),
     );
 
     await queryRunner.createForeignKey(
       "refresh_tokens",
       new TableForeignKey({
-        name: "FK_refresh_token_user_id",
-        columnNames: ["user_id"],
+        name: "FK_refresh_token_userId",
+        columnNames: ["userId"],
         referencedColumnNames: ["id"],
         referencedTableName: "users",
         onDelete: "CASCADE",
-      })
+      }),
     );
 
     await queryRunner.query(`
@@ -73,16 +71,16 @@ export class CreateRefreshtokenTable1768481340605
     `);
 
     await queryRunner.query(`
-      CREATE INDEX "IDX_refresh_token_user_id" ON "refresh_tokens" ("user_id")
+      CREATE INDEX "IDX_refresh_token_userId" ON "refresh_tokens" ("userId")
     `);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DROP INDEX "IDX_refresh_token_token"`);
-    await queryRunner.query(`DROP INDEX "IDX_refresh_token_user_id"`);
+    await queryRunner.query(`DROP INDEX "IDX_refresh_token_userId"`);
     await queryRunner.dropForeignKey(
       "refresh_tokens",
-      "FK_refresh_token_user_id"
+      "FK_refresh_token_userId",
     );
     await queryRunner.dropTable("refresh_tokens");
   }

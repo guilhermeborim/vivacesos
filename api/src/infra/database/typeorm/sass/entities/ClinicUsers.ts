@@ -29,10 +29,10 @@ export class ClinicUser {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ name: "user_id", type: "uuid", nullable: false })
+  @Column({ name: "userId", type: "uuid", nullable: false })
   userId: string;
 
-  @Column({ name: "clinic_id", type: "uuid", nullable: false })
+  @Column({ name: "clinicId", type: "uuid", nullable: false })
   clinicId: string;
 
   @Column({
@@ -51,14 +51,18 @@ export class ClinicUser {
   })
   status: ClinicUserStatus;
 
-  @CreateDateColumn({ name: "created_at" })
+  @CreateDateColumn({
+    name: "createdAt",
+    type: "timestamptz",
+    nullable: false,
+  })
   createdAt: Date;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: "userId" })
   user: User;
 
   @ManyToOne(() => Clinic)
-  @JoinColumn({ name: "clinic_id" })
+  @JoinColumn({ name: "clinicId" })
   clinic: Clinic;
 }

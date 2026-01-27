@@ -14,3 +14,15 @@ export const postRegister = (data: RegisterHttpParams) =>
 export const getSession = () => api.get<Session>(url.GET_SESSION);
 export const postRefreshToken = () => api.post(url.POST_REFRESH_TOKEN);
 export const postLogout = () => api.post(url.POST_LOGOUT);
+export const postNextStep = (data: any) => api.post(url.POST_NEXT_STEP, data);
+
+// Select Clinic Method
+export const postSelectClinic = (clinicId: string) =>
+  api.post(url.POST_SELECT_CLINIC, { clinicId });
+
+// Clinic Method
+export const postCreateClinic = (data: any) => api.post(url.POST_CLINIC, data);
+
+// Professional Method
+export const postCreateProfessionalOnboarding = (data: any) =>
+  api.post(url.POST_PROFESSIONAL_ONBOARDING, data);

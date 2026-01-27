@@ -19,10 +19,10 @@ export class Professional {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ name: "user_id", type: "uuid", nullable: false })
+  @Column({ name: "userId", type: "uuid", nullable: true, default: null })
   userId: string;
 
-  @Column({ name: "clinic_id", type: "uuid", nullable: false })
+  @Column({ name: "clinicId", type: "uuid", nullable: false })
   clinicId: string;
 
   @Column({
@@ -50,24 +50,24 @@ export class Professional {
   active: boolean;
 
   @CreateDateColumn({
-    name: "created_at",
+    name: "createdAt",
     type: "timestamptz",
     nullable: false,
   })
   createdAt: Date;
 
   @UpdateDateColumn({
-    name: "updated_at",
+    name: "updatedAt",
     type: "timestamptz",
     nullable: false,
   })
   updatedAt: Date;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: "userId" })
   user: User;
 
   @ManyToOne(() => Clinic)
-  @JoinColumn({ name: "clinic_id" })
+  @JoinColumn({ name: "clinicId" })
   clinic: Clinic;
 }

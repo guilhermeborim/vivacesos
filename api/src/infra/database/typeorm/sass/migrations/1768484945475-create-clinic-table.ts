@@ -37,19 +37,50 @@ export class CreateClinicTable1768484945475 implements MigrationInterface {
             default: true,
           },
           {
-            name: "created_at",
+            name: "cep",
+            type: "varchar(20)",
+            isNullable: false,
+          },
+          {
+            name: "road",
+            type: "varchar(100)",
+            isNullable: false,
+          },
+          {
+            name: "number",
+            type: "varchar(20)",
+            isNullable: false,
+          },
+          {
+            name: "neighborhood",
+            type: "varchar(50)",
+            isNullable: false,
+          },
+          {
+            name: "city",
+            type: "varchar(50)",
+            isNullable: false,
+          },
+          {
+            name: "complement",
+            type: "varchar(100)",
+            isNullable: true,
+            default: null,
+          },
+          {
+            name: "createdAt",
             type: "timestamptz",
             isNullable: false,
             default: "CURRENT_TIMESTAMP",
           },
           {
-            name: "updated_at",
+            name: "updatedAt",
             type: "timestamptz",
             isNullable: false,
             default: "CURRENT_TIMESTAMP",
           },
         ],
-      })
+      }),
     );
   }
 

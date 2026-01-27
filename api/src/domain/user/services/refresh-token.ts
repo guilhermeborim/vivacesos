@@ -27,6 +27,7 @@ export class RefreshTokenService {
     const accessToken = this.jwtService.generateAccessToken({
       id: storedToken.userId,
       email: storedToken.user.email,
+      clinicId: storedToken.clinicId,
     });
 
     return { accessToken };

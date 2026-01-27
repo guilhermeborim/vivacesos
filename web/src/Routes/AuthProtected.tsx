@@ -12,12 +12,11 @@ const AuthProtected: React.FC<AuthProtectedProps> = ({ children }) => {
   if (loading) {
     return <Loading loading />;
   }
-  if (!session?.clinics) {
+  if (session?.clinics.length === 0) {
     console.log(`sem clinica`);
   }
 
   if (!session) {
-    console.log("falei");
     return <Navigate to="/login" replace />;
   }
 

@@ -1,4 +1,5 @@
 import { useAuth } from "context/auth/hooks/use-auth";
+import ModalSelectClinic from "context/dashboard/components/modal_select_clinic";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -11,11 +12,14 @@ import {
 //import images
 const ProfileDropdown = () => {
   const { signOut, session } = useAuth();
+  const [openSelectClinic, setOpenSelectClinic] = useState(false);
+
   //Dropdown Toggle
   const [isProfileDropdown, setIsProfileDropdown] = useState(false);
   const toggleProfileDropdown = () => {
     setIsProfileDropdown(!isProfileDropdown);
   };
+
   return (
     <React.Fragment>
       <Dropdown
@@ -30,31 +34,26 @@ const ProfileDropdown = () => {
                 {session?.user.name}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">
-                {session?.role}
+                {session?.activeClinic
+                  ? `${session.activeClinic.name} - ${session.role}`
+                  : "Nenhuma clínica ativa"}
               </span>
             </span>
           </span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <h6 className="dropdown-header">Bem Vindo!</h6>
-          {/* <DropdownItem className="p-0">
-            <Link to="#" className="dropdown-item">
-              <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-              <span className="align-middle">Manual</span>
-            </Link>
-          </DropdownItem>
-          <DropdownItem className="p-0">
-            <Link to="#" className="dropdown-item">
-              <i className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
-              <span className="align-middle">Suporte</span>
-            </Link>
-          </DropdownItem>
-          <DropdownItem className="p-0">
-            <Link to="#" className="dropdown-item">
-              <i className="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>
-              <span className="align-middle">Fale Conosco</span>
-            </Link>
-          </DropdownItem> */}
+          {session && session?.clinics.length > 1 && (
+            <DropdownItem className="p-0">
+              <button
+                className="dropdown-item"
+                onClick={() => setOpenSelectClinic(true)}
+              >
+                <i className="mdi mdi-swap-horizontal text-muted fs-16 align-middle me-1"></i>
+                <span className="align-middle">Mudar Clínica</span>
+              </button>
+            </DropdownItem>
+          )}
           <div className="dropdown-divider"></div>
           <DropdownItem className="p-0">
             <Link to="#" className="dropdown-item" onClick={signOut}>
@@ -66,6 +65,14 @@ const ProfileDropdown = () => {
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
+
+      {session && session?.clinics.length > 1 && (
+        <ModalSelectClinic
+          clinics={session.clinics}
+          isOpen={openSelectClinic}
+          onClose={() => setOpenSelectClinic(false)}
+        />
+      )}
     </React.Fragment>
   );
 };
