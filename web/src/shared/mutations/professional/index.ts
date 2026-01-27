@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { CreateProfessionalOnboardingBodySchema } from "context/professional/schemas";
+import { CreateProfessionalOnboardingBodySchema } from "features/professional/schemas";
 import { postCreateProfessionalOnboarding } from "helpers/backend_helper";
 import { toast } from "react-toastify";
 

@@ -1,5 +1,5 @@
 import { Loading } from "Components/Common/Loading";
-import { useAuth } from "context/auth/hooks/use-auth";
+import { useAuth } from "features/auth/hooks/use-auth";
 import { Navigate } from "react-router-dom";
 
 interface PublicProtectedProps {

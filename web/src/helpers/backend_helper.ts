@@ -1,8 +1,8 @@
-import { Session } from "context/auth/hooks/authContext";
+import { Session } from "features/auth/hooks/authContext";
 import {
   LoginHttpParams,
   RegisterHttpParams,
-} from "context/auth/interfaces/auth";
+} from "features/auth/interfaces/auth";
 import { api } from "./api_helper";
 import * as url from "./url_helper";
 

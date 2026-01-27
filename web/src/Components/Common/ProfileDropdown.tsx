@@ -1,5 +1,5 @@
-import { useAuth } from "context/auth/hooks/use-auth";
-import ModalSelectClinic from "context/dashboard/components/modal_select_clinic";
+import { useAuth } from "features/auth/hooks/use-auth";
+import ModalSelectClinic from "features/dashboard/components/modal_select_clinic";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {

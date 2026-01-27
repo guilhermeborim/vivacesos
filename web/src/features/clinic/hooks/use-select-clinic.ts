@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { Clinic } from "context/auth/hooks/authContext";
+import { Clinic } from "features/auth/hooks/authContext";
 import {
   selectClinicFormSchema,
   SelectClinicFormSchema,
-} from "context/auth/schemas";
+} from "features/auth/schemas";
 import { useForm } from "react-hook-form";
 import { useMutationSelectClinic } from "shared/mutations/clinic";
 

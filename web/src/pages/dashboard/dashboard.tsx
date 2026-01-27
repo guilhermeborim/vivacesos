@@ -1,8 +1,8 @@
 import BreadCrumb from "Components/Common/BreadCrumb";
-import { useAuth } from "context/auth/hooks/use-auth";
-import InitialSteps from "context/dashboard/components/initial_steps";
-import ModalSelectClinic from "context/dashboard/components/modal_select_clinic";
-import ModalWelcome from "context/dashboard/components/modal_welcome";
+import { useAuth } from "features/auth/hooks/use-auth";
+import InitialSteps from "features/dashboard/components/initial_steps";
+import ModalSelectClinic from "features/dashboard/components/modal_select_clinic";
+import ModalWelcome from "features/dashboard/components/modal_welcome";
 import { Card, CardBody, Container } from "reactstrap";
 
 const Dashboard = () => {

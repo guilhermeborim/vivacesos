@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "context/auth/hooks/use-auth";
+import { useAuth } from "features/auth/hooks/use-auth";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutationCreateProfessionalOnboarding } from "shared/mutations/professional";

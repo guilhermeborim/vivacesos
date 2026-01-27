@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Container, Row } from "reactstrap";
 import ParticlesAuth from "../../Components/constants/footer-auth";
 
-import Sign from "context/auth/components/login";
+import Sign from "features/auth/components/login";
 import withRouter from "../../Components/Common/withRouter";
 
 const Login = () => {

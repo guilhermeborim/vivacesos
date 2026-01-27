@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Container, Row } from "reactstrap";
 import ParticlesAuth from "../../Components/constants/footer-auth";
 
-import SignUp from "context/auth/components/register";
+import SignUp from "features/auth/components/register";
 import withRouter from "../../Components/Common/withRouter";
 
 const Register = () => {

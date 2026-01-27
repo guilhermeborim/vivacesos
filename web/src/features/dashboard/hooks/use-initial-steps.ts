@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { CreateClinicFormSchema } from "context/clinic/schemas";
-import { CreateProfessionalOnboardingBodySchema } from "context/professional/schemas";
+import { CreateClinicFormSchema } from "features/clinic/schemas";
+import { CreateProfessionalOnboardingBodySchema } from "features/professional/schemas";
 import { postNextStep } from "helpers/backend_helper";
 import { useEffect, useState } from "react";
 import { useMutationCreateClinic } from "shared/mutations/clinic";

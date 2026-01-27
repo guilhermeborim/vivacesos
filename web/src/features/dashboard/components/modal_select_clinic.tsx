@@ -2,7 +2,7 @@ import { SelectController } from "Components/Common/SelectController";
 import {
   useSelectClinic,
   UseSelectClinicProps,
-} from "context/clinic/hooks/use-select-clinic";
+} from "features/clinic/hooks/use-select-clinic";
 import { Modal, ModalBody } from "reactstrap";
 import ImgSelect from "../../../assets/images/select.svg";
 

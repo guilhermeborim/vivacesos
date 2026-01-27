@@ -1,5 +1,5 @@
 import BreadCrumb from "Components/Common/BreadCrumb";
-import ListClinic from "context/clinic/components/list";
+import ListClinic from "features/clinic/components/list";
 import { Button, Card, CardBody, CardHeader, Container } from "reactstrap";
 
 const ClinicList = () => {

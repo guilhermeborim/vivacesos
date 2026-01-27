@@ -2,9 +2,9 @@ import classnames from "classnames";
 import { InputController } from "Components/Common/InputController";
 import { Loading } from "Components/Common/Loading";
 import { SelectController } from "Components/Common/SelectController";
-import FormClinic from "context/clinic/components/form";
-import { useClinic } from "context/clinic/hooks/use-clinic";
-import { useProfessionalOnboarding } from "context/professional/hooks/use-professional-onboarding";
+import FormClinic from "features/clinic/components/form";
+import { useClinic } from "features/clinic/hooks/use-clinic";
+import { useProfessionalOnboarding } from "features/professional/hooks/use-professional-onboarding";
 import {
   Col,
   Nav,
