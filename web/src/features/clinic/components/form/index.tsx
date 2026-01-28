@@ -1,8 +1,8 @@
-import { InputController } from "Components/Common/InputController";
-import { InputMaskController } from "Components/Common/InputMaskController";
 import { CreateClinicFormSchema } from "features/clinic/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { Col, Row } from "reactstrap";
+import { InputMaskController } from "shared/components";
+import { InputController } from "shared/components/InputController";
 
 interface FormClinicProps {
   formClinic: UseFormReturn<CreateClinicFormSchema>;

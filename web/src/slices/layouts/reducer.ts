@@ -14,7 +14,7 @@ import {
   LEFT_SIDEBAR_VIEW_TYPES,
   PERLOADER_TYPES,
   SIDEBAR_VISIBILITY_TYPES,
-} from "../../Components/constants/layout";
+} from "../../shared/constants/layout";
 
 export interface LayoutState {
   layoutType:

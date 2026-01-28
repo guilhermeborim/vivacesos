@@ -102,7 +102,7 @@ interface TableContainerProps {
   handleTicketClick?: any;
 }
 
-const TableContainer = ({
+export const TableContainer = ({
   columns,
   data,
   isGlobalFilter,
@@ -299,5 +299,3 @@ const TableContainer = ({
     </Fragment>
   );
 };
-
-export default TableContainer;

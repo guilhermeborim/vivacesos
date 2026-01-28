@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { InputController } from "Components/Common/InputController";
-import { Loading } from "Components/Common/Loading";
+import { ButtonPrimitive } from "core/ui";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { Button, Card, CardBody, Col, Label, Row } from "reactstrap";
+import { Card, CardBody, Col, Label, Row } from "reactstrap";
+import { InputController, Loading } from "shared/components";
 import { useAuth } from "../hooks/use-auth";
 import { type LoginFormSchema, loginFormSchema } from "../schemas";
 
@@ -78,14 +78,15 @@ export default function Login() {
                   </div>
 
                   <div className="mt-4">
-                    <Button
-                      color="success"
-                      className="btn btn-success w-100"
+                    <ButtonPrimitive
+                      variant="success"
+                      className="w-100"
                       type="submit"
                       disabled={connectingUser}
+                      isLoading={connectingUser}
                     >
-                      {connectingUser ? "Entrando..." : "Entrar"}
-                    </Button>
+                      Entrar
+                    </ButtonPrimitive>
                   </div>
                   <div className="text-end mt-1">
                     <Link to="/register">Cadastrar</Link>

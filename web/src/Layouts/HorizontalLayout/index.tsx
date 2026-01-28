@@ -2,12 +2,12 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Col, Collapse, Row } from "reactstrap";
-import withRouter from "../../Components/Common/withRouter";
 
 // Import Data
 import navdata from "../LayoutMenuData";
 //i18n
 import { withTranslation } from "react-i18next";
+import { withRouter } from "shared/components";
 
 const HorizontalLayout = (props: any) => {
   const navData = navdata().props.children;

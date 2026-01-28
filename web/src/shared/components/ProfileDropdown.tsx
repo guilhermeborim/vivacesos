@@ -1,5 +1,4 @@
 import { useAuth } from "features/auth/hooks/use-auth";
-import ModalSelectClinic from "features/dashboard/components/modal_select_clinic";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -10,7 +9,7 @@ import {
 } from "reactstrap";
 
 //import images
-const ProfileDropdown = () => {
+export const ProfileDropdown = () => {
   const { signOut, session } = useAuth();
   const [openSelectClinic, setOpenSelectClinic] = useState(false);
 
@@ -65,16 +64,6 @@ const ProfileDropdown = () => {
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
-
-      {session && session?.clinics.length > 1 && (
-        <ModalSelectClinic
-          clinics={session.clinics}
-          isOpen={openSelectClinic}
-          onClose={() => setOpenSelectClinic(false)}
-        />
-      )}
     </React.Fragment>
   );
 };
-
-export default ProfileDropdown;

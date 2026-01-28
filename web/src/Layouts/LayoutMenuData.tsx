@@ -204,7 +204,12 @@ const Navdata = () => {
           link: "#",
           parentId: "charts",
         },
-        { id: "echarts", label: "Clínica", link: "#", parentId: "charts" },
+        {
+          id: "echarts",
+          label: "Clínica",
+          link: "/clinics",
+          parentId: "charts",
+        },
       ],
     },
     {

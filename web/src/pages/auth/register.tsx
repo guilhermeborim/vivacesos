@@ -1,14 +1,14 @@
 import React from "react";
 import { Col, Container, Row } from "reactstrap";
-import ParticlesAuth from "../../Components/constants/footer-auth";
 
+import { Footer } from "core/ui";
 import SignUp from "features/auth/components/register";
-import withRouter from "../../Components/Common/withRouter";
+import { withRouter } from "shared/components";
 
 const Register = () => {
   return (
     <React.Fragment>
-      <ParticlesAuth>
+      <Footer>
         <div className="auth-page-content mt-lg-5">
           <Container>
             <Row>
@@ -27,7 +27,7 @@ const Register = () => {
             <SignUp />
           </Container>
         </div>
-      </ParticlesAuth>
+      </Footer>
     </React.Fragment>
   );
 };

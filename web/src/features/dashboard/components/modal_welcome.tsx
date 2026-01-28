@@ -1,3 +1,4 @@
+import { ButtonPrimitive } from "core/ui";
 import { useState } from "react";
 import { Modal, ModalBody } from "reactstrap";
 import ImgWelcome from "../../../assets/images/welcome.svg";
@@ -28,13 +29,13 @@ export default function ModalWelcome({ isOpen }: ModalWelcomeProps) {
           </div>
         </div>
         <div className="d-grid mt-4 mb-2">
-          <button
+          <ButtonPrimitive
             type="button"
-            className="btn btn-primary"
+            variant="primary"
             onClick={() => setmodalWelcome(false)}
           >
             Vamos nessa!
-          </button>
+          </ButtonPrimitive>
         </div>
       </ModalBody>
     </Modal>

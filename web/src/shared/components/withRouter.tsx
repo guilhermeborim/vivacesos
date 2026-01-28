@@ -1,6 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-function withRouter(Component: any) {
+export const withRouter = (Component: any) => {
   function ComponentWithRouterProp(props: any) {
     let location = useLocation();
     let navigate = useNavigate();
@@ -9,6 +9,4 @@ function withRouter(Component: any) {
   }
 
   return ComponentWithRouterProp;
-}
-
-export default withRouter;
+};

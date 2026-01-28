@@ -1,9 +1,6 @@
-import React from "react";
-import withRouter from "../../Components/Common/withRouter";
-
-const ParticlesAuth = ({ children }: any) => {
+export const Footer = ({ children }: any) => {
   return (
-    <React.Fragment>
+    <>
       <div className="auth-page-wrapper pt-5">
         <div className="auth-one-bg-position auth-one-bg" id="auth-particles">
           <div className="bg-overlay"></div>
@@ -39,8 +36,6 @@ const ParticlesAuth = ({ children }: any) => {
           </div>
         </footer>
       </div>
-    </React.Fragment>
+    </>
   );
 };
-
-export default withRouter(ParticlesAuth);

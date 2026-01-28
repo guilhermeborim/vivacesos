@@ -6,11 +6,10 @@ import { Dropdown, DropdownMenu, DropdownToggle, Form } from "reactstrap";
 import logoLg from "../assets/images/logo_lg.png";
 
 //import Components
-import ProfileDropdown from "../Components/Common/ProfileDropdown";
 
-import LightDark from "Components/Common/LightDark";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import { LightDark, ProfileDropdown } from "shared/components";
 import { changeSidebarVisibility } from "../slices/thunks";
 
 const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }: any) => {

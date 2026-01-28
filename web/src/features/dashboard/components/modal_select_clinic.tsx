@@ -1,9 +1,10 @@
-import { SelectController } from "Components/Common/SelectController";
+import { ButtonPrimitive } from "core/ui";
 import {
   useSelectClinic,
   UseSelectClinicProps,
 } from "features/clinic/hooks/use-select-clinic";
 import { Modal, ModalBody } from "reactstrap";
+import { SelectController } from "shared/components";
 import ImgSelect from "../../../assets/images/select.svg";
 
 export default function ModalSelectClinic({
@@ -50,15 +51,14 @@ export default function ModalSelectClinic({
             name={"clinicId"}
           />
           <div className="d-grid mt-4 mb-2">
-            <button
+            <ButtonPrimitive
               type="submit"
-              className="btn btn-primary"
+              variant="primary"
               disabled={!form.watch("clinicId")}
+              isLoading={mutationSelectClinic.isPending}
             >
-              {mutationSelectClinic.isPending
-                ? "Selecionando..."
-                : "Selecionar Clínica"}
-            </button>
+              Selecionar Clínica
+            </ButtonPrimitive>
           </div>
         </form>
       </ModalBody>

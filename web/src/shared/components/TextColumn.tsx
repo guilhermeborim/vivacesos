@@ -1,4 +1,4 @@
-export const textColumn = (header: string, accessorKey: string) => {
+export const TextColumn = (header: string, accessorKey: string) => {
   return {
     header: header,
     accessorKey: accessorKey,

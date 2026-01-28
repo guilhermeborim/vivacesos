@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { InputController } from "Components/Common/InputController";
-import { Loading } from "Components/Common/Loading";
+import { ButtonPrimitive } from "core/ui";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { Button, Card, CardBody, Col, Label, Row } from "reactstrap";
+import { Card, CardBody, Col, Label, Row } from "reactstrap";
+import { InputController, Loading } from "shared/components";
 import { useAuth } from "../hooks/use-auth";
 import { registerFormSchema, RegisterFormSchema } from "../schemas";
 
@@ -87,14 +87,15 @@ export default function Register() {
                   </div>
 
                   <div className="mt-4">
-                    <Button
-                      color="success"
-                      className="btn btn-success w-100"
+                    <ButtonPrimitive
+                      variant="success"
+                      className="w-100"
                       type="submit"
                       disabled={registerUser}
+                      isLoading={registerUser}
                     >
-                      {registerUser ? "Cadastrano..." : "Cadastrar"}
-                    </Button>
+                      Cadastrar
+                    </ButtonPrimitive>
                   </div>
                   <div className="text-end mt-1">
                     <Link to="/login">Já tem uma conta? Entrar</Link>

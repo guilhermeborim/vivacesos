@@ -24,7 +24,7 @@ import {
 //SimpleBar
 import SimpleBar from "simplebar-react";
 
-const NotificationDropdown = () => {
+export const NotificationDropdown = () => {
   //Dropdown Toggle
   const [isNotificationDropdown, setIsNotificationDropdown] =
     useState<boolean>(false);
@@ -485,5 +485,3 @@ const NotificationDropdown = () => {
     </React.Fragment>
   );
 };
-
-export default NotificationDropdown;
