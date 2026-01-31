@@ -3,22 +3,21 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutationCreateClinic } from "shared/mutations/clinic";
-import { createClinicFormSchema, CreateClinicFormSchema } from "../schemas";
+import { createClinicFormSchema, CreateClinicFormTypeSchema } from "../schemas";
 
-export function useClinic(defaultValues?: any) {
+export const useCreateClinic = () => {
   const mutationCreateClinic = useMutationCreateClinic();
-  const formClinic = useForm<CreateClinicFormSchema>({
+  const formCreateClinic = useForm<CreateClinicFormTypeSchema>({
     resolver: zodResolver(createClinicFormSchema),
-    defaultValues,
   });
 
-  useEffect(() => {
-    if (defaultValues) {
-      formClinic.reset(defaultValues);
-    }
-  }, [defaultValues]);
+  const onSubmitClinicCreate = async (data: CreateClinicFormTypeSchema) => {
+    try {
+      await mutationCreateClinic.mutateAsync(data);
+    } catch (error) {}
+  };
 
-  const cep = formClinic.watch("cep");
+  const cep = formCreateClinic.watch("cep");
 
   useEffect(() => {
     const cepFormatted = cep?.replace(/\D/g, "");
@@ -32,9 +31,9 @@ export function useClinic(defaultValues?: any) {
         );
         const data = response.data;
 
-        formClinic.setValue("road", data.logradouro || "");
-        formClinic.setValue("neighborhood", data.bairro || "");
-        formClinic.setValue("city", data.localidade || "");
+        formCreateClinic.setValue("road", data.logradouro || "");
+        formCreateClinic.setValue("neighborhood", data.bairro || "");
+        formCreateClinic.setValue("city", data.localidade || "");
       } catch (error) {
         console.log("erro", error);
       }
@@ -44,7 +43,8 @@ export function useClinic(defaultValues?: any) {
   }, [cep]);
 
   return {
+    formCreateClinic,
     mutationCreateClinic,
-    formClinic,
+    onSubmitClinicCreate,
   };
-}
+};

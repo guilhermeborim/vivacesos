@@ -1,4 +1,4 @@
-import { Card, CardBody, Container } from "reactstrap";
+import { Card, CardBody, CardFooter, Container } from "reactstrap";
 import { BreadCrumb } from "./BreadCrumb";
 
 interface BasePageProps {
@@ -6,6 +6,7 @@ interface BasePageProps {
   pageTitle: string;
   header?: React.ReactNode;
   children: React.ReactNode;
+  footer?: React.ReactNode;
   modals?: React.ReactNode;
 }
 
@@ -14,6 +15,7 @@ export function BasePage({
   pageTitle,
   header,
   children,
+  footer,
   modals,
 }: BasePageProps) {
   return (
@@ -24,6 +26,7 @@ export function BasePage({
           <Card>
             {header && header}
             <CardBody>{children}</CardBody>
+            {footer && <CardFooter className="mt-3">{footer}</CardFooter>}
           </Card>
         </Container>
       </div>

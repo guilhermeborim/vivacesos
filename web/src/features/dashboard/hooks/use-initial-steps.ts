@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { CreateClinicFormSchema } from "features/clinic/schemas";
+import { CreateClinicFormTypeSchema } from "features/clinic/schemas";
 import { CreateProfessionalOnboardingBodySchema } from "features/professional/schemas";
 import { postNextStep } from "helpers/backend_helper";
 import { useEffect, useState } from "react";
@@ -7,10 +7,10 @@ import { useMutationCreateClinic } from "shared/mutations/clinic";
 import { useMutationCreateProfessionalOnboarding } from "shared/mutations/professional";
 
 export function useInitialSteps(step: string) {
+  const queryClient = useQueryClient();
   const mutationCreateClinic = useMutationCreateClinic();
   const mutationCreateProfessionalOnboarding =
     useMutationCreateProfessionalOnboarding();
-  const queryClient = useQueryClient();
   const [activeTab, setactiveTab] = useState(
     step === "CREATE_CLINIC" ? 1 : step === "LINK_PROFESSIONAL" ? 2 : 3,
   );
@@ -18,7 +18,7 @@ export function useInitialSteps(step: string) {
     step === "CREATE_CLINIC" ? 0 : step === "LINK_PROFESSIONAL" ? 50 : 100,
   );
 
-  const onSubmitClinic = async (data: CreateClinicFormSchema) => {
+  const onSubmitClinic = async (data: CreateClinicFormTypeSchema) => {
     try {
       await mutationCreateClinic.mutateAsync(data);
       await postNextStep({ step: "LINK_PROFESSIONAL" });

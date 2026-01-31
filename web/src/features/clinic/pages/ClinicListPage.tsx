@@ -1,9 +1,11 @@
-import { ButtonPrimitive } from "core/ui";
-import { HeaderList } from "shared/components";
-import { BasePage } from "shared/components/BasePage";
+import { ButtonPrimitive } from "core/ui/primitives/Button";
+import { useNavigate } from "react-router-dom";
+import { BasePage, HeaderList } from "shared/components";
 import ListClinic from "../components/list";
 
 export function ClinicListPage() {
+  const navigate = useNavigate();
+
   return (
     <BasePage
       title="Clínicas"
@@ -12,7 +14,13 @@ export function ClinicListPage() {
         <HeaderList
           actions={
             <>
-              <ButtonPrimitive variant="success">Adicionar</ButtonPrimitive>
+              <ButtonPrimitive
+                variant="success"
+                disabled
+                onClick={() => navigate("/clinics/create")}
+              >
+                Adicionar
+              </ButtonPrimitive>
               {/* <ButtonPrimitive variant="info">Exportar</ButtonPrimitive> */}
             </>
           }

@@ -1,4 +1,5 @@
 import { Button, ButtonProps } from "reactstrap";
+import { ActivityIndicator } from "shared/components";
 
 type ButtonVariant =
   | "primary"
@@ -31,7 +32,7 @@ export function ButtonPrimitive({
       color={variant}
       {...props}
     >
-      {isLoading ? "Carregando..." : children}
+      {isLoading ? <ActivityIndicator /> : children}
     </Button>
   );
 }

@@ -1,14 +1,13 @@
 import { Clinic } from "../../entities/Clinic";
-
-export interface CreateClinicParams {
-  name: string;
-  cnpj: string;
-  phone: string;
-  active?: boolean;
-}
+import {
+  ClinicCreateParams,
+  ClinicUpdateParams,
+} from "../../interfaces/clinic";
 
 export interface ClinicRepositoryInterface {
-  createClinic(data: CreateClinicParams): Promise<Clinic>;
-  findByCnpj(cnpj: string): Promise<Clinic | null>;
-  findByPhone(phone: string): Promise<Clinic | null>;
+  createClinic(data: ClinicCreateParams): Promise<Clinic>;
+  updateClinic(clinicId: string, data: ClinicUpdateParams): Promise<void>;
+  findByCnpj(clinicId: string | null, cnpj: string): Promise<Clinic | null>;
+  findByPhone(clinicId: string | null, phone: string): Promise<Clinic | null>;
+  findById(clinicId: string): Promise<Clinic | null>;
 }

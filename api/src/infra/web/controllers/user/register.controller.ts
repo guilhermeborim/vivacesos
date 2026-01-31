@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { RegisterService } from "../../../../domain/user/services/register";
-import { CreateUserParams } from "../../../database/typeorm/sass/repositories/interfaces/user-repository.interface";
+import { UserCreateParams } from "../../../database/typeorm/sass/interfaces/user";
 import { registerBodySchema } from "../../routes/schemas/user/register.schema";
 
 export class RegisterController {
@@ -11,7 +11,7 @@ export class RegisterController {
   }
 
   execute = async (
-    request: FastifyRequest<{ Body: CreateUserParams }>,
+    request: FastifyRequest<{ Body: UserCreateParams }>,
     reply: FastifyReply,
   ) => {
     const userData = registerBodySchema.parse(request.body);

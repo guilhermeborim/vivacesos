@@ -7,6 +7,7 @@ import Error500 from "../pages/errors/Error500";
 
 import Register from "pages/auth/register";
 import ClinicList from "pages/clinic";
+import ClinicCreate from "pages/clinic/create";
 import Dashboard from "pages/dashboard";
 import Login from "../pages/auth/login";
 
@@ -22,6 +23,10 @@ const authProtectedRoutes = [
   {
     path: "/clinics",
     component: <ClinicList />,
+  },
+  {
+    path: "/clinics/create",
+    component: <ClinicCreate />,
   },
   { path: "*", component: <Navigate to="/error-404" /> },
 ];

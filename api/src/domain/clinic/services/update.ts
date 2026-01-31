@@ -1,20 +1,25 @@
-import { Clinic } from "../../../infra/database/typeorm/sass/entities/Clinic";
-import { ClinicCreateParams } from "../../../infra/database/typeorm/sass/interfaces/clinic";
+import { ClinicUpdateParams } from "../../../infra/database/typeorm/sass/interfaces/clinic";
 import { ClinicTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/clinic.repository";
 import { encrypt } from "../../../infra/utils/crypto";
 import { ConflictError } from "../../../shared/errors/conflict.error";
 
-export class RegisterClinicService {
+export class UpdateClinicService {
   private clinicRepository: ClinicTypeormRepository;
 
   constructor() {
     this.clinicRepository = new ClinicTypeormRepository();
   }
 
-  async execute(clinic: ClinicCreateParams): Promise<Clinic> {
+  async execute(clinicId: string, clinic: ClinicUpdateParams): Promise<void> {
+    const clinicExisting = await this.clinicRepository.findById(clinicId);
+
+    if (!clinicExisting) {
+      throw new ConflictError("Clínica não encontrada!");
+    }
+
     const clinicExistsByCnpj = await this.clinicRepository.findByCnpj(
-      null,
-      clinic.cnpj,
+      clinicId,
+      clinicExisting.cnpj,
     );
 
     if (clinicExistsByCnpj) {
@@ -22,20 +27,20 @@ export class RegisterClinicService {
     }
 
     const clinicExistsByPhone = await this.clinicRepository.findByPhone(
-      null,
-      clinic.phone,
+      clinicId,
+      clinicExisting.phone,
     );
 
     if (clinicExistsByPhone) {
       throw new ConflictError("Telefone já está cadastrado!");
     }
 
-    const encryptedCnpj = encrypt(clinic.cnpj);
+    if (clinic.cnpj) {
+      const encryptedCnpj = encrypt(clinic.cnpj);
 
-    clinic.cnpj = encryptedCnpj;
+      clinic.cnpj = encryptedCnpj;
+    }
 
-    const clinicCreated = await this.clinicRepository.createClinic(clinic);
-
-    return clinicCreated;
+    await this.clinicRepository.updateClinic(clinicId, clinic);
   }
 }

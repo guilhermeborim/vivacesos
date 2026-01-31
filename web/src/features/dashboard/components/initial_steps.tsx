@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import FormClinic from "features/clinic/components/form";
-import { useClinic } from "features/clinic/hooks/use-clinic";
+import { useCreateClinic } from "features/clinic/hooks/use-create-clinic";
 import { useProfessionalOnboarding } from "features/professional/hooks/use-professional-onboarding";
 import {
   Col,
@@ -29,7 +29,7 @@ export default function InitialSteps({ step }: InitialStepsProps) {
     activeTab,
     progressbarvalue,
   } = useInitialSteps(step);
-  const { formClinic } = useClinic();
+  const { formCreateClinic } = useCreateClinic();
   const { formProfessionalOnboarding } = useProfessionalOnboarding();
 
   return (
@@ -110,15 +110,15 @@ export default function InitialSteps({ step }: InitialStepsProps) {
                 </div>
               </div>
             </div>
-            <form onSubmit={formClinic.handleSubmit(onSubmitClinic)}>
-              <FormClinic formClinic={formClinic} />
+            <form onSubmit={formCreateClinic.handleSubmit(onSubmitClinic)}>
+              <FormClinic formClinic={formCreateClinic} />
               <div className="d-flex">
                 <button
                   type="submit"
                   className="btn btn-primary ms-auto"
                   disabled={
                     mutationCreateClinic.isPending ||
-                    !formClinic.formState.isValid
+                    !formCreateClinic.formState.isValid
                   }
                 >
                   {mutationCreateClinic.isPending

@@ -1,13 +1,15 @@
 import { FastifyInstance } from "fastify";
 import { BindClinicUserController } from "../controllers/clinicUser/bind.controller";
+import { FindUsersByAnyClinicController } from "../controllers/clinicUser/findUsersByAnyClinic.controller";
 import { FindUsersByClinicController } from "../controllers/clinicUser/findUsersByClinic.controller";
-import { CheckAuthtenticationMiddleware } from "../middlewares/check-authentication";
+import { CheckAuthenticationMiddleware } from "../middlewares/check-authentication";
 import { CheckClinicUserMiddleware } from "../middlewares/check-clinic";
 
 export const configure = (fastify: FastifyInstance) => {
   const bindClinicUserController = new BindClinicUserController();
   const findUsersByClinicController = new FindUsersByClinicController();
-  const checkAuthenticated = new CheckAuthtenticationMiddleware();
+  const findUsersByAnyClinicController = new FindUsersByAnyClinicController();
+  const checkAuthenticated = new CheckAuthenticationMiddleware();
   const clinicAuthorizationHeader = new CheckClinicUserMiddleware();
 
   fastify.route({
@@ -21,5 +23,12 @@ export const configure = (fastify: FastifyInstance) => {
     method: "GET",
     preHandler: [checkAuthenticated.execute, clinicAuthorizationHeader.execute],
     handler: findUsersByClinicController.execute,
+  });
+
+  fastify.route({
+    url: "/clinic-user/find-by-any-clinic",
+    method: "GET",
+    preHandler: [checkAuthenticated.execute, clinicAuthorizationHeader.execute],
+    handler: findUsersByAnyClinicController.execute,
   });
 };

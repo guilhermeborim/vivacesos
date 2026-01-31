@@ -1,14 +1,22 @@
-import { CreateClinicFormSchema } from "features/clinic/schemas";
-import { UseFormReturn } from "react-hook-form";
+import { useEffect } from "react";
 import { Col, Row } from "reactstrap";
 import { InputMaskController } from "shared/components";
 import { InputController } from "shared/components/InputController";
 
 interface FormClinicProps {
-  formClinic: UseFormReturn<CreateClinicFormSchema>;
+  formClinic: any;
+  defaultValues?: any;
 }
 
-export default function FormClinic({ formClinic }: FormClinicProps) {
+export default function FormClinic({
+  formClinic,
+  defaultValues,
+}: FormClinicProps) {
+  useEffect(() => {
+    if (defaultValues) {
+      formClinic.reset(defaultValues);
+    }
+  }, [defaultValues]);
   return (
     <>
       <Row>
@@ -16,7 +24,7 @@ export default function FormClinic({ formClinic }: FormClinicProps) {
           <InputController
             label="Nome"
             control={formClinic.control}
-            name="name"
+            name={"name"}
             placeholder="Nome da Clínica"
           />
         </Col>
@@ -24,7 +32,7 @@ export default function FormClinic({ formClinic }: FormClinicProps) {
           <InputMaskController
             label="CNPJ"
             control={formClinic.control}
-            name="cnpj"
+            name={"cnpj"}
             mask="99.999.999/9999-99"
             placeholder="CNPJ da Clínica"
           />
@@ -33,7 +41,7 @@ export default function FormClinic({ formClinic }: FormClinicProps) {
           <InputMaskController
             label="Telefone"
             control={formClinic.control}
-            name="phone"
+            name={"phone"}
             mask="(99) 99999-9999"
             placeholder="Telefone da Clínica"
           />
@@ -42,7 +50,7 @@ export default function FormClinic({ formClinic }: FormClinicProps) {
           <InputMaskController
             label="CEP"
             control={formClinic.control}
-            name="cep"
+            name={"cep"}
             mask="99999-999"
             placeholder="CEP da Clínica"
           />
@@ -51,7 +59,7 @@ export default function FormClinic({ formClinic }: FormClinicProps) {
           <InputController
             label="Rua"
             control={formClinic.control}
-            name="road"
+            name={"road"}
             placeholder="Rua da Clínica"
           />
         </Col>

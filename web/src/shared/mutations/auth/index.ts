@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 
 export function useMutationLogin() {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: async (payload: LoginFormSchema) => await postLogin(payload),

@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { AuthLoginRequest } from "../../../../domain/user/interfaces/authLoginRequest";
 import { AuthenticateService } from "../../../../domain/user/services/authenticate";
+import { UserLoginParams } from "../../../database/typeorm/sass/interfaces/user";
 import { authenticateBodySchema } from "../../routes/schemas/user/authenticate.schema";
 
 export class AuthenticateController {
@@ -11,7 +11,7 @@ export class AuthenticateController {
   }
 
   execute = async (
-    request: FastifyRequest<{ Body: AuthLoginRequest }>,
+    request: FastifyRequest<{ Body: UserLoginParams }>,
     reply: FastifyReply,
   ) => {
     const userData = authenticateBodySchema.parse(request.body);

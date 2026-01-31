@@ -22,7 +22,14 @@ export const postSelectClinic = (clinicId: string) =>
 
 // Clinic Method
 export const postCreateClinic = (data: any) => api.post(url.POST_CLINIC, data);
+export const getClinicById = (clinicId: string) =>
+  api.get(url.GET_CLINIC_BY_ID.replace(":clinicId", clinicId));
+export const putClinicById = (clinicId: string, data: any) =>
+  api.put(url.PUT_CLINIC_BY_ID.replace(":clinicId", clinicId), data);
 
 // Professional Method
 export const postCreateProfessionalOnboarding = (data: any) =>
   api.post(url.POST_PROFESSIONAL_ONBOARDING, data);
+
+// Clinic User Method
+export const getClinicsByUser = () => api.get(url.GET_CLINICS_BY_USER);

@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { NextOnboardingStepRequest } from "../../../../domain/user/interfaces/nextOnboardingStepRequest";
 import { NextOnboardingStepService } from "../../../../domain/user/services/next-onboarding-step";
+import { UserNextOnboardingStepParams } from "../../../database/typeorm/sass/interfaces/user";
 import { nextOnboardingStepBodySchema } from "../../routes/schemas/user/next-onboarding-step.schema";
 
 export class NextOnboardingStepController {
@@ -11,7 +11,7 @@ export class NextOnboardingStepController {
   }
 
   execute = async (
-    request: FastifyRequest<{ Body: NextOnboardingStepRequest }>,
+    request: FastifyRequest<{ Body: UserNextOnboardingStepParams }>,
     reply: FastifyReply,
   ) => {
     const userId = request.user.id;

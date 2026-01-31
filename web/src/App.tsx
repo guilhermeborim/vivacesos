@@ -6,14 +6,7 @@ import { AuthProvider } from "features/auth/hooks/authContext";
 import { ToastContainer } from "react-toastify";
 import Route from "./Routes";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      staleTime: 120000,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 function App() {
   return (

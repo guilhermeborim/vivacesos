@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { GetProfessionalsByClinicController } from "../controllers/professional/getByClinic.controller";
 import { RegisterProfessionalController } from "../controllers/professional/register.controller";
 import { RegisterProfessionalOnboardingController } from "../controllers/professional/registerOnboarding.controller";
-import { CheckAuthtenticationMiddleware } from "../middlewares/check-authentication";
+import { CheckAuthenticationMiddleware } from "../middlewares/check-authentication";
 import { CheckClinicUserMiddleware } from "../middlewares/check-clinic";
 
 export const configure = (fastify: FastifyInstance) => {
@@ -11,7 +11,7 @@ export const configure = (fastify: FastifyInstance) => {
     new RegisterProfessionalOnboardingController();
   const getProfessionalsByClinicController =
     new GetProfessionalsByClinicController();
-  const checkAuthenticated = new CheckAuthtenticationMiddleware();
+  const checkAuthenticated = new CheckAuthenticationMiddleware();
   const clinicAuthorizationHeader = new CheckClinicUserMiddleware();
 
   fastify.route({
