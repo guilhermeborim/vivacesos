@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { RegisterProfessionalOnboardingService } from "../../../../domain/professional/services/registerOnboarding";
-import { CreateProfessionalOnboardingParams } from "../../../database/typeorm/sass/repositories/interfaces/professional-repository.interface";
+import { CreateProfessionalOnboardingParams } from "../../../database/typeorm/sass/interfaces/professional";
 import { registerProfessionalOnboardingBodySchema } from "../../routes/schemas/professional/registerOnboarding.schema";
 
 export class RegisterProfessionalOnboardingController {

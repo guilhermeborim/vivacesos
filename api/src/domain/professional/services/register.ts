@@ -1,7 +1,7 @@
 import { hashSync } from "bcrypt";
-import { CreateProfessionalParams } from "../../../infra/database/typeorm/sass/repositories/interfaces/professional-repository.interface";
+import { Professional } from "../../../infra/database/typeorm/sass/entities/Professional";
+import { CreateProfessionalParams } from "../../../infra/database/typeorm/sass/interfaces/professional";
 import { ProfessionalTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/professional.repository";
-import { ProfessionalResponse } from "../interfaces/professionalResponse";
 
 export class RegisterProfessionalService {
   private professionalRepository: ProfessionalTypeormRepository;
@@ -13,7 +13,7 @@ export class RegisterProfessionalService {
   async execute(
     clinicId: string,
     professional: CreateProfessionalParams,
-  ): Promise<ProfessionalResponse> {
+  ): Promise<Professional> {
     if (professional.crm) {
       const crmHash = hashSync(professional.crm, 10);
       professional.crm = crmHash;
@@ -25,8 +25,6 @@ export class RegisterProfessionalService {
         professional,
       );
 
-    return {
-      professional: professionalCreated,
-    };
+    return professionalCreated;
   }
 }

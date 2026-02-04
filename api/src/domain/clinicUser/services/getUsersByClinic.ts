@@ -1,7 +1,7 @@
+import { FindUsersByClinic } from "../../../infra/database/typeorm/sass/interfaces/clinicUser";
 import { ClinicUsersTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
-import { FindUsersByClinic } from "../interfaces/clinicUserBinded";
 
-export class FindUsersByClinicService {
+export class GetUsersByClinicService {
   private clinicUserRepository: ClinicUsersTypeormRepository;
 
   constructor() {
@@ -9,9 +9,8 @@ export class FindUsersByClinicService {
   }
 
   async execute(clinicId: string): Promise<FindUsersByClinic[]> {
-    const clinicUsers = await this.clinicUserRepository.findUsersByClinic(
-      clinicId
-    );
+    const clinicUsers =
+      await this.clinicUserRepository.getUsersByClinic(clinicId);
 
     return clinicUsers;
   }

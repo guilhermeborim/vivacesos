@@ -4,7 +4,7 @@ import {
   ClinicUserRole,
   ClinicUserStatus,
 } from "../../../database/typeorm/sass/entities/ClinicUsers";
-import { BindClinicUsersParams } from "../../../database/typeorm/sass/repositories/interfaces/clinic-users-repository.interface";
+import { BindClinicUsersParams } from "../../../database/typeorm/sass/interfaces/clinicUser";
 import { bindClinicUserBodySchema } from "../../routes/schemas/clinicUser/bind.schema";
 
 export class BindClinicUserController {

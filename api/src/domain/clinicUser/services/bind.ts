@@ -1,9 +1,11 @@
+import {
+  BindClinicUsersParams,
+  ClinicUserResponse,
+} from "../../../infra/database/typeorm/sass/interfaces/clinicUser";
 import { ClinicUsersTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
-import { BindClinicUsersParams } from "../../../infra/database/typeorm/sass/repositories/interfaces/clinic-users-repository.interface";
 import { UserTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/user.repository";
 import { ConflictError } from "../../../shared/errors/conflict.error";
 import { JWTService } from "../../../shared/services/jwt.service";
-import { ClinicUserResponse } from "../interfaces/clinicUserBinded";
 
 export class BindClinicUserService {
   private clinicUserRepository: ClinicUsersTypeormRepository;
@@ -20,7 +22,7 @@ export class BindClinicUserService {
     clinicUser: BindClinicUsersParams,
   ): Promise<ClinicUserResponse> {
     const userBindedClinic =
-      await this.clinicUserRepository.findUserBindedClinic(
+      await this.clinicUserRepository.getUserBindedClinic(
         clinicUser.clinicId,
         clinicUser.userId,
       );
@@ -30,9 +32,7 @@ export class BindClinicUserService {
     }
 
     const findClinicsUserBefore =
-      await this.clinicUserRepository.findUserBindedAnyClinics(
-        clinicUser.userId,
-      );
+      await this.clinicUserRepository.getUsersByClinic(clinicUser.userId);
 
     const clinicUserBinded =
       await this.clinicUserRepository.bindClinicUser(clinicUser);

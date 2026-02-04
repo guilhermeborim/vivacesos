@@ -2,7 +2,7 @@ import { ClinicUser } from "../../../infra/database/typeorm/sass/entities/Clinic
 import { ClinicUsersTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
 import { decrypt } from "../../../infra/utils/crypto";
 
-export class FindUsersByAnyClinicService {
+export class GetClinicsByUserService {
   private clinicUserRepository: ClinicUsersTypeormRepository;
 
   constructor() {
@@ -11,7 +11,7 @@ export class FindUsersByAnyClinicService {
 
   async execute(userId: string): Promise<ClinicUser[]> {
     const clinicUsers =
-      await this.clinicUserRepository.findUserBindedAnyClinics(userId);
+      await this.clinicUserRepository.getClinicsByUser(userId);
 
     for (const clinicUser of clinicUsers) {
       clinicUser.clinic.cnpj = decrypt(clinicUser.clinic.cnpj);

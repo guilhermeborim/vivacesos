@@ -1,37 +1,16 @@
 import { FastifyInstance } from "fastify";
-import { GetProfessionalsByClinicController } from "../controllers/professional/getByClinic.controller";
-import { RegisterProfessionalController } from "../controllers/professional/register.controller";
-import { RegisterProfessionalOnboardingController } from "../controllers/professional/registerOnboarding.controller";
+import { RegisterProfessionalOnboardingController } from "../controllers/professional/registerOnboarding";
 import { CheckAuthenticationMiddleware } from "../middlewares/check-authentication";
-import { CheckClinicUserMiddleware } from "../middlewares/check-clinic";
 
 export const configure = (fastify: FastifyInstance) => {
-  const registerProfessionalController = new RegisterProfessionalController();
   const registerProfessionalOnboardingController =
     new RegisterProfessionalOnboardingController();
-  const getProfessionalsByClinicController =
-    new GetProfessionalsByClinicController();
-  const checkAuthenticated = new CheckAuthenticationMiddleware();
-  const clinicAuthorizationHeader = new CheckClinicUserMiddleware();
+  const checkAuthenticationMiddleware = new CheckAuthenticationMiddleware();
 
   fastify.route({
-    url: "/professional/register",
+    url: "/professional/onboarding",
     method: "POST",
-    preHandler: [checkAuthenticated.execute, clinicAuthorizationHeader.execute],
-    handler: registerProfessionalController.execute,
-  });
-
-  fastify.route({
-    url: "/professional/onboarding/register",
-    method: "POST",
-    preHandler: [checkAuthenticated.execute],
+    preHandler: [checkAuthenticationMiddleware.execute],
     handler: registerProfessionalOnboardingController.execute,
-  });
-
-  fastify.route({
-    url: "/professionals",
-    method: "GET",
-    preHandler: [checkAuthenticated.execute, clinicAuthorizationHeader.execute],
-    handler: getProfessionalsByClinicController.execute,
   });
 };

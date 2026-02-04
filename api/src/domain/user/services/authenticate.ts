@@ -33,9 +33,7 @@ export class AuthenticateService {
       throw new UnauthenticatedError("A senha está inválida!");
     }
 
-    const clinics = await this.clinicsUserRepository.findUserBindedAnyClinics(
-      user.id,
-    );
+    const clinics = await this.clinicsUserRepository.getClinicsByUser(user.id);
 
     await this.refreshTokenRepository.revokeByUserId(user.id);
 

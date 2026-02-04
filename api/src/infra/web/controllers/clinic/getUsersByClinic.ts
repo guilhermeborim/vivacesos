@@ -1,11 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { FindUsersByClinicService } from "../../../../domain/clinicUser/services/findUsersByClinic";
+import { GetUsersByClinicService } from "../../../../domain/clinicUser/services/getUsersByClinic";
 
-export class FindUsersByClinicController {
-  private clinicUserLogic: FindUsersByClinicService;
+export class GetUsersByClinicController {
+  private clinicUserLogic: GetUsersByClinicService;
 
   constructor() {
-    this.clinicUserLogic = new FindUsersByClinicService();
+    this.clinicUserLogic = new GetUsersByClinicService();
   }
 
   execute = async (request: FastifyRequest, reply: FastifyReply) => {

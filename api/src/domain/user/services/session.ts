@@ -16,7 +16,7 @@ export class SessionService {
     if (!user) throw new Error("User not found");
 
     const clinicUsers =
-      await this.clinicUserRepository.findUserBindedAnyClinics(userId);
+      await this.clinicUserRepository.getClinicsByUser(userId);
 
     const clinics = clinicUsers.map((cu) => ({
       clinicId: cu.clinicId,
