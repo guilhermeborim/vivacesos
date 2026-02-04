@@ -17,12 +17,12 @@ export function ClinicActionsDropdown({
           icon: <i className="mdi mdi-pencil-outline me-1" />,
           onClick: onEdit,
         },
-        {
-          label: "Deletar",
-          icon: <i className="mdi mdi-delete-outline me-1" />,
-          onClick: onDelete,
-          variant: "danger",
-        },
+        // {
+        //   label: "Desativar",
+        //   icon: <i className="mdi mdi-delete-outline me-1" />,
+        //   onClick: onDelete,
+        //   variant: "danger",
+        // },
       ]}
     />
   );

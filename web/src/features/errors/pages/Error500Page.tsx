@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
 // Import Images
-import error500 from "../../assets/images/error500.png";
+import error500 from "../../../assets/images/error500.png";
 
-const Error500 = () => {
+export function Error500Page() {
   return (
     <React.Fragment>
       <div className="auth-page-wrapper py-5 d-flex justify-content-center align-items-center min-vh-100">
@@ -38,6 +38,4 @@ const Error500 = () => {
       </div>
     </React.Fragment>
   );
-};
-
-export default Error500;
+}

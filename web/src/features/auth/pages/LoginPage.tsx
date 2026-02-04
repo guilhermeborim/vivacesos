@@ -3,9 +3,8 @@ import { Col, Container, Row } from "reactstrap";
 
 import { Footer } from "core/ui";
 import Sign from "features/auth/components/login";
-import { withRouter } from "shared/components";
 
-const Login = () => {
+export function LoginPage() {
   return (
     <React.Fragment>
       <Footer>
@@ -30,6 +29,4 @@ const Login = () => {
       </Footer>
     </React.Fragment>
   );
-};
-
-export default withRouter(Login);
+}

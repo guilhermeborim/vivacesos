@@ -1,10 +1,7 @@
 import { ButtonPrimitive } from "core/ui";
-import {
-  useSelectClinic,
-  UseSelectClinicProps,
-} from "features/clinic/hooks/use-select-clinic";
 import { Modal, ModalBody } from "reactstrap";
 import { SelectController } from "shared/components";
+import { useSelectClinic, UseSelectClinicProps } from "shared/hooks";
 import ImgSelect from "../../../assets/images/select.svg";
 
 export default function ModalSelectClinic({

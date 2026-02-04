@@ -1,7 +1,5 @@
 import classnames from "classnames";
 import FormClinic from "features/clinic/components/form";
-import { useCreateClinic } from "features/clinic/hooks/use-create-clinic";
-import { useProfessionalOnboarding } from "features/professional/hooks/use-professional-onboarding";
 import {
   Col,
   Nav,
@@ -13,24 +11,28 @@ import {
   TabPane,
 } from "reactstrap";
 import { InputController, Loading, SelectController } from "shared/components";
-import { useInitialSteps } from "../hooks/use-initial-steps";
+import { useCreateClinic } from "shared/hooks";
+import {
+  useInitialStepClinic,
+  useInitialStepFinished,
+  useInitialStepProfessional,
+  useInitialSteps,
+} from "../hooks";
 
 interface InitialStepsProps {
   step: "CREATE_CLINIC" | "LINK_PROFESSIONAL" | "DONE" | "FINISHED";
 }
 
 export default function InitialSteps({ step }: InitialStepsProps) {
+  const { activeTab, progressbarvalue } = useInitialSteps(step);
+  const { mutationCreateClinic, onSubmitClinic } = useInitialStepClinic();
   const {
-    onSubmitClinic,
-    mutationCreateClinic,
-    onSubmitProfessionalOnboarding,
     mutationCreateProfessionalOnboarding,
-    onSubmitFinishedOnboarding,
-    activeTab,
-    progressbarvalue,
-  } = useInitialSteps(step);
+    onSubmitProfessionalOnboarding,
+    formProfessionalOnboarding,
+  } = useInitialStepProfessional();
+  const { onSubmitFinishedOnboarding } = useInitialStepFinished();
   const { formCreateClinic } = useCreateClinic();
-  const { formProfessionalOnboarding } = useProfessionalOnboarding();
 
   return (
     <>

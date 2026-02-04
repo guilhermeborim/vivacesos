@@ -3,9 +3,8 @@ import { Col, Container, Row } from "reactstrap";
 
 import { Footer } from "core/ui";
 import SignUp from "features/auth/components/register";
-import { withRouter } from "shared/components";
 
-const Register = () => {
+export function RegisterPage() {
   return (
     <React.Fragment>
       <Footer>
@@ -30,6 +29,4 @@ const Register = () => {
       </Footer>
     </React.Fragment>
   );
-};
-
-export default withRouter(Register);
+}

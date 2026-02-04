@@ -14,7 +14,7 @@ export const POST_CLINIC = "/clinic/register";
 export const GET_CLINIC_BY_ID = "/clinic/:clinicId";
 export const PUT_CLINIC_BY_ID = "/clinic/:clinicId";
 //PROFESSIONAL
-export const POST_PROFESSIONAL_ONBOARDING = "/professional/onboarding/register";
+export const POST_PROFESSIONAL_ONBOARDING = "/professional/onboarding";
 
 //CLINIC_USER
-export const GET_CLINICS_BY_USER = "/clinic-user/find-by-any-clinic";
+export const GET_CLINICS_BY_USER = "/clinics";

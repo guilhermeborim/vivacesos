@@ -1,20 +1,19 @@
 import { Navigate } from "react-router-dom";
 
 // Errors
-import Cover404 from "../pages/errors/Cover404";
-import Error403 from "../pages/errors/Error403";
-import Error500 from "../pages/errors/Error500";
-
-import Register from "pages/auth/register";
-import ClinicList from "pages/clinic";
-import ClinicCreate from "pages/clinic/create";
-import Dashboard from "pages/dashboard";
-import Login from "../pages/auth/login";
+import { LoginPage } from "features/auth/pages/LoginPage";
+import { RegisterPage } from "features/auth/pages/RegisterPage";
+import { ClinicCreatePage } from "features/clinic/pages/ClinicCreatePage";
+import { ClinicListPage } from "features/clinic/pages/ClinicListPage";
+import { DashboardPage } from "features/dashboard/pages/DashboardPage";
+import { Error403Page } from "features/errors/pages/Error403page";
+import { Error404Page } from "features/errors/pages/Error404Page";
+import { Error500Page } from "features/errors/pages/Error500Page";
 
 const authProtectedRoutes = [
   {
     path: "/dashboard",
-    component: <Dashboard />,
+    component: <DashboardPage />,
   },
   {
     path: "/",
@@ -22,22 +21,22 @@ const authProtectedRoutes = [
   },
   {
     path: "/clinics",
-    component: <ClinicList />,
+    component: <ClinicListPage />,
   },
   {
     path: "/clinics/create",
-    component: <ClinicCreate />,
+    component: <ClinicCreatePage />,
   },
   { path: "*", component: <Navigate to="/error-404" /> },
 ];
 
 const publicRoutes = [
   // Authentication Page
-  { path: "/login", component: <Login /> },
-  { path: "/register", component: <Register /> },
-  { path: "/error-404", component: <Cover404 /> },
-  { path: "/error-403", component: <Error403 /> },
-  { path: "/error-500", component: <Error500 /> },
+  { path: "/login", component: <LoginPage /> },
+  { path: "/register", component: <RegisterPage /> },
+  { path: "/error-404", component: <Error404Page /> },
+  { path: "/error-403", component: <Error403Page /> },
+  { path: "/error-500", component: <Error500Page /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useMutationUpdateClinic } from "shared/mutations/clinic";
+import { useMutationUpdateClinic } from "../api/mutations";
 import { updateClinicFormSchema, UpdateClinicFormTypeSchema } from "../schemas";
 
 export const useEditClinic = (clinicId: string | null) => {

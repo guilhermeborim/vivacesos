@@ -77,8 +77,8 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
           u.name,
           u.email
           FROM clinic_users cu
-          INNER JOIN users u ON cu.userId = u.id
-          WHERE cu.clinicId = $1
+          INNER JOIN users u ON cu."userId" = u.id
+          WHERE cu."clinicId" = $1
         `,
         [clinicId],
       );

@@ -1,7 +1,7 @@
 import { ButtonPrimitive } from "core/ui";
 import { BasePage } from "shared/components";
+import { useCreateClinic } from "shared/hooks";
 import FormClinic from "../components/form";
-import { useCreateClinic } from "../hooks/use-create-clinic";
 
 export function ClinicCreatePage() {
   const { formCreateClinic, onSubmitClinicCreate, mutationCreateClinic } =

@@ -1,45 +1,12 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { CreateClinicFormTypeSchema } from "features/clinic/schemas";
-import { CreateProfessionalOnboardingBodySchema } from "features/professional/schemas";
-import { postNextStep } from "helpers/backend_helper";
 import { useEffect, useState } from "react";
-import { useMutationCreateClinic } from "shared/mutations/clinic";
-import { useMutationCreateProfessionalOnboarding } from "shared/mutations/professional";
 
 export function useInitialSteps(step: string) {
-  const queryClient = useQueryClient();
-  const mutationCreateClinic = useMutationCreateClinic();
-  const mutationCreateProfessionalOnboarding =
-    useMutationCreateProfessionalOnboarding();
   const [activeTab, setactiveTab] = useState(
     step === "CREATE_CLINIC" ? 1 : step === "LINK_PROFESSIONAL" ? 2 : 3,
   );
   const [progressbarvalue, setprogressbarvalue] = useState(
     step === "CREATE_CLINIC" ? 0 : step === "LINK_PROFESSIONAL" ? 50 : 100,
   );
-
-  const onSubmitClinic = async (data: CreateClinicFormTypeSchema) => {
-    try {
-      await mutationCreateClinic.mutateAsync(data);
-      await postNextStep({ step: "LINK_PROFESSIONAL" });
-      queryClient.invalidateQueries({ queryKey: ["session"] });
-    } catch (error) {}
-  };
-
-  const onSubmitProfessionalOnboarding = async (
-    data: CreateProfessionalOnboardingBodySchema,
-  ) => {
-    try {
-      await mutationCreateProfessionalOnboarding.mutateAsync(data);
-      await postNextStep({ step: "DONE" });
-      queryClient.invalidateQueries({ queryKey: ["session"] });
-    } catch (error) {}
-  };
-
-  const onSubmitFinishedOnboarding = async () => {
-    await postNextStep({ step: "FINISHED" });
-    queryClient.invalidateQueries({ queryKey: ["session"] });
-  };
 
   useEffect(() => {
     if (step === "CREATE_CLINIC") {
@@ -55,11 +22,6 @@ export function useInitialSteps(step: string) {
   }, [step]);
 
   return {
-    mutationCreateClinic,
-    onSubmitClinic,
-    mutationCreateProfessionalOnboarding,
-    onSubmitProfessionalOnboarding,
-    onSubmitFinishedOnboarding,
     activeTab,
     progressbarvalue,
   };

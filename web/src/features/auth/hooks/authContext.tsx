@@ -1,10 +1,10 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { postLogout } from "helpers/backend_helper";
+import { useQuerySession } from "core/api/shared/queries";
 import { createContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMutationLogin, useMutationRegister } from "shared/mutations/auth";
-import { useQuerySession } from "shared/queries/auth";
 import { Permission } from "../../../../../shared/permissions";
+import { useMutationLogin, useMutationRegister } from "../api/mutations";
+import { postLogout } from "../api/routes";
 import type { LoginFormSchema, RegisterFormSchema } from "../schemas";
 
 interface User {

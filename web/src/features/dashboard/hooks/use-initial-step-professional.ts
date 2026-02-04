@@ -1,15 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "features/auth/hooks/use-auth";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useMutationCreateProfessionalOnboarding } from "shared/mutations/professional";
 import {
   createProfessionalOnboardingBodySchema,
   CreateProfessionalOnboardingBodySchema,
-} from "../schemas";
+} from "features/professional/schemas";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useMutationCreateProfessionalOnboarding } from "../api/mutations";
+import { postNextStep } from "../api/routes";
 
-export function useProfessionalOnboarding() {
+export const useInitialStepProfessional = () => {
   const { session } = useAuth();
+  const queryClient = useQueryClient();
+
   const mutationCreateProfessionalOnboarding =
     useMutationCreateProfessionalOnboarding();
 
@@ -20,6 +24,16 @@ export function useProfessionalOnboarding() {
         type: "MEDICO",
       },
     });
+
+  const onSubmitProfessionalOnboarding = async (
+    data: CreateProfessionalOnboardingBodySchema,
+  ) => {
+    try {
+      await mutationCreateProfessionalOnboarding.mutateAsync(data);
+      await postNextStep({ step: "DONE" });
+      queryClient.invalidateQueries({ queryKey: ["session"] });
+    } catch (error) {}
+  };
 
   useEffect(() => {
     if (session?.user.id && session.clinics[0]?.clinicId) {
@@ -33,6 +47,7 @@ export function useProfessionalOnboarding() {
 
   return {
     mutationCreateProfessionalOnboarding,
+    onSubmitProfessionalOnboarding,
     formProfessionalOnboarding,
   };
-}
+};

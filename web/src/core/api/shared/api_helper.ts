@@ -1,5 +1,5 @@
 import axios from "axios";
-import { postRefreshToken } from "./backend_helper";
+import { postRefreshToken } from "features/auth/api/routes";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,

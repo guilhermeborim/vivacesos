@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
-const Cover403 = () => {
+export function Error403Page() {
   return (
     <React.Fragment>
       <div className="auth-page-content">
@@ -32,6 +32,4 @@ const Cover403 = () => {
       </div>
     </React.Fragment>
   );
-};
-
-export default Cover403;
+}

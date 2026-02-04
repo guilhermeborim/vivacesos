@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { CreateProfessionalOnboardingBodySchema } from "features/professional/schemas";
-import { postCreateProfessionalOnboarding } from "helpers/backend_helper";
 import { toast } from "react-toastify";
+import { postCreateProfessionalOnboarding } from "./routes";
 
 export const useMutationCreateProfessionalOnboarding = () => {
   return useMutation({

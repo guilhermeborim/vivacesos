@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { LoginFormSchema } from "features/auth/schemas";
-import { postLogin, postRegister } from "helpers/backend_helper";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { postLogin, postRegister } from "./routes";
 
 export function useMutationLogin() {
   const queryClient = useQueryClient();

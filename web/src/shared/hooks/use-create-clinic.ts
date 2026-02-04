@@ -1,9 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import {
+  createClinicFormSchema,
+  CreateClinicFormTypeSchema,
+} from "features/clinic/schemas";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutationCreateClinic } from "shared/mutations/clinic";
-import { createClinicFormSchema, CreateClinicFormTypeSchema } from "../schemas";
 
 export const useCreateClinic = () => {
   const mutationCreateClinic = useMutationCreateClinic();

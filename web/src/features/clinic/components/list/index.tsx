@@ -1,9 +1,12 @@
 import { ButtonPrimitive } from "core/ui";
+import {
+  useQueryClinic,
+  useQueryClinicById,
+} from "features/clinic/api/mutations";
 import { useEditClinic } from "features/clinic/hooks/use-edit-clinic";
 import { useState } from "react";
 import { Modal, ModalBody, ModalFooter } from "reactstrap";
 import { TableContainer } from "shared/components";
-import { useQueryClinic, useQueryClinicById } from "shared/queries/clinic";
 import FormClinic from "../form";
 import { columnsListClinic } from "./columns";
 

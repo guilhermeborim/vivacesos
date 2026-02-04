@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 
-import error400cover from "../../assets/images/error400-cover.png";
+import error400cover from "../../../assets/images/error400-cover.png";
 
-const Cover404 = () => {
+export function Error404Page() {
   return (
     <React.Fragment>
       <div className="auth-page-content">
@@ -39,6 +39,4 @@ const Cover404 = () => {
       </div>
     </React.Fragment>
   );
-};
-
-export default Cover404;
+}
