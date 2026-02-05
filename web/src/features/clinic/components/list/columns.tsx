@@ -15,13 +15,13 @@ export function columnsListClinic({ onEdit, onDelete }: ColumnsListProps) {
       {
         label: "Editar",
         icon: <i className="mdi mdi-pencil-outline me-1" />,
-        onClick: () => onEdit(row.id),
+        onClick: () => onEdit(row.clinic.id),
       },
       {
         label: "Excluir",
         icon: <i className="mdi mdi-delete-outline me-1" />,
         variant: "danger",
-        onClick: () => onDelete(row.id),
+        onClick: () => onDelete(row.clinic.id),
       },
     ]),
   ];
