@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import withRouter from "../Components/Common/withRouter";
 
 //import Components
 import Footer from "./Footer";
@@ -24,9 +23,10 @@ import {
 } from "../slices/thunks";
 
 //redux
-import { useAuth } from "context/auth/hooks/use-auth";
+import { useAuth } from "features/auth/hooks/use-auth";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import { withRouter } from "shared/components";
 
 const Layout = (props: any) => {
   const { session } = useAuth();

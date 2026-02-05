@@ -1,38 +1,47 @@
 import { Navigate } from "react-router-dom";
 
 // Errors
-import Cover404 from "../pages/errors/Cover404";
-import Error403 from "../pages/errors/Error403";
-import Error500 from "../pages/errors/Error500";
-
-import Register from "pages/auth/register";
-import ClinicList from "pages/clinic/list-clinic";
-import Dashboard from "pages/dashboard/dashboard";
-import Login from "../pages/auth/login";
+import { LoginPage } from "features/auth/pages/LoginPage";
+import { RegisterPage } from "features/auth/pages/RegisterPage";
+import { ClinicCreatePage } from "features/clinic/pages/ClinicCreatePage";
+import { ClinicListPage } from "features/clinic/pages/ClinicListPage";
+import { DashboardPage } from "features/dashboard/pages/DashboardPage";
+import { Error403Page } from "features/errors/pages/Error403Page";
+import { Error404Page } from "features/errors/pages/Error404Page";
+import { Error500Page } from "features/errors/pages/Error500Page";
+import { ProfessionalListPage } from "features/professional/pages/ProfessionalListPage";
 
 const authProtectedRoutes = [
+  { path: "*", component: <Navigate to="/error-404" /> },
   {
     path: "/dashboard",
-    component: <Dashboard />,
+    component: <DashboardPage />,
   },
   {
     path: "/",
     component: <Navigate to={"/dashboard"} />,
   },
   {
-    path: "/patient",
-    component: <ClinicList />,
+    path: "/clinics",
+    component: <ClinicListPage />,
   },
-  { path: "*", component: <Navigate to="/error-404" /> },
+  {
+    path: "/clinics/create",
+    component: <ClinicCreatePage />,
+  },
+  {
+    path: "/professionals",
+    component: <ProfessionalListPage />,
+  },
 ];
 
 const publicRoutes = [
   // Authentication Page
-  { path: "/login", component: <Login /> },
-  { path: "/register", component: <Register /> },
-  { path: "/error-404", component: <Cover404 /> },
-  { path: "/error-403", component: <Error403 /> },
-  { path: "/error-500", component: <Error500 /> },
+  { path: "/login", component: <LoginPage /> },
+  { path: "/register", component: <RegisterPage /> },
+  { path: "/error-404", component: <Error404Page /> },
+  { path: "/error-403", component: <Error403Page /> },
+  { path: "/error-500", component: <Error500Page /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

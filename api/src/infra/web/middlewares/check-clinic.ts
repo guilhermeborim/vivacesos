@@ -16,7 +16,7 @@ export class CheckClinicUserMiddleware {
       throw new Error("Cabeçalho de autorização da clínica não fornecido");
     }
 
-    const clinicUSer = await this.clinicUserRepository.findUserBindedClinic(
+    const clinicUSer = await this.clinicUserRepository.getUserBindedClinic(
       clinicAuthorization as string,
       request.user.id,
     );

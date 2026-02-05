@@ -1,23 +1,15 @@
-import { FindUsersByClinic } from "../../../../../../domain/clinicUser/interfaces/clinicUserBinded";
+import { ClinicUser } from "../../entities/ClinicUsers";
 import {
-  ClinicUser,
-  ClinicUserRole,
-  ClinicUserStatus,
-} from "../../entities/ClinicUsers";
-
-export interface BindClinicUsersParams {
-  userId: string;
-  clinicId: string;
-  role?: ClinicUserRole;
-  status?: ClinicUserStatus;
-}
+  BindClinicUsersParams,
+  FindUsersByClinic,
+} from "../../interfaces/clinicUser";
 
 export interface ClinicUsersRepositoryInterface {
   bindClinicUser(data: BindClinicUsersParams): Promise<ClinicUser>;
-  findUserBindedClinic(
+  getClinicsByUser(userId: string): Promise<ClinicUser[]>; //ClinicUser[]
+  getUsersByClinic(clinicId: string): Promise<FindUsersByClinic[]>; // FindUsersByClinic[]
+  getUserBindedClinic(
     clinicId: string,
     userId: string,
   ): Promise<ClinicUser | null>;
-  findUserBindedAnyClinics(userId: string): Promise<ClinicUser[] | null>;
-  findUsersByClinic(clinicId: string): Promise<FindUsersByClinic[]>;
 }

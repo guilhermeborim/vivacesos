@@ -17,7 +17,7 @@ export class SelectClinicService {
     const user = await this.UserRepository.findById(userId);
     if (!user) throw new Error("User not found");
 
-    const clinicUser = await this.clinicUserRepository.findUserBindedClinic(
+    const clinicUser = await this.clinicUserRepository.getUserBindedClinic(
       clinicId,
       userId,
     );

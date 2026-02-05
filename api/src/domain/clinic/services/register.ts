@@ -1,8 +1,8 @@
-import { hashSync } from "bcrypt";
+import { Clinic } from "../../../infra/database/typeorm/sass/entities/Clinic";
+import { ClinicCreateParams } from "../../../infra/database/typeorm/sass/interfaces/clinic";
 import { ClinicTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/clinic.repository";
-import { CreateClinicParams } from "../../../infra/database/typeorm/sass/repositories/interfaces/clinic-repository.interface";
+import { encrypt } from "../../../infra/utils/crypto";
 import { ConflictError } from "../../../shared/errors/conflict.error";
-import { ClinicResponse } from "../interfaces/clinicResponse";
 
 export class RegisterClinicService {
   private clinicRepository: ClinicTypeormRepository;
@@ -11,8 +11,9 @@ export class RegisterClinicService {
     this.clinicRepository = new ClinicTypeormRepository();
   }
 
-  async execute(clinic: CreateClinicParams): Promise<ClinicResponse> {
+  async execute(clinic: ClinicCreateParams): Promise<Clinic> {
     const clinicExistsByCnpj = await this.clinicRepository.findByCnpj(
+      null,
       clinic.cnpj,
     );
 
@@ -21,6 +22,7 @@ export class RegisterClinicService {
     }
 
     const clinicExistsByPhone = await this.clinicRepository.findByPhone(
+      null,
       clinic.phone,
     );
 
@@ -28,14 +30,12 @@ export class RegisterClinicService {
       throw new ConflictError("Telefone já está cadastrado!");
     }
 
-    const hashCpnj = hashSync(clinic.cnpj, 10);
+    const encryptedCnpj = encrypt(clinic.cnpj);
 
-    clinic.cnpj = hashCpnj;
+    clinic.cnpj = encryptedCnpj;
 
     const clinicCreated = await this.clinicRepository.createClinic(clinic);
 
-    return {
-      clinic: clinicCreated,
-    };
+    return clinicCreated;
   }
 }

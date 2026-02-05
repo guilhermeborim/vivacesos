@@ -7,7 +7,7 @@ import navdata from "../LayoutMenuData";
 //i18n
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import withRouter from "../../Components/Common/withRouter";
+import { withRouter } from "shared/components";
 
 const VerticalLayout = (props: any) => {
   const navData = navdata().props.children;

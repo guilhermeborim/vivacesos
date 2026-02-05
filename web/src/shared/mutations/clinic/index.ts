@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { CreateClinicFormSchema } from "context/clinic/schemas";
-import { postCreateClinic, postSelectClinic } from "helpers/backend_helper";
+import { postCreateClinic, postSelectClinic } from "core/api/shared/routes";
+import { CreateClinicFormTypeSchema } from "features/clinic/schemas";
 import { toast } from "react-toastify";
 
 export const useMutationSelectClinic = () => {
@@ -25,7 +25,8 @@ export const useMutationSelectClinic = () => {
 
 export const useMutationCreateClinic = () => {
   return useMutation({
-    mutationFn: (payload: CreateClinicFormSchema) => postCreateClinic(payload),
+    mutationFn: (payload: CreateClinicFormTypeSchema) =>
+      postCreateClinic(payload),
     onSuccess: async () => {
       toast.success("Clínica criada com sucesso!");
     },

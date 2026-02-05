@@ -1,23 +1,17 @@
 import { hashSync } from "bcrypt";
-import { CreateUserParams } from "../../../infra/database/typeorm/sass/repositories/interfaces/user-repository.interface";
-import { RefreshTokenRepository } from "../../../infra/database/typeorm/sass/repositories/refresh-token.repository";
+import { User } from "../../../infra/database/typeorm/sass/entities/User";
+import { UserCreateParams } from "../../../infra/database/typeorm/sass/interfaces/user";
 import { UserTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/user.repository";
 import { ConflictError } from "../../../shared/errors/conflict.error";
-import { JWTService } from "../../../shared/services/jwt.service";
-import { RegisterResponse } from "../interfaces/authResponse";
 
 export class RegisterService {
   private authRepository: UserTypeormRepository;
-  private refreshTokenRepository: RefreshTokenRepository;
-  private jwtService: JWTService;
 
   constructor() {
     this.authRepository = new UserTypeormRepository();
-    this.refreshTokenRepository = new RefreshTokenRepository();
-    this.jwtService = new JWTService();
   }
 
-  async execute(user: CreateUserParams): Promise<RegisterResponse> {
+  async execute(user: UserCreateParams): Promise<User> {
     const userExists = await this.authRepository.findByEmail(user.email);
 
     if (userExists) {
@@ -33,8 +27,6 @@ export class RegisterService {
 
     delete userCreated.password;
 
-    return {
-      user: userCreated,
-    };
+    return userCreated;
   }
 }

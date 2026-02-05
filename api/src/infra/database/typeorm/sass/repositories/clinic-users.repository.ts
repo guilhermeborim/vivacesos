@@ -1,12 +1,12 @@
 import { Repository } from "typeorm";
-import { FindUsersByClinic } from "../../../../../domain/clinicUser/interfaces/clinicUserBinded";
 import { DatabaseError } from "../../../../../shared/errors/database.error";
 import { SassDataSource } from "../data-source";
 import { ClinicUser } from "../entities/ClinicUsers";
 import {
   BindClinicUsersParams,
-  ClinicUsersRepositoryInterface,
-} from "./interfaces/clinic-users-repository.interface";
+  FindUsersByClinic,
+} from "../interfaces/clinicUser";
+import { ClinicUsersRepositoryInterface } from "./interfaces/clinic-users-repository.interface";
 
 export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterface {
   private clinicUsersRepository: Repository<ClinicUser>;
@@ -28,7 +28,7 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
     }
   }
 
-  async findUserBindedClinic(
+  async getUserBindedClinic(
     clinicId: string,
     userId: string,
   ): Promise<ClinicUser | null> {
@@ -49,7 +49,7 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
     }
   }
 
-  async findUserBindedAnyClinics(userId: string): Promise<ClinicUser[]> {
+  async getClinicsByUser(userId: string): Promise<ClinicUser[]> {
     try {
       const clinicUsers = await this.clinicUsersRepository.find({
         where: { userId },
@@ -65,7 +65,7 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
     }
   }
 
-  async findUsersByClinic(clinicId: string): Promise<FindUsersByClinic[]> {
+  async getUsersByClinic(clinicId: string): Promise<FindUsersByClinic[]> {
     try {
       const clinicUsers = await this.clinicUsersRepository.query(
         `
@@ -77,8 +77,8 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
           u.name,
           u.email
           FROM clinic_users cu
-          INNER JOIN users u ON cu.userId = u.id
-          WHERE cu.clinicId = $1
+          INNER JOIN users u ON cu."userId" = u.id
+          WHERE cu."clinicId" = $1
         `,
         [clinicId],
       );

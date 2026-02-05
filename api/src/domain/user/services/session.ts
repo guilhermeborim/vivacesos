@@ -16,16 +16,16 @@ export class SessionService {
     if (!user) throw new Error("User not found");
 
     const clinicUsers =
-      await this.clinicUserRepository.findUserBindedAnyClinics(userId);
+      await this.clinicUserRepository.getClinicsByUser(userId);
 
     const clinics = clinicUsers.map((cu) => ({
       clinicId: cu.clinicId,
       name: cu.clinic.name,
     }));
 
-    let activeClinic = null;
-    let role = null;
-    let permissions: string[] = [];
+    let activeClinic = clinics.length === 1 ? clinics[0] : null;
+    let role = clinics.length === 1 ? clinicUsers[0].role : null;
+    let permissions = ROLE_PERMISSIONS[role] || null;
 
     if (clinicId) {
       const clinicUser = clinicUsers.find((cu) => cu.clinicId === clinicId);
@@ -37,7 +37,7 @@ export class SessionService {
       role = clinicUser.role;
       permissions = ROLE_PERMISSIONS[role];
       activeClinic = {
-        id: clinicUser.clinicId,
+        clinicId: clinicUser.clinicId,
         name: clinicUser.clinic.name,
       };
     }

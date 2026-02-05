@@ -1,16 +1,8 @@
-import { Professional, ProfessionalType } from "../../entities/Professional";
-
-export interface CreateProfessionalParams {
-  userId: string;
-  type?: ProfessionalType;
-  crm?: string;
-  specialty?: string;
-  active?: boolean;
-}
-
-export interface CreateProfessionalOnboardingParams extends CreateProfessionalParams {
-  clinicId: string;
-}
+import { Professional } from "../../entities/Professional";
+import {
+  CreateProfessionalOnboardingParams,
+  CreateProfessionalParams,
+} from "../../interfaces/professional";
 
 export interface ProfessionalRepositoryInterface {
   createProfessional(
@@ -20,5 +12,5 @@ export interface ProfessionalRepositoryInterface {
   createProfessionalOnboarding(
     data: CreateProfessionalOnboardingParams,
   ): Promise<Professional>;
-  findProfessionalByClinicId(clinicId: string): Promise<Professional[]>;
+  getProfessionalsByClinicId(clinicId: string): Promise<Professional[]>;
 }

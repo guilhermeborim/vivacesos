@@ -1,7 +1,7 @@
 import { hashSync } from "bcrypt";
-import { CreateProfessionalOnboardingParams } from "../../../infra/database/typeorm/sass/repositories/interfaces/professional-repository.interface";
+import { Professional } from "../../../infra/database/typeorm/sass/entities/Professional";
+import { CreateProfessionalOnboardingParams } from "../../../infra/database/typeorm/sass/interfaces/professional";
 import { ProfessionalTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/professional.repository";
-import { ProfessionalResponse } from "../interfaces/professionalResponse";
 
 export class RegisterProfessionalOnboardingService {
   private professionalRepository: ProfessionalTypeormRepository;
@@ -12,7 +12,7 @@ export class RegisterProfessionalOnboardingService {
 
   async execute(
     professional: CreateProfessionalOnboardingParams,
-  ): Promise<ProfessionalResponse> {
+  ): Promise<Professional> {
     if (professional.crm) {
       const crmHash = hashSync(professional.crm, 10);
       professional.crm = crmHash;
@@ -23,8 +23,6 @@ export class RegisterProfessionalOnboardingService {
         professional,
       );
 
-    return {
-      professional: professionalCreated,
-    };
+    return professionalCreated;
   }
 }

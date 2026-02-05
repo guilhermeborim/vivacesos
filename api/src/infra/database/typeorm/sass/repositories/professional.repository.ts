@@ -5,8 +5,8 @@ import { Professional } from "../entities/Professional";
 import {
   CreateProfessionalOnboardingParams,
   CreateProfessionalParams,
-  ProfessionalRepositoryInterface,
-} from "./interfaces/professional-repository.interface";
+} from "../interfaces/professional";
+import { ProfessionalRepositoryInterface } from "./interfaces/professional-repository.interface";
 
 export class ProfessionalTypeormRepository implements ProfessionalRepositoryInterface {
   private professionalRepository: Repository<Professional>;
@@ -45,12 +45,13 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
     }
   }
 
-  async findProfessionalByClinicId(clinicId: string): Promise<Professional[]> {
+  async getProfessionalsByClinicId(clinicId: string): Promise<Professional[]> {
     try {
       const professionals = await this.professionalRepository.find({
         where: {
           clinicId,
         },
+        relations: ["user"],
       });
 
       return professionals;

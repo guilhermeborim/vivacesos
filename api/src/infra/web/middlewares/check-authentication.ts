@@ -5,7 +5,7 @@ import { UnauthenticatedError } from "../../../shared/errors/unauthenticated.err
 import { JWTService } from "../../../shared/services/jwt.service";
 import { UserTypeormRepository } from "../../database/typeorm/sass/repositories/user.repository";
 
-export class CheckAuthtenticationMiddleware {
+export class CheckAuthenticationMiddleware {
   private authRepository: UserTypeormRepository;
   private jwtService: JWTService;
 
