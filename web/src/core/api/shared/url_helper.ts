@@ -13,8 +13,9 @@ export const POST_SELECT_CLINIC = "/auth/session/select-clinic";
 export const POST_CLINIC = "/clinic/register";
 export const GET_CLINIC_BY_ID = "/clinic/:clinicId";
 export const PUT_CLINIC_BY_ID = "/clinic/:clinicId";
+
 //PROFESSIONAL
 export const POST_PROFESSIONAL_ONBOARDING = "/professional/onboarding";
-
+export const GET_PROFESSIONALS = "/clinic/professionals";
 //CLINIC_USER
 export const GET_CLINICS_BY_USER = "/clinics";

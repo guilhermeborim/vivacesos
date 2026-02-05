@@ -6,11 +6,13 @@ import { RegisterPage } from "features/auth/pages/RegisterPage";
 import { ClinicCreatePage } from "features/clinic/pages/ClinicCreatePage";
 import { ClinicListPage } from "features/clinic/pages/ClinicListPage";
 import { DashboardPage } from "features/dashboard/pages/DashboardPage";
-import { Error403Page } from "features/errors/pages/Error403page";
+import { Error403Page } from "features/errors/pages/Error403Page";
 import { Error404Page } from "features/errors/pages/Error404Page";
 import { Error500Page } from "features/errors/pages/Error500Page";
+import { ProfessionalListPage } from "features/professional/pages/ProfessionalListPage";
 
 const authProtectedRoutes = [
+  { path: "*", component: <Navigate to="/error-404" /> },
   {
     path: "/dashboard",
     component: <DashboardPage />,
@@ -27,7 +29,10 @@ const authProtectedRoutes = [
     path: "/clinics/create",
     component: <ClinicCreatePage />,
   },
-  { path: "*", component: <Navigate to="/error-404" /> },
+  {
+    path: "/professionals",
+    component: <ProfessionalListPage />,
+  },
 ];
 
 const publicRoutes = [

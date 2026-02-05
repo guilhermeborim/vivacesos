@@ -5,14 +5,14 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 
-interface ActionItem {
+export interface ActionItem {
   label: string;
   icon?: React.ReactNode;
   onClick: () => void;
   variant?: "danger" | "default";
 }
 
-interface ActionsDropdownProps {
+export interface ActionsDropdownProps {
   actions: ActionItem[];
 }
 

@@ -200,8 +200,8 @@ const Navdata = () => {
         },
         {
           id: "formselect",
-          label: "Profissionais de Saúde",
-          link: "#",
+          label: "Profissionais da Saúde",
+          link: "/professionals",
           parentId: "charts",
         },
         {

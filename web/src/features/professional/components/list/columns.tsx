@@ -6,10 +6,14 @@ interface ColumnsListProps {
   onDelete: (id: string) => void;
 }
 
-export function columnsListClinic({ onEdit, onDelete }: ColumnsListProps) {
+export function columnsListProfessional({
+  onEdit,
+  onDelete,
+}: ColumnsListProps) {
   return [
-    TextColumn("Nome", "clinic.name"),
-    TextColumn("Cnpj", "clinic.cnpj"),
+    TextColumn("Nome", "user.name"),
+    TextColumn("Tipo", "type"),
+    TextColumn("Especialidade", "specialty"),
 
     actionsColumn((row: any) => [
       {

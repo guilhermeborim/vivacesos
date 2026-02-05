@@ -51,6 +51,7 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
         where: {
           clinicId,
         },
+        relations: ["user"],
       });
 
       return professionals;
