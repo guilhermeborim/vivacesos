@@ -40,12 +40,12 @@ export function SelectController<T extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      render={({ field }) => {
+      render={({ field, fieldState }) => {
         const selectedOption =
           options.find((opt) => opt.value === field.value) ?? null;
 
         return (
-          <FormField label={label} error={error}>
+          <FormField label={label} error={fieldState.error?.message}>
             <Select
               inputId={name}
               options={options}

@@ -12,9 +12,15 @@ export class UserTypeormRepository implements UserRepositoryInterface {
     this.userRepository = SassDataSource.getRepository(User);
   }
 
-  async createUser(user: UserCreateParams): Promise<User> {
+  async createUser(
+    user: UserCreateParams,
+    onboardingStep?: UserOnboardingStep,
+  ): Promise<User> {
     try {
-      const userCreated = await this.userRepository.save(user);
+      const userCreated = await this.userRepository.save({
+        ...user,
+        onboardingStep: onboardingStep ? onboardingStep : null,
+      });
       return userCreated;
     } catch (error) {
       throw new DatabaseError("Falha ao criar usuário!", error);

@@ -19,3 +19,8 @@ export const POST_PROFESSIONAL_ONBOARDING = "/professional/onboarding";
 export const GET_PROFESSIONALS = "/clinic/professionals";
 //CLINIC_USER
 export const GET_CLINICS_BY_USER = "/clinics";
+export const GET_USERS_BY_CLINIC = "/clinic/users";
+
+//INVITE
+export const POST_INVITE = "/invite";
+export const GET_INVITE_BY_TOKEN = "/invite/:token";

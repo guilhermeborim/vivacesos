@@ -195,7 +195,7 @@ const Navdata = () => {
         {
           id: "basicelements",
           label: "Acessos",
-          link: "#",
+          link: "/users",
           parentId: "charts",
         },
         {

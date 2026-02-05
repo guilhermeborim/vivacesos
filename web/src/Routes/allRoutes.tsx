@@ -9,7 +9,9 @@ import { DashboardPage } from "features/dashboard/pages/DashboardPage";
 import { Error403Page } from "features/errors/pages/Error403Page";
 import { Error404Page } from "features/errors/pages/Error404Page";
 import { Error500Page } from "features/errors/pages/Error500Page";
+import { InvitePage } from "features/invite/pages/InvitePage";
 import { ProfessionalListPage } from "features/professional/pages/ProfessionalListPage";
+import { UserListPage } from "features/users/pages/UserListPage";
 
 const authProtectedRoutes = [
   { path: "*", component: <Navigate to="/error-404" /> },
@@ -33,11 +35,16 @@ const authProtectedRoutes = [
     path: "/professionals",
     component: <ProfessionalListPage />,
   },
+  {
+    path: "/users",
+    component: <UserListPage />,
+  },
 ];
 
 const publicRoutes = [
   // Authentication Page
   { path: "/login", component: <LoginPage /> },
+  { path: "/invite/accept", component: <InvitePage /> },
   { path: "/register", component: <RegisterPage /> },
   { path: "/error-404", component: <Error404Page /> },
   { path: "/error-403", component: <Error403Page /> },
