@@ -1,102 +1,78 @@
 import { useEffect } from "react";
 import { Col, Row } from "reactstrap";
-import { InputMaskController } from "shared/components";
+import { SelectController } from "shared/components";
 import { InputController } from "shared/components/InputController";
 
 interface FormProfessionalProps {
   formProfessional: any;
   defaultValues?: any;
+  users: any;
 }
 
 export default function FormProfessional({
   formProfessional,
   defaultValues,
+  users,
 }: FormProfessionalProps) {
+  const type = formProfessional.watch("type");
+
   useEffect(() => {
     if (defaultValues) {
       formProfessional.reset(defaultValues);
     }
   }, [defaultValues]);
+
   return (
     <>
-      <Row>
-        <Col lg={3}>
-          <InputController
-            label="Nome"
+      <Row className="gap-3">
+        <Col lg={12}>
+          <SelectController
             control={formProfessional.control}
-            name={"name"}
-            placeholder="Nome da Clínica"
+            name="userId"
+            options={
+              users?.map((user: any) => ({
+                label: user.user.name,
+                value: user.user.id_user,
+              })) ?? []
+            }
+            label="Selecione o Usuário"
           />
         </Col>
-        <Col lg={2}>
-          <InputMaskController
-            label="CNPJ"
+        <Col lg={12}>
+          <SelectController
             control={formProfessional.control}
-            name={"cnpj"}
-            mask="99.999.999/9999-99"
-            placeholder="CNPJ da Clínica"
+            name="type"
+            options={[
+              { label: "Médico", value: "MEDICO" },
+              {
+                label: "Mais categorias em breve!",
+                value: "",
+                isDisabled: true,
+              },
+            ]}
+            label="Tipo de Profissional"
           />
         </Col>
-        <Col lg={2}>
-          <InputMaskController
-            label="Telefone"
-            control={formProfessional.control}
-            name={"phone"}
-            mask="(99) 99999-9999"
-            placeholder="Telefone da Clínica"
-          />
-        </Col>
-        <Col lg={2}>
-          <InputMaskController
-            label="CEP"
-            control={formProfessional.control}
-            name={"cep"}
-            mask="99999-999"
-            placeholder="CEP da Clínica"
-          />
-        </Col>
-        <Col lg={3}>
-          <InputController
-            label="Rua"
-            control={formProfessional.control}
-            name={"road"}
-            placeholder="Rua da Clínica"
-          />
-        </Col>
-      </Row>
-      <Row className="mt-3">
-        <Col lg={3}>
-          <InputController
-            label="Bairro"
-            control={formProfessional.control}
-            name="neighborhood"
-            placeholder="Bairro da Clínica"
-          />
-        </Col>
-        <Col lg={2}>
-          <InputController
-            label="Cidade"
-            control={formProfessional.control}
-            name="city"
-            placeholder="Cidade da Clínica"
-          />
-        </Col>
-        <Col lg={2}>
-          <InputController
-            label="Número"
-            control={formProfessional.control}
-            name="number"
-            placeholder="Número"
-          />
-        </Col>
-        <Col lg={2}>
-          <InputController
-            label="Complemento"
-            control={formProfessional.control}
-            name="complement"
-            placeholder="Complemento"
-          />
-        </Col>
+        {type && (
+          <>
+            <Col lg={12}>
+              <InputController
+                control={formProfessional.control}
+                name="crm"
+                label="CRM"
+                placeholder="CRM do Profissional"
+              />
+            </Col>
+            <Col lg={12}>
+              <InputController
+                control={formProfessional.control}
+                name="specialty"
+                label="Especialidade"
+                placeholder="Especialidade do Profissional"
+              />
+            </Col>
+          </>
+        )}
       </Row>
     </>
   );

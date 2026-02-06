@@ -11,6 +11,7 @@ import Select from "react-select";
 interface Option {
   label: string;
   value: string;
+  isDisabled?: boolean;
 }
 
 interface SelectControllerProps<T extends FieldValues> {

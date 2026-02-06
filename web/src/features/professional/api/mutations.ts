@@ -1,5 +1,28 @@
-import { useQuery } from "@tanstack/react-query";
-import { getProfessionals } from "./routes";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
+import { CreateProfessionalBodySchema } from "../schemas";
+import { getProfessionals, postCreateProfessional } from "./routes";
+
+export const useMutationCreateProfessional = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (payload: CreateProfessionalBodySchema) =>
+      await postCreateProfessional(payload),
+    onSuccess: () => {
+      toast.success("Profissional criado com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["professional"] });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(
+          error.response?.data.message || "Erro ao criar Profissional",
+        );
+      }
+    },
+  });
+};
 
 // export const useMutationUpdateProfessional = (professionalId: string) => {
 //   return useMutation({
