@@ -14,9 +14,9 @@ export function ProfessionalListPage() {
 
   const professionals = dataProfessionals?.data ?? [];
 
-  const usersNotProfessionals = dataUsers?.data.filter(
+  const usersNotProfessionals = dataUsers?.filter(
     (user: any) =>
-      !professionals.some((prof: any) => prof.user.id === user.user.id_user),
+      !professionals.some((prof: any) => prof.user.id === user.id_user),
   );
 
   return (
@@ -36,7 +36,7 @@ export function ProfessionalListPage() {
         />
       }
     >
-      <ListClinic data={dataProfessionals?.data} />
+      <ListClinic data={dataProfessionals} />
 
       {modalOpen && (
         <Modal isOpen={modalOpen} centered toggle={toggleModalOpen} size="lg">

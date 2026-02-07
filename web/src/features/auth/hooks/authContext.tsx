@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Permission } from "../../../../../shared/permissions";
 import { useMutationLogin, useMutationRegister } from "../api/mutations";
 import { postLogout } from "../api/routes";
-import type { LoginFormSchema, RegisterFormSchema } from "../schemas";
+import type { LoginFormTypeSchema, RegisterFormTypeSchema } from "../schemas";
 
 interface User {
   id: string;
@@ -35,8 +35,8 @@ export interface Session {
 interface AuthContextProps {
   loading: boolean;
   session: Session | null;
-  login: (payload: LoginFormSchema) => Promise<void>;
-  register: (payload: RegisterFormSchema) => Promise<void>;
+  login: (payload: LoginFormTypeSchema) => Promise<void>;
+  register: (payload: RegisterFormTypeSchema) => Promise<void>;
   signOut: () => void;
   hasPermission: (permission: Permission) => boolean;
 }
@@ -58,14 +58,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isError]);
 
-  async function login(payload: LoginFormSchema) {
+  async function login(payload: LoginFormTypeSchema) {
     try {
       await mutationLogin.mutateAsync(payload);
       await refetch();
     } catch (error) {}
   }
 
-  async function register(payload: any) {
+  async function register(payload: RegisterFormTypeSchema) {
     try {
       await mutationRegister.mutateAsync(payload);
     } catch (error) {}

@@ -1,14 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import { CreateProfessionalBodySchema } from "../schemas";
+import { CreateProfessionalTypeSchema } from "../schemas";
 import { getProfessionals, postCreateProfessional } from "./routes";
 
 export const useMutationCreateProfessional = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (payload: CreateProfessionalBodySchema) =>
+    mutationFn: async (payload: CreateProfessionalTypeSchema) =>
       await postCreateProfessional(payload),
     onSuccess: () => {
       toast.success("Profissional criado com sucesso!");
@@ -42,11 +42,13 @@ export const useMutationCreateProfessional = () => {
 // };
 
 export function useQueryProfessionals() {
-  const { data: dataProfessionals } = useQuery({
+  const { data } = useQuery({
     queryKey: ["professional"],
     queryFn: getProfessionals,
     retry: false,
   });
+
+  const dataProfessionals = data?.data;
 
   return {
     dataProfessionals,

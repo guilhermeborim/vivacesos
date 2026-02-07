@@ -3,23 +3,23 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutationCreateProfessional } from "../api/mutations";
 import {
-  CreateProfessionalBodySchema,
-  createProfessionalBodySchema,
+  CreateProfessionalTypeSchema,
+  createProfessionalSchema,
 } from "../schemas";
 
 export const useProfessional = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const mutationCreateProfessional = useMutationCreateProfessional();
 
-  const form = useForm<CreateProfessionalBodySchema>({
-    resolver: zodResolver(createProfessionalBodySchema),
+  const form = useForm<CreateProfessionalTypeSchema>({
+    resolver: zodResolver(createProfessionalSchema),
   });
   const toggleModalOpen = () => {
     setModalOpen(!modalOpen);
     form.reset();
   };
 
-  const handleSubmit = async (payload: CreateProfessionalBodySchema) => {
+  const handleSubmit = async (payload: CreateProfessionalTypeSchema) => {
     try {
       await mutationCreateProfessional.mutateAsync(payload);
       toggleModalOpen();

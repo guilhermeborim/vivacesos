@@ -21,7 +21,6 @@ export function ClinicListPage() {
               >
                 Adicionar
               </ButtonPrimitive>
-              {/* <ButtonPrimitive variant="info">Exportar</ButtonPrimitive> */}
             </>
           }
         />

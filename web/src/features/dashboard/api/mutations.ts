@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { CreateProfessionalOnboardingBodySchema } from "features/professional/schemas";
 import { toast } from "react-toastify";
+import { CreateProfessionalOnboardingTypeSchema } from "../schemas";
 import { postCreateProfessionalOnboarding } from "./routes";
 
 export const useMutationCreateProfessionalOnboarding = () => {
   return useMutation({
-    mutationFn: async (payload: CreateProfessionalOnboardingBodySchema) =>
+    mutationFn: async (payload: CreateProfessionalOnboardingTypeSchema) =>
       await postCreateProfessionalOnboarding(payload),
     onSuccess: () => {
       toast.success("Profissional criado com sucesso!");

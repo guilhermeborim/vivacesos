@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Card, CardBody, Col, Label, Row } from "reactstrap";
 import { InputController, Loading } from "shared/components";
 import { useAuth } from "../hooks/use-auth";
-import { registerFormSchema, RegisterFormSchema } from "../schemas";
+import { registerFormSchema, RegisterFormTypeSchema } from "../schemas";
 
 export default function Register() {
   const { register } = useAuth();
@@ -16,11 +16,11 @@ export default function Register() {
   const toggleShowPassword = () => {
     setShowPassword((prevState) => !prevState);
   };
-  const form = useForm<RegisterFormSchema>({
+  const form = useForm<RegisterFormTypeSchema>({
     resolver: zodResolver(registerFormSchema),
   });
 
-  function handleSubmit(payload: RegisterFormSchema) {
+  function handleSubmit(payload: RegisterFormTypeSchema) {
     setRegisterUser(async () => {
       await register(payload);
     });

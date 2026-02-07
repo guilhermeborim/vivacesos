@@ -18,12 +18,9 @@ import {
   useInitialStepProfessional,
   useInitialSteps,
 } from "../hooks";
+import { CreateNextStepTypeSchema } from "../schemas";
 
-interface InitialStepsProps {
-  step: "CREATE_CLINIC" | "LINK_PROFESSIONAL" | "DONE" | "FINISHED";
-}
-
-export default function InitialSteps({ step }: InitialStepsProps) {
+export default function InitialSteps(step: CreateNextStepTypeSchema) {
   const { activeTab, progressbarvalue } = useInitialSteps(step);
   const { mutationCreateClinic, onSubmitClinic } = useInitialStepClinic();
   const {

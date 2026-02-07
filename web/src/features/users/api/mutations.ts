@@ -1,15 +1,17 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import { RegisterInviteBodySchema } from "../schemas";
+import { CreateInviteTypeSchema } from "../schemas";
 import { getUserById, getUsersByClinic, postINvite } from "./routes";
 
 export function useQueryUsers() {
-  const { data: dataUsers } = useQuery({
+  const { data } = useQuery({
     queryKey: ["users"],
     queryFn: getUsersByClinic,
     retry: false,
   });
+
+  const dataUsers = data?.data;
 
   return {
     dataUsers,
@@ -31,8 +33,7 @@ export function useQueryUserById(userId: string | null) {
 
 export const useMutationInvite = () => {
   return useMutation({
-    mutationFn: async (payload: RegisterInviteBodySchema) =>
-      postINvite(payload),
+    mutationFn: async (payload: CreateInviteTypeSchema) => postINvite(payload),
     onSuccess: async () => {
       toast.success("Convite enviado com sucesso!");
     },

@@ -1,6 +1,7 @@
 import { ButtonPrimitive } from "core/ui/primitives/Button";
 import { Modal, ModalBody, ModalFooter } from "reactstrap";
 import { BasePage, HeaderList } from "shared/components";
+import { DeleteConfirmModal } from "shared/components/DeleteConfirmModal";
 import FormUser from "../components/form";
 import ListUser from "../components/list";
 import { useInviteUser } from "../hooks";
@@ -54,6 +55,12 @@ export function UserListPage() {
           </ModalFooter>
         </Modal>
       )}
+
+      <DeleteConfirmModal
+        isOpen={true}
+        onCancel={() => {}}
+        onConfirm={() => {}}
+      />
     </BasePage>
   );
 }

@@ -7,7 +7,7 @@ export const loginFormSchema = z.object({
     .min(6, { error: "Mínimo de 6 Caracteres" }),
 });
 
-export type LoginFormSchema = z.infer<typeof loginFormSchema>;
+export type LoginFormTypeSchema = z.infer<typeof loginFormSchema>;
 
 export const registerFormSchema = z.object({
   name: z.string({ error: "Campo Obrigatório" }),
@@ -17,10 +17,10 @@ export const registerFormSchema = z.object({
     .min(6, { error: "Mínimo de 6 Caracteres" }),
 });
 
-export type RegisterFormSchema = z.infer<typeof registerFormSchema>;
+export type RegisterFormTypeSchema = z.infer<typeof registerFormSchema>;
 
 export const selectClinicFormSchema = z.object({
   clinicId: z.string({ error: "Campo Obrigatório" }),
 });
 
-export type SelectClinicFormSchema = z.infer<typeof selectClinicFormSchema>;
+export type SelectClinicFormTypeSchema = z.infer<typeof selectClinicFormSchema>;

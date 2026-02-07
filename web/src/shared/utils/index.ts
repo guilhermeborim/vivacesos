@@ -1,0 +1,1 @@
+export { getCep } from "./cep";

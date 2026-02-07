@@ -47,12 +47,18 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
 
   async getProfessionalsByClinicId(clinicId: string): Promise<Professional[]> {
     try {
-      const professionals = await this.professionalRepository.find({
-        where: {
-          clinicId,
-        },
-        relations: ["user"],
-      });
+      const professionals = await this.professionalRepository.query(
+        `
+          SELECT 
+          pr.*,
+          u.name,
+          u.email
+          FROM professionals pr 
+          INNER JOIN users u ON pr."userId" = u."id"
+          WHERE pr."clinicId" = $1
+        `,
+        [clinicId],
+      );
 
       return professionals;
     } catch (error) {

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { Card, CardBody, Col, Label, Row } from "reactstrap";
 import { InputController, Loading } from "shared/components";
 import { useAuth } from "../hooks/use-auth";
-import { type LoginFormSchema, loginFormSchema } from "../schemas";
+import { type LoginFormTypeSchema, loginFormSchema } from "../schemas";
 
 export default function Login() {
   const { login } = useAuth();
@@ -17,11 +17,11 @@ export default function Login() {
     setShowPassword((prevState) => !prevState);
   };
 
-  const form = useForm<LoginFormSchema>({
+  const form = useForm<LoginFormTypeSchema>({
     resolver: zodResolver(loginFormSchema),
   });
 
-  function handleSubmit(payload: LoginFormSchema) {
+  function handleSubmit(payload: LoginFormTypeSchema) {
     setConnectingUser(async () => {
       await login(payload);
     });

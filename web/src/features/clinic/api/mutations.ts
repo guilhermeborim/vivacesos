@@ -22,11 +22,13 @@ export const useMutationUpdateClinic = (clinicId: string) => {
 };
 
 export function useQueryClinic() {
-  const { data: dataClinics } = useQuery({
+  const { data } = useQuery({
     queryKey: ["clinic"],
     queryFn: getClinicsByUser,
     retry: false,
   });
+
+  const dataClinics = data?.data;
 
   return {
     dataClinics,

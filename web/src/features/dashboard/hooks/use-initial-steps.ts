@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { CreateNextStepTypeSchema } from "../schemas";
 
-export function useInitialSteps(step: string) {
+export function useInitialSteps({ step }: CreateNextStepTypeSchema) {
   const [activeTab, setactiveTab] = useState(
     step === "CREATE_CLINIC" ? 1 : step === "LINK_PROFESSIONAL" ? 2 : 3,
   );

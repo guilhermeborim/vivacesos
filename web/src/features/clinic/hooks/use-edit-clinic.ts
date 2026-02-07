@@ -1,49 +1,57 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { getCep } from "shared/utils";
 import { useMutationUpdateClinic } from "../api/mutations";
 import { updateClinicFormSchema, UpdateClinicFormTypeSchema } from "../schemas";
 
-export const useEditClinic = (clinicId: string | null) => {
-  const mutationUpdateClinic = useMutationUpdateClinic(clinicId!);
+export const useEditClinic = () => {
+  // STATES
+  const [editClinicId, setEditClinicId] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // FORM
   const formUpdateClinic = useForm<UpdateClinicFormTypeSchema>({
     resolver: zodResolver(updateClinicFormSchema),
   });
-
-  const onSubmitClinicUpdate = async (data: UpdateClinicFormTypeSchema) => {
+  const cep = formUpdateClinic.watch("cep");
+  const mutationUpdateClinic = useMutationUpdateClinic(editClinicId!);
+  const onSubmitClinicUpdate = async (payload: UpdateClinicFormTypeSchema) => {
     try {
-      await mutationUpdateClinic.mutateAsync(data);
+      await mutationUpdateClinic.mutateAsync(payload);
     } catch (error) {}
   };
 
-  const cep = formUpdateClinic.watch("cep");
+  // FUNCTIONS
+  function toggleModal() {
+    setModalOpen(!modalOpen);
+    setEditClinicId(null);
+  }
+
+  function handleEdit(clinicId: string) {
+    setModalOpen(true);
+    setEditClinicId(clinicId);
+  }
+
+  function handleDelete(id: string) {
+    console.log("Deletar clínica", id);
+  }
+
+  // RENDERS
   useEffect(() => {
-    const cepFormatted = cep?.replace(/\D/g, "");
-
-    if (cepFormatted?.length !== 8) return;
-
-    async function buscarCep() {
-      try {
-        const response = await axios.get(
-          `https://viacep.com.br/ws/${cepFormatted}/json/`,
-        );
-        const data = response.data;
-
-        formUpdateClinic.setValue("road", data.logradouro || "");
-        formUpdateClinic.setValue("neighborhood", data.bairro || "");
-        formUpdateClinic.setValue("city", data.localidade || "");
-      } catch (error) {
-        console.log("erro", error);
-      }
+    if (cep) {
+      getCep({ form: formUpdateClinic, cep });
     }
-
-    buscarCep();
   }, [cep]);
 
   return {
     formUpdateClinic,
     mutationUpdateClinic,
     onSubmitClinicUpdate,
+    handleDelete,
+    handleEdit,
+    modalOpen,
+    toggleModal,
+    editClinicId,
   };
 };

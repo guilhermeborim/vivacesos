@@ -1,7 +1,8 @@
 import z from "zod";
 
-export const createProfessionalSchema = z.object({
+export const createProfessionalOnboardingSchema = z.object({
   userId: z.uuid("ID do usuário inválido"),
+  clinicId: z.uuid("ID da clínica inválido"),
   type: z.enum(["MEDICO"]).optional(),
   crm: z
     .string({ error: "Campo obrigatório!" })
@@ -13,6 +14,12 @@ export const createProfessionalSchema = z.object({
   active: z.boolean().optional(),
 });
 
-export type CreateProfessionalTypeSchema = z.infer<
-  typeof createProfessionalSchema
+export type CreateProfessionalOnboardingTypeSchema = z.infer<
+  typeof createProfessionalOnboardingSchema
 >;
+
+export const createNextStepSchema = z.object({
+  step: z.enum(["CREATE_CLINIC", "LINK_PROFESSIONAL", "DONE", "FINISHED"]),
+});
+
+export type CreateNextStepTypeSchema = z.infer<typeof createNextStepSchema>;

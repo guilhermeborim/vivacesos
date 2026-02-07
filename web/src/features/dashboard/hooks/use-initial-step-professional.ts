@@ -1,14 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "features/auth/hooks/use-auth";
-import {
-  createProfessionalOnboardingBodySchema,
-  CreateProfessionalOnboardingBodySchema,
-} from "features/professional/schemas";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutationCreateProfessionalOnboarding } from "../api/mutations";
 import { postNextStep } from "../api/routes";
+import {
+  createProfessionalOnboardingSchema,
+  CreateProfessionalOnboardingTypeSchema,
+} from "../schemas";
 
 export const useInitialStepProfessional = () => {
   const { session } = useAuth();
@@ -18,18 +18,18 @@ export const useInitialStepProfessional = () => {
     useMutationCreateProfessionalOnboarding();
 
   const formProfessionalOnboarding =
-    useForm<CreateProfessionalOnboardingBodySchema>({
-      resolver: zodResolver(createProfessionalOnboardingBodySchema),
+    useForm<CreateProfessionalOnboardingTypeSchema>({
+      resolver: zodResolver(createProfessionalOnboardingSchema),
       defaultValues: {
         type: "MEDICO",
       },
     });
 
   const onSubmitProfessionalOnboarding = async (
-    data: CreateProfessionalOnboardingBodySchema,
+    payload: CreateProfessionalOnboardingTypeSchema,
   ) => {
     try {
-      await mutationCreateProfessionalOnboarding.mutateAsync(data);
+      await mutationCreateProfessionalOnboarding.mutateAsync(payload);
       await postNextStep({ step: "DONE" });
       queryClient.invalidateQueries({ queryKey: ["session"] });
     } catch (error) {}

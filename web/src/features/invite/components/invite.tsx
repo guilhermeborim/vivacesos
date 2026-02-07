@@ -1,13 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ButtonPrimitive } from "core/ui";
 import { useAuth } from "features/auth/hooks/use-auth";
+import {
+  registerFormSchema,
+  RegisterFormTypeSchema,
+} from "features/auth/schemas";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { Card, CardBody, Col, Label, Row } from "reactstrap";
 import { InputController, Loading } from "shared/components";
 import { useQueryInviteByToken } from "../api/mutations";
-import { InviteFormSchema, inviteFormSchema } from "../schemas";
 
 export default function Invite() {
   const [params] = useSearchParams();
@@ -16,8 +19,8 @@ export default function Invite() {
   const [showPassword, setShowPassword] = React.useState(false);
   const { data } = useQueryInviteByToken(params.get("token") as string);
 
-  const form = useForm<InviteFormSchema>({
-    resolver: zodResolver(inviteFormSchema),
+  const form = useForm<RegisterFormTypeSchema>({
+    resolver: zodResolver(registerFormSchema),
   });
 
   useEffect(() => {
@@ -29,7 +32,7 @@ export default function Invite() {
     setShowPassword((prevState) => !prevState);
   };
 
-  function handleSubmit(payload: InviteFormSchema) {
+  function handleSubmit(payload: RegisterFormTypeSchema) {
     setRegisterUser(async () => {
       await register(payload);
     });

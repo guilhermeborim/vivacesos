@@ -11,7 +11,7 @@ export function columnsListProfessional({
   onDelete,
 }: ColumnsListProps) {
   return [
-    TextColumn("Nome", "user.name"),
+    TextColumn("Nome", "name"),
     TextColumn("Tipo", "type"),
     TextColumn("Especialidade", "specialty"),
 
