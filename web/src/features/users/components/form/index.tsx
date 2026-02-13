@@ -1,7 +1,6 @@
+import { InputController, SelectController } from "core/ui";
 import { useEffect } from "react";
 import { Col, Row } from "reactstrap";
-import { SelectController } from "shared/components";
-import { InputController } from "shared/components/InputController";
 
 interface FormUserProps {
   formUser: any;

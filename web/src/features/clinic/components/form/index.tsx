@@ -1,7 +1,6 @@
+import { InputController, InputMaskController } from "core/ui";
 import { useEffect } from "react";
 import { Col, Row } from "reactstrap";
-import { InputMaskController } from "shared/components";
-import { InputController } from "shared/components/InputController";
 
 interface FormClinicProps {
   formClinic: any;

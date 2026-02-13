@@ -14,6 +14,7 @@ export class RegisterProfessionalService {
     clinicId: string,
     professional: CreateProfessionalParams,
   ): Promise<Professional> {
+    //TODO: Verificar se o usuário já esta vinculado como professional na clínica.
     if (professional.crm) {
       const crmHash = hashSync(professional.crm, 10);
       professional.crm = crmHash;

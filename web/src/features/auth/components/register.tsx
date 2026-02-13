@@ -1,10 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ButtonPrimitive } from "core/ui";
+import { ButtonPrimitive, InputController, Loading } from "core/ui";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Card, CardBody, Col, Label, Row } from "reactstrap";
-import { InputController, Loading } from "shared/components";
 import { useAuth } from "../hooks/use-auth";
 import { registerFormSchema, RegisterFormTypeSchema } from "../schemas";
 

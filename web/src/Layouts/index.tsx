@@ -2,8 +2,7 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 //import Components
-import Footer from "./Footer";
-import Header from "./Header";
+import { Header } from "core/ui";
 import Sidebar from "./Sidebar";
 
 //import actions
@@ -23,10 +22,10 @@ import {
 } from "../slices/thunks";
 
 //redux
+import { FooterRest } from "core/ui";
 import { useAuth } from "features/auth/hooks/use-auth";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { withRouter } from "shared/components";
 
 const Layout = (props: any) => {
   const { session } = useAuth();
@@ -165,7 +164,7 @@ const Layout = (props: any) => {
           )}
         <div className="main-content">
           {props.children}
-          <Footer />
+          <FooterRest />
         </div>
       </div>
     </React.Fragment>
@@ -176,4 +175,4 @@ Layout.propTypes = {
   children: PropTypes.object,
 };
 
-export default withRouter(Layout);
+export default Layout;

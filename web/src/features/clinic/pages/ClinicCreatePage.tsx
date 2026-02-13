@@ -1,5 +1,4 @@
-import { ButtonPrimitive } from "core/ui";
-import { BasePage } from "shared/components";
+import { BaseLayout, ButtonPrimitive } from "core/ui";
 import { useCreateClinic } from "shared/hooks";
 import FormClinic from "../components/form";
 
@@ -8,10 +7,11 @@ export function ClinicCreatePage() {
     useCreateClinic();
 
   return (
-    <BasePage
-      title="Cadastrar Clínica"
-      pageTitle="Administração"
-      footer={
+    <BaseLayout.Root title="Cadastrar Clínica" pageTitle="Administração">
+      <BaseLayout.Body>
+        <FormClinic formClinic={formCreateClinic} />
+      </BaseLayout.Body>
+      <BaseLayout.Footer>
         <form onSubmit={formCreateClinic.handleSubmit(onSubmitClinicCreate)}>
           <div className="d-flex justify-content-end">
             <ButtonPrimitive
@@ -24,9 +24,7 @@ export function ClinicCreatePage() {
             </ButtonPrimitive>
           </div>
         </form>
-      }
-    >
-      <FormClinic formClinic={formCreateClinic} />
-    </BasePage>
+      </BaseLayout.Footer>
+    </BaseLayout.Root>
   );
 }

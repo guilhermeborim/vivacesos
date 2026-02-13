@@ -1,6 +1,4 @@
-import { ButtonPrimitive } from "core/ui";
-import { Modal, ModalBody } from "reactstrap";
-import { SelectController } from "shared/components";
+import { ButtonPrimitive, ModalComponent, SelectController } from "core/ui";
 import { useSelectClinic, UseSelectClinicProps } from "shared/hooks";
 import ImgSelect from "../../../assets/images/select.svg";
 
@@ -16,8 +14,10 @@ export default function ModalSelectClinic({
   });
 
   return (
-    <Modal fade={true} isOpen={isOpen} centered={true}>
-      <ModalBody className="py-3 px-5">
+    <ModalComponent.Root isOpen={isOpen} toggle={() => {}}>
+      <ModalComponent.Body
+      // className="py-3 px-5"
+      >
         <div className="my-2 text-center">
           <img
             src={ImgSelect}
@@ -58,7 +58,7 @@ export default function ModalSelectClinic({
             </ButtonPrimitive>
           </div>
         </form>
-      </ModalBody>
-    </Modal>
+      </ModalComponent.Body>
+    </ModalComponent.Root>
   );
 }

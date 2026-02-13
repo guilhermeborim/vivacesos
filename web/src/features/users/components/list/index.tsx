@@ -1,27 +1,18 @@
+import { TableList } from "core/ui/components/Table";
 import { useQueryUsers } from "features/users/api/mutations";
-import { TableContainer } from "shared/components";
-import { columnsListClinic } from "./columns";
+import { createUserColumns } from "./columns";
 
 export default function ListUser() {
   const { dataUsers } = useQueryUsers();
 
-  function handleEdit(clinicId: string) {}
-
-  function handleDelete(id: string) {}
+  const columns = createUserColumns({
+    onEdit: () => console.log("editou"),
+    onDelete: () => console.log("excluiu"),
+  });
 
   return (
     <>
-      <TableContainer
-        columns={columnsListClinic({
-          onEdit: handleEdit,
-          onDelete: handleDelete,
-        })}
-        data={dataUsers || []}
-        customPageSize={6}
-        divClass="table-card mb-3"
-        tableClass="table align-middle table-nowrap mb-0"
-        theadClass="table-light"
-      />
+      <TableList.Root columns={columns} data={dataUsers || []} />
     </>
   );
 }

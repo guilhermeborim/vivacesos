@@ -1,6 +1,6 @@
+import { Loading } from "core/ui";
 import { useAuth } from "features/auth/hooks/use-auth";
 import { Navigate } from "react-router-dom";
-import { Loading } from "shared/components";
 
 interface PublicProtectedProps {
   children: React.ReactNode;

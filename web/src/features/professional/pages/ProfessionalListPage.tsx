@@ -1,62 +1,64 @@
-import { ButtonPrimitive } from "core/ui/primitives/Button";
+import { BaseLayout, ButtonPrimitive, ModalComponent } from "core/ui";
 import { useQueryUsers } from "features/users/api/mutations";
-import { Modal, ModalBody, ModalFooter } from "reactstrap";
-import { BasePage, HeaderList } from "shared/components";
+import { Professional, User } from "shared/types";
 import { useQueryProfessionals } from "../api/mutations";
 import FormProfessional from "../components/form";
 import ListClinic from "../components/list";
 import { useProfessional } from "../hooks";
 
 export function ProfessionalListPage() {
-  const { modalOpen, toggleModalOpen, form, handleSubmit } = useProfessional();
+  const {
+    modalOpen,
+    toggleModalOpen,
+    form,
+    handleSubmit,
+    mutationCreateProfessional,
+  } = useProfessional();
   const { dataProfessionals } = useQueryProfessionals();
   const { dataUsers } = useQueryUsers();
 
-  const professionals = dataProfessionals?.data ?? [];
-
-  const usersNotProfessionals = dataUsers?.filter(
-    (user: any) =>
-      !professionals.some((prof: any) => prof.user.id === user.id_user),
+  const usersNotProfessionals = dataUsers?.filter((user: User) =>
+    dataProfessionals?.some(
+      (prof: Professional) => prof.userId === user.id_user,
+    ),
   );
 
   return (
-    <BasePage
-      title="Profissionais da Saúde"
-      pageTitle="Administração"
-      header={
-        <HeaderList
-          actions={
-            <>
-              <ButtonPrimitive variant="success" onClick={toggleModalOpen}>
-                Vincular
-              </ButtonPrimitive>
-              {/* <ButtonPrimitive variant="info">Exportar</ButtonPrimitive> */}
-            </>
-          }
-        />
-      }
-    >
-      <ListClinic data={dataProfessionals} />
+    <BaseLayout.Root title="Profissionais da Saúde" pageTitle="Administração">
+      <BaseLayout.Header>
+        <ButtonPrimitive variant="success" onClick={toggleModalOpen}>
+          Vincular
+        </ButtonPrimitive>
+      </BaseLayout.Header>
+      <BaseLayout.Body>
+        <ListClinic />
+      </BaseLayout.Body>
 
       {modalOpen && (
-        <Modal isOpen={modalOpen} centered toggle={toggleModalOpen} size="lg">
-          <ModalBody>
+        <ModalComponent.Root
+          isOpen={modalOpen}
+          toggle={toggleModalOpen}
+          size="lg"
+        >
+          <ModalComponent.Body>
             <FormProfessional
               formProfessional={form}
               users={usersNotProfessionals}
             />
-          </ModalBody>
-          <ModalFooter className="border border-top mt-3">
+          </ModalComponent.Body>
+          <ModalComponent.Footer>
             <ButtonPrimitive
               variant="primary"
               className="mt-3"
               onClick={form.handleSubmit(handleSubmit)}
+              disabled={!form.formState.isValid}
+              isLoading={mutationCreateProfessional.isPending}
             >
               Vincular
             </ButtonPrimitive>
-          </ModalFooter>
-        </Modal>
+          </ModalComponent.Footer>
+        </ModalComponent.Root>
       )}
-    </BasePage>
+    </BaseLayout.Root>
   );
 }

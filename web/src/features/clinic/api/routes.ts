@@ -1,10 +1,7 @@
 import { api } from "core/api/shared/api_helper";
 import * as url from "core/api/shared/url_helper";
+import { Clinic } from "shared/types";
 import { UpdateClinicFormTypeSchema } from "../schemas";
-
-type Clinic = {
-  name: string;
-};
 
 export const getClinicById = (clinicId: string) =>
   api.get(url.GET_CLINIC_BY_ID.replace(":clinicId", clinicId));

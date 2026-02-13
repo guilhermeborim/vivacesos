@@ -1,7 +1,4 @@
-import { ButtonPrimitive } from "core/ui/primitives/Button";
-import { Modal, ModalBody, ModalFooter } from "reactstrap";
-import { BasePage, HeaderList } from "shared/components";
-import { DeleteConfirmModal } from "shared/components/DeleteConfirmModal";
+import { BaseLayout, ButtonPrimitive, ModalComponent } from "core/ui";
 import FormUser from "../components/form";
 import ListUser from "../components/list";
 import { useInviteUser } from "../hooks";
@@ -11,32 +8,22 @@ export function UserListPage() {
     useInviteUser();
 
   return (
-    <BasePage
-      title="Acessos"
-      pageTitle="Administração"
-      header={
-        <HeaderList
-          actions={
-            <>
-              <ButtonPrimitive variant="success" onClick={toggleModalInvite}>
-                Convidar
-              </ButtonPrimitive>
-              {/* <ButtonPrimitive variant="info">Exportar</ButtonPrimitive> */}
-            </>
-          }
-        />
-      }
-    >
-      <ListUser />
-
+    <BaseLayout.Root title="Acessos" pageTitle="Administração">
+      <BaseLayout.Header>
+        <ButtonPrimitive variant="success" onClick={toggleModalInvite}>
+          Convidar
+        </ButtonPrimitive>
+      </BaseLayout.Header>
+      <BaseLayout.Body>
+        <ListUser />
+      </BaseLayout.Body>
       {modalInvite && (
-        <Modal
+        <ModalComponent.Root
           isOpen={modalInvite}
           toggle={toggleModalInvite}
           size="lg"
-          centered
         >
-          <ModalBody>
+          <ModalComponent.Body>
             <div className="mb-4">
               <h6>
                 Este convite tem duração de 24 horas, após isso é necessário um
@@ -44,23 +31,17 @@ export function UserListPage() {
               </h6>
             </div>
             <FormUser formUser={formUser} />
-          </ModalBody>
-          <ModalFooter className="border border-top mt-3">
+          </ModalComponent.Body>
+          <ModalComponent.Footer>
             <ButtonPrimitive
               onClick={formUser.handleSubmit(onSubmitInvite)}
               className="mt-3"
             >
               Convidar
             </ButtonPrimitive>
-          </ModalFooter>
-        </Modal>
+          </ModalComponent.Footer>
+        </ModalComponent.Root>
       )}
-
-      <DeleteConfirmModal
-        isOpen={true}
-        onCancel={() => {}}
-        onConfirm={() => {}}
-      />
-    </BasePage>
+    </BaseLayout.Root>
   );
 }

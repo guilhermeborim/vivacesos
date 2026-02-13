@@ -1,12 +1,12 @@
+import { InputController, SelectController } from "core/ui";
 import { useEffect } from "react";
 import { Col, Row } from "reactstrap";
-import { SelectController } from "shared/components";
-import { InputController } from "shared/components/InputController";
+import { User } from "shared/types";
 
 interface FormProfessionalProps {
   formProfessional: any;
   defaultValues?: any;
-  users: any;
+  users: User[];
 }
 
 export default function FormProfessional({
@@ -30,9 +30,9 @@ export default function FormProfessional({
             control={formProfessional.control}
             name="userId"
             options={
-              users?.map((user: any) => ({
-                label: user.user.name,
-                value: user.user.id_user,
+              users?.map((user) => ({
+                label: user.name,
+                value: user.id_user,
               })) ?? []
             }
             label="Selecione o Usuário"

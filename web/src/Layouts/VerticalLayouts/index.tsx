@@ -1,23 +1,27 @@
-import PropTypes from "prop-types";
-import React, { useCallback, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Collapse } from "reactstrap";
-// Import Data
-import navdata from "../LayoutMenuData";
-//i18n
+import { useCallback, useEffect, useState } from "react";
+import { withTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { NavLink, useLocation } from "react-router-dom";
+import { Collapse } from "reactstrap";
 import { createSelector } from "reselect";
-import { withRouter } from "shared/components";
+import menuData, { MenuItem } from "../LayoutMenuData";
 
-const VerticalLayout = (props: any) => {
-  const navData = navdata().props.children;
-  const path = props.router.location.pathname;
+type Props = {
+  t: (key: string) => string;
+};
+
+const VerticalLayout = ({ t }: Props) => {
+  const location = useLocation();
+  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
   /*
- layout settings
- */
+  ========================
+  REDUX LAYOUT SETTINGS
+  ========================
+  */
 
   const selectLayoutState = (state: any) => state.Layout;
+
   const selectLayoutProperties = createSelector(
     selectLayoutState,
     (layout) => ({
@@ -26,346 +30,135 @@ const VerticalLayout = (props: any) => {
       layoutType: layout.layoutType,
     }),
   );
-  // Inside your component
+
   const { leftsidbarSizeType, sidebarVisibilitytype, layoutType } = useSelector(
     selectLayoutProperties,
   );
 
-  //vertical and semibox resize events
+  /*
+  ========================
+  RESPONSIVE SIDEBAR
+  ========================
+  */
+
   const resizeSidebarMenu = useCallback(() => {
-    var windowSize = document.documentElement.clientWidth;
-    const humberIcon = document.querySelector(".hamburger-icon") as HTMLElement;
-    var hamburgerIcon = document.querySelector(".hamburger-icon");
+    const windowSize = document.documentElement.clientWidth;
+    const hamburgerIcon = document.querySelector(".hamburger-icon");
+
     if (windowSize >= 1025) {
-      if (document.documentElement.getAttribute("data-layout") === "vertical") {
-        document.documentElement.setAttribute(
-          "data-sidebar-size",
-          leftsidbarSizeType,
-        );
-      }
-      if (document.documentElement.getAttribute("data-layout") === "semibox") {
-        document.documentElement.setAttribute(
-          "data-sidebar-size",
-          leftsidbarSizeType,
-        );
-      }
+      document.documentElement.setAttribute(
+        "data-sidebar-size",
+        leftsidbarSizeType,
+      );
+
       if (
         (sidebarVisibilitytype === "show" ||
           layoutType === "vertical" ||
           layoutType === "twocolumn") &&
-        document.querySelector(".hamburger-icon")
+        hamburgerIcon
       ) {
-        if (hamburgerIcon !== null) {
-          hamburgerIcon.classList.remove("open");
-        }
-      } else {
-        // var hamburgerIcon = document.querySelector(".hamburger-icon");
-        if (hamburgerIcon !== null) {
-          hamburgerIcon.classList.add("open");
-        }
+        hamburgerIcon.classList.remove("open");
+      } else if (hamburgerIcon) {
+        hamburgerIcon.classList.add("open");
       }
     } else if (windowSize < 1025 && windowSize > 767) {
       document.body.classList.remove("twocolumn-panel");
-      if (document.documentElement.getAttribute("data-layout") === "vertical") {
-        document.documentElement.setAttribute("data-sidebar-size", "sm");
-      }
-      if (document.documentElement.getAttribute("data-layout") === "semibox") {
-        document.documentElement.setAttribute("data-sidebar-size", "sm");
-      }
-      if (humberIcon) {
-        humberIcon.classList.add("open");
-      }
-    } else if (windowSize <= 767) {
+      document.documentElement.setAttribute("data-sidebar-size", "sm");
+      hamburgerIcon?.classList.add("open");
+    } else {
       document.body.classList.remove("vertical-sidebar-enable");
-      if (
-        document.documentElement.getAttribute("data-layout") !== "horizontal"
-      ) {
-        document.documentElement.setAttribute("data-sidebar-size", "lg");
-      }
-      if (humberIcon) {
-        humberIcon.classList.add("open");
-      }
+      document.documentElement.setAttribute("data-sidebar-size", "lg");
+      hamburgerIcon?.classList.add("open");
     }
   }, [leftsidbarSizeType, sidebarVisibilitytype, layoutType]);
 
   useEffect(() => {
-    window.addEventListener("resize", resizeSidebarMenu, true);
+    resizeSidebarMenu();
+    window.addEventListener("resize", resizeSidebarMenu);
+    return () => window.removeEventListener("resize", resizeSidebarMenu);
   }, [resizeSidebarMenu]);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    const initMenu = () => {
-      const pathName = import.meta.env.PUBLIC_URL + path;
-      const ul = document.getElementById("navbar-nav") as HTMLElement;
-      const items: any = ul.getElementsByTagName("a");
-      let itemsArray = [...items]; // converts NodeList to Array
-      removeActivation(itemsArray);
-      let matchingMenuItem = itemsArray.find((x) => {
-        return x.pathname === pathName;
-      });
-      if (matchingMenuItem) {
-        activateParentDropdown(matchingMenuItem);
+  /*
+  ========================
+  MENU STATE
+  ========================
+  */
+
+  const toggleMenu = (id: string) => {
+    setOpenMenus((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  /*
+  ========================
+  RENDER MENU RECURSIVO
+  ========================
+  */
+
+  const renderMenuItems = (items: MenuItem[], level = 0) => {
+    return items.map((item) => {
+      if (item.isHeader) {
+        return (
+          <li key={item.id} className="menu-title">
+            <span>{t(item.label)}</span>
+          </li>
+        );
       }
-    };
-    if (props.layoutType === "vertical") {
-      initMenu();
-    }
-  }, [path, props.layoutType]);
 
-  function activateParentDropdown(item: any) {
-    item.classList.add("active");
-    let parentCollapseDiv = item.closest(".collapse.menu-dropdown");
+      const hasChildren = item.children && item.children.length > 0;
+      const isOpen = openMenus[item.id];
 
-    if (parentCollapseDiv) {
-      // to set aria expand true remaining
-      parentCollapseDiv.classList.add("show");
-      parentCollapseDiv.parentElement.children[0].classList.add("active");
-      parentCollapseDiv.parentElement.children[0].setAttribute(
-        "aria-expanded",
-        "true",
+      if (hasChildren) {
+        return (
+          <li key={item.id} className="nav-item">
+            <a
+              href="/#"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleMenu(item.id);
+              }}
+              className={`nav-link menu-link ${isOpen ? "active" : ""}`}
+            >
+              {item.icon && <i className={item.icon}></i>}
+              <span>{t(item.label)}</span>
+            </a>
+
+            <Collapse isOpen={isOpen} className="menu-dropdown">
+              <ul className="nav nav-sm flex-column">
+                {renderMenuItems(item.children!, level + 1)}
+              </ul>
+            </Collapse>
+          </li>
+        );
+      }
+
+      return (
+        <li key={item.id} className="nav-item">
+          <NavLink
+            to={item.link || "/#"}
+            className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+          >
+            {item.icon && <i className={item.icon}></i>}
+            <span>{t(item.label)}</span>
+          </NavLink>
+        </li>
       );
-      if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")) {
-        parentCollapseDiv.parentElement
-          .closest(".collapse")
-          .classList.add("show");
-        if (
-          parentCollapseDiv.parentElement.closest(".collapse")
-            .previousElementSibling
-        )
-          parentCollapseDiv.parentElement
-            .closest(".collapse")
-            .previousElementSibling.classList.add("active");
-        if (
-          parentCollapseDiv.parentElement
-            .closest(".collapse")
-            .previousElementSibling.closest(".collapse")
-        ) {
-          parentCollapseDiv.parentElement
-            .closest(".collapse")
-            .previousElementSibling.closest(".collapse")
-            .classList.add("show");
-          parentCollapseDiv.parentElement
-            .closest(".collapse")
-            .previousElementSibling.closest(".collapse")
-            .previousElementSibling.classList.add("active");
-        }
-      }
-      return false;
-    }
-    return false;
-  }
-
-  const removeActivation = (items: any) => {
-    let actiItems = items.filter((x: any) => x.classList.contains("active"));
-
-    actiItems.forEach((item: any) => {
-      if (item.classList.contains("menu-link")) {
-        if (!item.classList.contains("active")) {
-          item.setAttribute("aria-expanded", false);
-        }
-        if (item.nextElementSibling) {
-          item.nextElementSibling.classList.remove("show");
-        }
-      }
-      if (item.classList.contains("nav-link")) {
-        if (item.nextElementSibling) {
-          item.nextElementSibling.classList.remove("show");
-        }
-        item.setAttribute("aria-expanded", false);
-      }
-      item.classList.remove("active");
     });
   };
 
-  return (
-    <React.Fragment>
-      {/* menu Items */}
-      {(navData || []).map((item: any, key: number) => {
-        return (
-          <React.Fragment key={key}>
-            {/* Main Header */}
-            {item["isHeader"] ? (
-              <li className="menu-title">
-                <span data-key="t-menu">{props.t(item.label)} </span>
-              </li>
-            ) : item.subItems ? (
-              <li className="nav-item">
-                <Link
-                  onClick={item.click}
-                  className="nav-link menu-link"
-                  to={item.link ? item.link : "/#"}
-                  data-bs-toggle="collapse"
-                >
-                  <i className={item.icon}></i>
-                  <span data-key="t-apps">{props.t(item.label)}</span>
-                  {item.badgeName ? (
-                    <span
-                      className={"badge badge-pill bg-" + item.badgeColor}
-                      data-key="t-new"
-                    >
-                      {item.badgeName}
-                    </span>
-                  ) : null}
-                </Link>
-                <Collapse
-                  className="menu-dropdown"
-                  isOpen={item.stateVariables}
-                  id="sidebarApps"
-                >
-                  <ul className="nav nav-sm flex-column test">
-                    {/* subItms  */}
-                    {item.subItems &&
-                      (item.subItems || []).map((subItem: any, key: number) => (
-                        <React.Fragment key={key}>
-                          {!subItem.isChildItem ? (
-                            <li className="nav-item">
-                              <Link
-                                to={subItem.link ? subItem.link : "/#"}
-                                className="nav-link"
-                              >
-                                {props.t(subItem.label)}
-                                {subItem.badgeName ? (
-                                  <span
-                                    className={
-                                      "badge badge-pill bg-" +
-                                      subItem.badgeColor
-                                    }
-                                    data-key="t-new"
-                                  >
-                                    {subItem.badgeName}
-                                  </span>
-                                ) : null}
-                              </Link>
-                            </li>
-                          ) : (
-                            <li className="nav-item">
-                              <Link
-                                onClick={subItem.click}
-                                className="nav-link"
-                                to="/#"
-                                data-bs-toggle="collapse"
-                              >
-                                {props.t(subItem.label)}
-                                {subItem.badgeName ? (
-                                  <span
-                                    className={
-                                      "badge badge-pill bg-" +
-                                      subItem.badgeColor
-                                    }
-                                    data-key="t-new"
-                                  >
-                                    {subItem.badgeName}
-                                  </span>
-                                ) : null}
-                              </Link>
-                              <Collapse
-                                className="menu-dropdown"
-                                isOpen={subItem.stateVariables}
-                                id="sidebarEcommerce"
-                              >
-                                <ul className="nav nav-sm flex-column">
-                                  {/* child subItms  */}
-                                  {subItem.childItems &&
-                                    (subItem.childItems || []).map(
-                                      (childItem: any, key: number) => (
-                                        <React.Fragment key={key}>
-                                          {!childItem.childItems ? (
-                                            <li className="nav-item">
-                                              <Link
-                                                to={
-                                                  childItem.link
-                                                    ? childItem.link
-                                                    : "/#"
-                                                }
-                                                className="nav-link"
-                                              >
-                                                {props.t(childItem.label)}
-                                              </Link>
-                                            </li>
-                                          ) : (
-                                            <li className="nav-item">
-                                              <Link
-                                                to="/#"
-                                                className="nav-link"
-                                                onClick={childItem.click}
-                                                data-bs-toggle="collapse"
-                                              >
-                                                {props.t(childItem.label)}
-                                              </Link>
-                                              <Collapse
-                                                className="menu-dropdown"
-                                                isOpen={
-                                                  childItem.stateVariables
-                                                }
-                                                id="sidebaremailTemplates"
-                                              >
-                                                <ul className="nav nav-sm flex-column">
-                                                  {childItem.childItems.map(
-                                                    (
-                                                      subChildItem: any,
-                                                      key: number,
-                                                    ) => (
-                                                      <li
-                                                        className="nav-item"
-                                                        key={key}
-                                                      >
-                                                        <Link
-                                                          to={subChildItem.link}
-                                                          className="nav-link"
-                                                          data-key="t-basic-action"
-                                                        >
-                                                          {props.t(
-                                                            subChildItem.label,
-                                                          )}{" "}
-                                                        </Link>
-                                                      </li>
-                                                    ),
-                                                  )}
-                                                </ul>
-                                              </Collapse>
-                                            </li>
-                                          )}
-                                        </React.Fragment>
-                                      ),
-                                    )}
-                                </ul>
-                              </Collapse>
-                            </li>
-                          )}
-                        </React.Fragment>
-                      ))}
-                  </ul>
-                </Collapse>
-              </li>
-            ) : (
-              <li className="nav-item">
-                <Link
-                  className="nav-link menu-link"
-                  to={item.link ? item.link : "/#"}
-                >
-                  <i className={item.icon}></i>{" "}
-                  <span>{props.t(item.label)}</span>
-                  {item.badgeName ? (
-                    <span
-                      className={"badge badge-pill bg-" + item.badgeColor}
-                      data-key="t-new"
-                    >
-                      {item.badgeName}
-                    </span>
-                  ) : null}
-                </Link>
-              </li>
-            )}
-          </React.Fragment>
-        );
-      })}
-    </React.Fragment>
-  );
+  /*
+  ========================
+  SCROLL TOP ON ROUTE CHANGE
+  ========================
+  */
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
+
+  return <>{renderMenuItems(menuData)}</>;
 };
 
-VerticalLayout.propTypes = {
-  location: PropTypes.object,
-  t: PropTypes.any,
-};
-
-export default withRouter(VerticalLayout);
+export default withTranslation()(VerticalLayout);

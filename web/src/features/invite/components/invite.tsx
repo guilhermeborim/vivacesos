@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ButtonPrimitive } from "core/ui";
+import { ButtonPrimitive, InputController, Loading } from "core/ui";
 import { useAuth } from "features/auth/hooks/use-auth";
 import {
   registerFormSchema,
@@ -9,7 +9,6 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { Card, CardBody, Col, Label, Row } from "reactstrap";
-import { InputController, Loading } from "shared/components";
 import { useQueryInviteByToken } from "../api/mutations";
 
 export default function Invite() {

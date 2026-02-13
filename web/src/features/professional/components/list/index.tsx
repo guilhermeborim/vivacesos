@@ -1,26 +1,18 @@
-import { TableContainer } from "shared/components";
-import { columnsListProfessional } from "./columns";
+import { TableList } from "core/ui/components/Table";
+import { useQueryProfessionals } from "features/professional/api/mutations";
+import { createProfessionalColumns } from "./columns";
 
-export default function ListProfessional(data: any) {
-  function handleEdit(professionalId: string) {}
+export default function ListProfessional() {
+  const { dataProfessionals } = useQueryProfessionals();
 
-  function handleDelete(id: string) {
-    console.log("Deletar clínica", id);
-  }
+  const columns = createProfessionalColumns({
+    onEdit: () => console.log("editou"),
+    onDelete: () => console.log("excluiu"),
+  });
 
   return (
     <>
-      <TableContainer
-        columns={columnsListProfessional({
-          onEdit: handleEdit,
-          onDelete: handleDelete,
-        })}
-        data={data?.data || []}
-        customPageSize={6}
-        divClass="table-card mb-3"
-        tableClass="table align-middle table-nowrap mb-0"
-        theadClass="table-light"
-      />
+      <TableList.Root columns={columns} data={dataProfessionals || []} />
     </>
   );
 }

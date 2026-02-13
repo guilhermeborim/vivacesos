@@ -87,11 +87,9 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
         id: clinicUser.id,
         role: clinicUser.role,
         status: clinicUser.status,
-        user: {
-          id_user: clinicUser.id_user,
-          name: clinicUser.name,
-          email: clinicUser.email,
-        },
+        id_user: clinicUser.id_user,
+        name: clinicUser.name,
+        email: clinicUser.email,
       }));
     } catch (error) {
       throw new DatabaseError(

@@ -1,16 +1,6 @@
-import classnames from "classnames";
+import { InputController, Loading, Nav, SelectController, Tab } from "core/ui";
 import FormClinic from "features/clinic/components/form";
-import {
-  Col,
-  Nav,
-  NavItem,
-  NavLink,
-  Progress,
-  Row,
-  TabContent,
-  TabPane,
-} from "reactstrap";
-import { InputController, Loading, SelectController } from "shared/components";
+import { Col, Progress, Row } from "reactstrap";
 import { useCreateClinic } from "shared/hooks";
 import {
   useInitialStepClinic,
@@ -43,60 +33,21 @@ export default function InitialSteps(step: CreateNextStepTypeSchema) {
         <div className="progress-nav mb-4 mt-3">
           <Progress value={progressbarvalue} style={{ height: "1px" }} />
 
-          <Nav className="nav-pills progress-bar-tab custom-nav" role="tablist">
-            <NavItem>
-              <NavLink
-                id="pills-gen-info-tab"
-                className={classnames(
-                  {
-                    active: activeTab === 1,
-                    done: activeTab <= 4 && activeTab >= 0,
-                  },
-                  "rounded-pill",
-                )}
-                tag="button"
-                type="button"
-              >
-                1
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                id="pills-gen-info-tab"
-                className={classnames(
-                  {
-                    active: activeTab === 2,
-                    done: activeTab <= 4 && activeTab > 1,
-                  },
-                  "rounded-pill",
-                )}
-                tag="button"
-                type="button"
-              >
-                2
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                id="pills-gen-info-tab"
-                className={classnames(
-                  {
-                    active: activeTab === 3,
-                    done: activeTab <= 4 && activeTab > 2,
-                  },
-                  "rounded-pill",
-                )}
-                tag="button"
-                type="button"
-              >
-                3
-              </NavLink>
-            </NavItem>
-          </Nav>
+          <Nav.Root>
+            <Nav.Item>
+              <Nav.Link activeTab={activeTab} maxTabs={4} tab={1} text="1" />
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link activeTab={activeTab} maxTabs={4} tab={2} text="2" />
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link activeTab={activeTab} maxTabs={4} tab={3} text="3" />
+            </Nav.Item>
+          </Nav.Root>
         </div>
 
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId={1}>
+        <Tab.Root activeTab={activeTab}>
+          <Tab.Item tabId={1}>
             <div>
               <div className="mb-4">
                 <div>
@@ -111,7 +62,7 @@ export default function InitialSteps(step: CreateNextStepTypeSchema) {
             </div>
             <form onSubmit={formCreateClinic.handleSubmit(onSubmitClinic)}>
               <FormClinic formClinic={formCreateClinic} />
-              <div className="d-flex">
+              <div className="d-flex py-3">
                 <button
                   type="submit"
                   className="btn btn-primary ms-auto"
@@ -126,9 +77,8 @@ export default function InitialSteps(step: CreateNextStepTypeSchema) {
                 </button>
               </div>
             </form>
-          </TabPane>
-
-          <TabPane tabId={2}>
+          </Tab.Item>
+          <Tab.Item tabId={2}>
             <form
               onSubmit={formProfessionalOnboarding.handleSubmit(
                 onSubmitProfessionalOnboarding,
@@ -191,9 +141,8 @@ export default function InitialSteps(step: CreateNextStepTypeSchema) {
                 </button>
               </div>
             </form>
-          </TabPane>
-
-          <TabPane tabId={3}>
+          </Tab.Item>
+          <Tab.Item tabId={3}>
             <div>
               <div className="text-center">
                 <div className="mb-4">
@@ -219,8 +168,8 @@ export default function InitialSteps(step: CreateNextStepTypeSchema) {
                 </button>
               </div>
             </div>
-          </TabPane>
-        </TabContent>
+          </Tab.Item>
+        </Tab.Root>
       </div>
     </>
   );

@@ -1,326 +1,80 @@
-import PropTypes from "prop-types";
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Col, Collapse, Row } from "reactstrap";
-
-// Import Data
-import navdata from "../LayoutMenuData";
-//i18n
+import { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
-import { withRouter } from "shared/components";
+import { NavLink, useLocation } from "react-router-dom";
+import { Collapse } from "reactstrap";
+import menuData, { MenuItem } from "../LayoutMenuData";
 
-const HorizontalLayout = (props: any) => {
-  const navData = navdata().props.children;
-  let splitMenuItems: Array<any> = [];
-  let menuSplitContainer = 6;
-  navData.forEach(function (value: any, key: number) {
-    if (value["isHeader"]) {
-      menuSplitContainer++;
-    }
-    if (key >= menuSplitContainer) {
-      let val = value;
-      val.childItems = value.subItems;
-      val.isChildItem = value.subItems ? true : false;
-      delete val.subItems;
-      splitMenuItems.push(val);
-    }
-  });
+type Props = {
+  t: (key: string) => string;
+};
 
-  const path = props.router.location.pathname;
+const HorizontalLayout = ({ t }: Props) => {
+  const location = useLocation();
+  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    const initMenu = () => {
-      const pathName = import.meta.env.PUBLIC_URL + path;
-      const ul = document.getElementById("navbar-nav") as HTMLElement;
-      const items: any = ul.getElementsByTagName("a");
-      let itemsArray = [...items]; // converts NodeList to Array
-      removeActivation(itemsArray);
-      let matchingMenuItem = itemsArray.find((x) => {
-        return x.pathname === pathName;
-      });
-      if (matchingMenuItem) {
-        activateParentDropdown(matchingMenuItem);
+  }, [location.pathname]);
+
+  const toggleMenu = (id: string) => {
+    setOpenMenus((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const renderMenuItems = (items: MenuItem[], level = 0) => {
+    return items.map((item) => {
+      if (item.isHeader) {
+        return (
+          <li key={item.id} className="menu-title">
+            <span>{t(item.label)}</span>
+          </li>
+        );
       }
-    };
-    initMenu();
-  }, [path, props.layoutType]);
 
-  function activateParentDropdown(item: any) {
-    item.classList.add("active");
-    let parentCollapseDiv = item.closest(".collapse.menu-dropdown");
+      const hasChildren = item.children && item.children.length > 0;
+      const isOpen = openMenus[item.id];
 
-    if (parentCollapseDiv) {
-      // to set aria expand true remaining
-      parentCollapseDiv.classList.add("show");
-      parentCollapseDiv.parentElement.children[0].classList.add("active");
-      parentCollapseDiv.parentElement.children[0].setAttribute(
-        "aria-expanded",
-        "true",
+      if (hasChildren) {
+        return (
+          <li key={item.id} className="nav-item">
+            <a
+              href="/#"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleMenu(item.id);
+              }}
+              className={`nav-link menu-link ${isOpen ? "active" : ""}`}
+            >
+              {item.icon && <i className={item.icon}></i>}
+              <span>{t(item.label)}</span>
+            </a>
+
+            <Collapse isOpen={isOpen} className="menu-dropdown">
+              <ul className="nav nav-sm flex-column">
+                {renderMenuItems(item.children!, level + 1)}
+              </ul>
+            </Collapse>
+          </li>
+        );
+      }
+
+      return (
+        <li key={item.id} className="nav-item">
+          <NavLink
+            to={item.link || "/#"}
+            className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+          >
+            {item.icon && <i className={item.icon}></i>}
+            <span>{t(item.label)}</span>
+          </NavLink>
+        </li>
       );
-      if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")) {
-        parentCollapseDiv.parentElement
-          .closest(".collapse")
-          .classList.add("show");
-        var parentElementDiv =
-          parentCollapseDiv.parentElement.closest(
-            ".collapse",
-          ).previousElementSibling;
-        if (parentElementDiv)
-          if (parentElementDiv.closest(".collapse"))
-            parentElementDiv.closest(".collapse").classList.add("show");
-        parentElementDiv.classList.add("active");
-        var parentElementSibling =
-          parentElementDiv.parentElement.parentElement.parentElement
-            .previousElementSibling;
-        if (parentElementSibling) {
-          parentElementSibling.classList.add("active");
-        }
-      }
-      return false;
-    }
-    return false;
-  }
-
-  const removeActivation = (items: any) => {
-    let actiItems = items.filter((x: any) => x.classList.contains("active"));
-
-    actiItems.forEach((item: any) => {
-      if (item.classList.contains("menu-link")) {
-        if (!item.classList.contains("active")) {
-          item.setAttribute("aria-expanded", false);
-        }
-        if (item.nextElementSibling) {
-          item.nextElementSibling.classList.remove("show");
-        }
-      }
-      if (item.classList.contains("nav-link")) {
-        if (item.nextElementSibling) {
-          item.nextElementSibling.classList.remove("show");
-        }
-        item.setAttribute("aria-expanded", false);
-      }
-      item.classList.remove("active");
     });
   };
 
-  return (
-    <React.Fragment>
-      {navData.map((item: any, key: number) => {
-        return (
-          <React.Fragment key={key}>
-            {/* Main Header */}
-            {!item["isHeader"] ? (
-              item.subItems ? (
-                <li className="nav-item">
-                  <Link
-                    onClick={item.click}
-                    className="nav-link menu-link"
-                    to={item.link ? item.link : "/#"}
-                    data-bs-toggle="collapse"
-                  >
-                    <i className={item.icon}></i>{" "}
-                    <span data-key="t-apps">{props.t(item.label)}</span>
-                  </Link>
-                  <Collapse
-                    className={
-                      item.id === "baseUi" && item.subItems.length > 13
-                        ? "menu-dropdown mega-dropdown-menu"
-                        : "menu-dropdown"
-                    }
-                    isOpen={item.stateVariables}
-                    id="sidebarApps"
-                  >
-                    {/* subItms  */}
-                    {item.id === "baseUi" && item.subItems.length > 13 ? (
-                      <React.Fragment>
-                        <Row>
-                          {item.subItems &&
-                            item.subItems.map((subItem: any, key: number) => (
-                              <React.Fragment key={key}>
-                                {key % 2 === 0 ? (
-                                  <Col lg={4}>
-                                    <ul className="nav nav-sm flex-column">
-                                      <li className="nav-item">
-                                        <Link
-                                          to={subItem.link}
-                                          className="nav-link"
-                                        >
-                                          {subItem.label}
-                                        </Link>
-                                      </li>
-                                    </ul>
-                                  </Col>
-                                ) : (
-                                  <Col lg={4}>
-                                    <ul className="nav nav-sm flex-column">
-                                      <li className="nav-item">
-                                        <Link
-                                          to={subItem.link}
-                                          className="nav-link"
-                                        >
-                                          {item.subItems[key].label}
-                                        </Link>
-                                      </li>
-                                    </ul>
-                                  </Col>
-                                )}
-                              </React.Fragment>
-                            ))}
-                        </Row>
-                      </React.Fragment>
-                    ) : (
-                      <ul className="nav nav-sm flex-column test">
-                        {item.subItems &&
-                          (item.subItems || []).map(
-                            (subItem: any, key: number) => (
-                              <React.Fragment key={key}>
-                                {!subItem.isChildItem ? (
-                                  <li className="nav-item">
-                                    <Link
-                                      to={subItem.link ? subItem.link : "/#"}
-                                      className="nav-link"
-                                    >
-                                      {props.t(subItem.label)}
-                                    </Link>
-                                  </li>
-                                ) : (
-                                  <li className="nav-item">
-                                    <Link
-                                      onClick={subItem.click}
-                                      className="nav-link"
-                                      to="/#"
-                                      data-bs-toggle="collapse"
-                                    >
-                                      {" "}
-                                      {props.t(subItem.label)}
-                                    </Link>
-                                    <Collapse
-                                      className="menu-dropdown"
-                                      isOpen={subItem.stateVariables}
-                                      id="sidebarEcommerce"
-                                    >
-                                      <ul className="nav nav-sm flex-column">
-                                        {/* child subItms  */}
-                                        {subItem.childItems &&
-                                          (subItem.childItems || []).map(
-                                            (
-                                              subChildItem: any,
-                                              key: number,
-                                            ) => (
-                                              <React.Fragment key={key}>
-                                                {!subChildItem.isChildItem ? (
-                                                  <li className="nav-item">
-                                                    <Link
-                                                      to={
-                                                        subChildItem.link
-                                                          ? subChildItem.link
-                                                          : "/#"
-                                                      }
-                                                      className="nav-link"
-                                                    >
-                                                      {props.t(
-                                                        subChildItem.label,
-                                                      )}
-                                                    </Link>
-                                                  </li>
-                                                ) : (
-                                                  <li className="nav-item">
-                                                    <Link
-                                                      onClick={
-                                                        subChildItem.click
-                                                      }
-                                                      className="nav-link"
-                                                      to="/#"
-                                                      data-bs-toggle="collapse"
-                                                    >
-                                                      {" "}
-                                                      {props.t(
-                                                        subChildItem.label,
-                                                      )}
-                                                    </Link>
-                                                    <Collapse
-                                                      className="menu-dropdown"
-                                                      isOpen={
-                                                        subChildItem.stateVariables
-                                                      }
-                                                      id="sidebarEcommerce"
-                                                    >
-                                                      <ul className="nav nav-sm flex-column">
-                                                        {/* child subItms  */}
-                                                        {subChildItem.childItems &&
-                                                          (
-                                                            subChildItem.childItems ||
-                                                            []
-                                                          ).map(
-                                                            (
-                                                              subSubChildItem: any,
-                                                              key: number,
-                                                            ) => (
-                                                              <li
-                                                                className="nav-item apex"
-                                                                key={key}
-                                                              >
-                                                                <Link
-                                                                  to={
-                                                                    subSubChildItem.link
-                                                                      ? subSubChildItem.link
-                                                                      : "/#"
-                                                                  }
-                                                                  className="nav-link"
-                                                                >
-                                                                  {props.t(
-                                                                    subSubChildItem.label,
-                                                                  )}
-                                                                </Link>
-                                                              </li>
-                                                            ),
-                                                          )}
-                                                      </ul>
-                                                    </Collapse>
-                                                  </li>
-                                                )}
-                                              </React.Fragment>
-                                            ),
-                                          )}
-                                      </ul>
-                                    </Collapse>
-                                  </li>
-                                )}
-                              </React.Fragment>
-                            ),
-                          )}
-                      </ul>
-                    )}
-                  </Collapse>
-                </li>
-              ) : (
-                <li className="nav-item">
-                  <Link
-                    className="nav-link menu-link"
-                    to={item.link ? item.link : "/#"}
-                  >
-                    <i className={item.icon}></i>{" "}
-                    <span>{props.t(item.label)}</span>
-                  </Link>
-                </li>
-              )
-            ) : (
-              <li className="menu-title">
-                <span data-key="t-menu">{props.t(item.label)}</span>
-              </li>
-            )}
-          </React.Fragment>
-        );
-      })}
-      {/* menu Items */}
-    </React.Fragment>
-  );
+  return <>{renderMenuItems(menuData)}</>;
 };
 
-HorizontalLayout.propTypes = {
-  location: PropTypes.object,
-  t: PropTypes.any,
-};
-
-export default withRouter(withTranslation()(HorizontalLayout));
+export default withTranslation()(HorizontalLayout);

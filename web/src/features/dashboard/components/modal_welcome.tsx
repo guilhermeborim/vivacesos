@@ -1,6 +1,5 @@
-import { ButtonPrimitive } from "core/ui";
+import { ButtonPrimitive, ModalComponent } from "core/ui";
 import { useState } from "react";
-import { Modal, ModalBody } from "reactstrap";
 import ImgWelcome from "../../../assets/images/welcome.svg";
 
 interface ModalWelcomeProps {
@@ -11,8 +10,10 @@ export default function ModalWelcome({ isOpen }: ModalWelcomeProps) {
   const [modalWelcome, setmodalWelcome] = useState(isOpen);
 
   return (
-    <Modal fade={true} isOpen={modalWelcome} centered={true}>
-      <ModalBody className="py-3 px-5">
+    <ModalComponent.Root isOpen={modalWelcome} toggle={() => {}}>
+      <ModalComponent.Body
+      //  className="py-3 px-5"
+      >
         <div className="mt-2 text-center">
           <img
             src={ImgWelcome}
@@ -37,7 +38,7 @@ export default function ModalWelcome({ isOpen }: ModalWelcomeProps) {
             Vamos nessa!
           </ButtonPrimitive>
         </div>
-      </ModalBody>
-    </Modal>
+      </ModalComponent.Body>
+    </ModalComponent.Root>
   );
 }

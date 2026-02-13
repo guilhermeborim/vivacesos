@@ -1,13 +1,13 @@
 import React from "react";
 import { Col, Container, Row } from "reactstrap";
 
-import { Footer } from "core/ui";
+import { FooterAuth } from "core/ui";
 import Sign from "features/auth/components/login";
 
 export function LoginPage() {
   return (
     <React.Fragment>
-      <Footer>
+      <FooterAuth>
         <div className="auth-page-content mt-lg-5">
           <Container>
             <Row>
@@ -26,7 +26,7 @@ export function LoginPage() {
             <Sign />
           </Container>
         </div>
-      </Footer>
+      </FooterAuth>
     </React.Fragment>
   );
 }

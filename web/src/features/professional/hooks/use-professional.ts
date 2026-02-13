@@ -31,5 +31,6 @@ export const useProfessional = () => {
     modalOpen,
     form,
     handleSubmit,
+    mutationCreateProfessional,
   };
 };

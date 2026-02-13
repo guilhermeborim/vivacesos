@@ -19,7 +19,9 @@ export class UserTypeormRepository implements UserRepositoryInterface {
     try {
       const userCreated = await this.userRepository.save({
         ...user,
-        onboardingStep: onboardingStep ? onboardingStep : null,
+        onboardingStep: onboardingStep
+          ? onboardingStep
+          : UserOnboardingStep.CREATE_CLINIC,
       });
       return userCreated;
     } catch (error) {
