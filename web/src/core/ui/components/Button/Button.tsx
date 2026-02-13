@@ -1,5 +1,5 @@
+import { VariantColor } from "@/shared/constants/variant";
 import { Button, ButtonProps } from "reactstrap";
-import { VariantColor } from "shared/constants/variant";
 import { ActivityIndicator } from "../Loading";
 
 type ButtonSize = "sm" | "md" | "lg";

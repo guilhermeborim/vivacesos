@@ -1,4 +1,4 @@
-import { CreateClinicFormTypeSchema } from "features/clinic/schemas";
+import { CreateClinicFormTypeSchema } from "@/features/clinic/schemas";
 import { api } from "./api_helper";
 import * as url from "./url_helper";
 
@@ -7,3 +7,4 @@ export const postSelectClinic = (clinicId: string) =>
 
 export const postCreateClinic = (payload: CreateClinicFormTypeSchema) =>
   api.post(url.POST_CLINIC, payload);
+export const postRefreshToken = () => api.post(url.POST_REFRESH_TOKEN);

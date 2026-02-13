@@ -1,5 +1,5 @@
-import { api } from "core/api/shared/api_helper";
-import * as url from "core/api/shared/url_helper";
+import { api } from "@/core/api/shared/api_helper";
+import * as url from "@/core/api/shared/url_helper";
 import { CreateInviteTypeSchema } from "../schemas";
 
 export const getUserById = (userId: string) =>

@@ -1,6 +1,6 @@
-import { api } from "core/api/shared/api_helper";
-import * as url from "core/api/shared/url_helper";
-import { Clinic } from "shared/types";
+import { api } from "@/core/api/shared/api_helper";
+import * as url from "@/core/api/shared/url_helper";
+import { Clinic } from "@/shared/types";
 import { UpdateClinicFormTypeSchema } from "../schemas";
 
 export const getClinicById = (clinicId: string) =>

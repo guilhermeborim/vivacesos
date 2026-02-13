@@ -1,5 +1,5 @@
+import { getSession } from "@/features/auth/api/routes";
 import { useQuery } from "@tanstack/react-query";
-import { getSession } from "features/auth/api/routes";
 import { useLocation } from "react-router-dom";
 
 export function useQuerySession() {

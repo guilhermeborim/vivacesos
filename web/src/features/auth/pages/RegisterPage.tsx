@@ -1,8 +1,8 @@
 import React from "react";
 import { Col, Container, Row } from "reactstrap";
 
-import { FooterAuth } from "core/ui";
-import SignUp from "features/auth/components/register";
+import { FooterAuth } from "@/core/ui";
+import SignUp from "@/features/auth/components/register";
 
 export function RegisterPage() {
   return (

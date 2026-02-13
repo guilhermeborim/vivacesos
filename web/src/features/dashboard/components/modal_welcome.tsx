@@ -1,6 +1,6 @@
-import { ButtonPrimitive, ModalComponent } from "core/ui";
+import ImgWelcome from "@/assets/images/welcome.svg";
+import { ButtonPrimitive, ModalComponent } from "@/core/ui";
 import { useState } from "react";
-import ImgWelcome from "../../../assets/images/welcome.svg";
 
 interface ModalWelcomeProps {
   isOpen: boolean;

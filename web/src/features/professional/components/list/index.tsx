@@ -1,5 +1,5 @@
-import { TableList } from "core/ui/components/Table";
-import { useQueryProfessionals } from "features/professional/api/mutations";
+import { TableList } from "@/core/ui/components/Table";
+import { useQueryProfessionals } from "@/features/professional/api/mutations";
 import { createProfessionalColumns } from "./columns";
 
 export default function ListProfessional() {

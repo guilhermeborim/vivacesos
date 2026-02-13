@@ -1,4 +1,4 @@
-import { BaseLayout, ButtonPrimitive } from "core/ui";
+import { BaseLayout, ButtonPrimitive } from "@/core/ui";
 import { useNavigate } from "react-router-dom";
 import ListClinic from "../components/list";
 

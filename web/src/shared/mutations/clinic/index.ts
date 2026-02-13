@@ -1,7 +1,7 @@
+import { postCreateClinic, postSelectClinic } from "@/core/api/shared/routes";
+import { CreateClinicFormTypeSchema } from "@/features/clinic/schemas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { postCreateClinic, postSelectClinic } from "core/api/shared/routes";
-import { CreateClinicFormTypeSchema } from "features/clinic/schemas";
 import { toast } from "react-toastify";
 
 export const useMutationSelectClinic = () => {

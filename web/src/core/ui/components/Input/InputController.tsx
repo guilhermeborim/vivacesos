@@ -1,4 +1,4 @@
-import { FormField, InputPrimitive } from "core/ui";
+import { FormField, InputPrimitive } from "@/core/ui";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import { InputProps } from "reactstrap";
 

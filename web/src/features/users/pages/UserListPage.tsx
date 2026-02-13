@@ -1,4 +1,4 @@
-import { BaseLayout, ButtonPrimitive, ModalComponent } from "core/ui";
+import { BaseLayout, ButtonPrimitive, ModalComponent } from "@/core/ui";
 import FormUser from "../components/form";
 import ListUser from "../components/list";
 import { useInviteUser } from "../hooks";

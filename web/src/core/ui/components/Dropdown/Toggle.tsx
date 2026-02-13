@@ -1,5 +1,5 @@
+import { VariantColor } from "@/shared/constants/variant";
 import { DropdownToggle, DropdownToggleProps } from "reactstrap";
-import { VariantColor } from "shared/constants/variant";
 
 interface ToggleProps extends DropdownToggleProps {
   variant?: VariantColor;

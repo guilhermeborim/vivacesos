@@ -1,7 +1,13 @@
-import { InputController, Loading, Nav, SelectController, Tab } from "core/ui";
-import FormClinic from "features/clinic/components/form";
+import {
+  InputController,
+  Loading,
+  Nav,
+  SelectController,
+  Tab,
+} from "@/core/ui";
+import FormClinic from "@/features/clinic/components/form";
+import { useCreateClinic } from "@/shared/hooks";
 import { Col, Progress, Row } from "reactstrap";
-import { useCreateClinic } from "shared/hooks";
 import {
   useInitialStepClinic,
   useInitialStepFinished,

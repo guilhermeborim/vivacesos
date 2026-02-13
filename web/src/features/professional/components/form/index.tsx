@@ -1,7 +1,7 @@
-import { InputController, SelectController } from "core/ui";
+import { InputController, SelectController } from "@/core/ui";
+import { User } from "@/shared/types";
 import { useEffect } from "react";
 import { Col, Row } from "reactstrap";
-import { User } from "shared/types";
 
 interface FormProfessionalProps {
   formProfessional: any;

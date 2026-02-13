@@ -1,6 +1,5 @@
-import { DropdownComponent } from "core/ui";
-import { TableList } from "core/ui/components/Table";
-import { Clinic } from "shared/types";
+import { DropdownComponent, TableList } from "@/core/ui";
+import { Clinic } from "@/shared/types";
 
 interface CreateClinicColumnsProps {
   onEdit: (clinic: Clinic) => void;

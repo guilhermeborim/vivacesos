@@ -1,5 +1,5 @@
+import { VariantColor } from "@/shared/constants/variant";
 import { DropdownItem, DropdownItemProps } from "reactstrap";
-import { VariantColor } from "shared/constants/variant";
 
 interface ItemProps extends DropdownItemProps {
   icon: React.ReactElement;

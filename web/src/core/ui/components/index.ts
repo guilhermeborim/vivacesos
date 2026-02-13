@@ -12,4 +12,5 @@ export * from "./Nav";
 export * from "./Notification";
 export * from "./Profile";
 export * from "./Tab";
-export * from "./theme";
+export * from "./Table";
+export * from "./Theme";

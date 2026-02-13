@@ -1,5 +1,5 @@
-import { Loading } from "core/ui";
-import { useAuth } from "features/auth/hooks/use-auth";
+import { Loading } from "@/core/ui";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 import { Navigate } from "react-router-dom";
 
 interface PublicProtectedProps {

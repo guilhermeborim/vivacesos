@@ -1,5 +1,5 @@
-import { TableList } from "core/ui/components/Table";
-import { useQueryUsers } from "features/users/api/mutations";
+import { TableList } from "@/core/ui/components/Table";
+import { useQueryUsers } from "@/features/users/api/mutations";
 import { createUserColumns } from "./columns";
 
 export default function ListUser() {

@@ -1,5 +1,5 @@
-import { BaseLayout, ButtonPrimitive } from "core/ui";
-import { useCreateClinic } from "shared/hooks";
+import { BaseLayout, ButtonPrimitive } from "@/core/ui";
+import { useCreateClinic } from "@/shared/hooks";
 import FormClinic from "../components/form";
 
 export function ClinicCreatePage() {

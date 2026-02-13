@@ -1,4 +1,4 @@
-import { InputController, SelectController } from "core/ui";
+import { InputController, SelectController } from "@/core/ui";
 import { useEffect } from "react";
 import { Col, Row } from "reactstrap";
 

@@ -1,6 +1,6 @@
+import { useAuth } from "@/features/auth/hooks/use-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "features/auth/hooks/use-auth";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutationCreateProfessionalOnboarding } from "../api/mutations";

@@ -1,6 +1,5 @@
-import { DropdownComponent } from "core/ui";
-import { TableList } from "core/ui/components/Table";
-import { User } from "shared/types";
+import { DropdownComponent, TableList } from "@/core/ui";
+import { User } from "@/shared/types";
 
 interface CreateUserColumnsProps {
   onEdit: (user: User) => void;

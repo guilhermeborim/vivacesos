@@ -1,5 +1,5 @@
+import { useQuerySession } from "@/core/api/shared/queries";
 import { useQueryClient } from "@tanstack/react-query";
-import { useQuerySession } from "core/api/shared/queries";
 import { createContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Permission } from "../../../../../shared/permissions";

@@ -1,5 +1,5 @@
-import { ButtonPrimitive, ModalComponent, SelectController } from "core/ui";
-import { useSelectClinic, UseSelectClinicProps } from "shared/hooks";
+import { ButtonPrimitive, ModalComponent, SelectController } from "@/core/ui";
+import { useSelectClinic, UseSelectClinicProps } from "@/shared/hooks";
 import ImgSelect from "../../../assets/images/select.svg";
 
 export default function ModalSelectClinic({

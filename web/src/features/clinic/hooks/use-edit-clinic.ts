@@ -1,7 +1,7 @@
+import { getCep } from "@/shared/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { getCep } from "shared/utils";
 import { useMutationUpdateClinic } from "../api/mutations";
 import { updateClinicFormSchema, UpdateClinicFormTypeSchema } from "../schemas";
 

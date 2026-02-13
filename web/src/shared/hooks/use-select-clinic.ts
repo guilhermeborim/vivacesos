@@ -1,12 +1,12 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
-import { Clinic } from "features/auth/hooks/authContext";
+import { Clinic } from "@/features/auth/hooks/authContext";
 import {
   selectClinicFormSchema,
-  SelectClinicFormSchema,
-} from "features/auth/schemas";
+  SelectClinicFormTypeSchema,
+} from "@/features/auth/schemas";
+import { useMutationSelectClinic } from "@/shared/mutations/clinic";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { useMutationSelectClinic } from "shared/mutations/clinic";
 
 export interface UseSelectClinicProps {
   clinics: Clinic[];
@@ -17,11 +17,11 @@ export interface UseSelectClinicProps {
 export function useSelectClinic({ isOpen, onClose }: UseSelectClinicProps) {
   const queryClient = useQueryClient();
   const mutationSelectClinic = useMutationSelectClinic();
-  const form = useForm<SelectClinicFormSchema>({
+  const form = useForm<SelectClinicFormTypeSchema>({
     resolver: zodResolver(selectClinicFormSchema),
   });
 
-  const onSubmitSelectClinic = async (data: SelectClinicFormSchema) => {
+  const onSubmitSelectClinic = async (data: SelectClinicFormTypeSchema) => {
     try {
       await mutationSelectClinic.mutateAsync(data.clinicId);
       queryClient.invalidateQueries({ queryKey: ["session"] });

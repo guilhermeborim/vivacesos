@@ -1,10 +1,10 @@
-import { ButtonPrimitive, ModalComponent } from "core/ui";
-import { TableList } from "core/ui/components/Table";
+import { ButtonPrimitive, ModalComponent } from "@/core/ui";
+import { TableList } from "@/core/ui/components/Table";
 import {
   useQueryClinic,
   useQueryClinicById,
-} from "features/clinic/api/mutations";
-import { useEditClinic } from "features/clinic/hooks/use-edit-clinic";
+} from "@/features/clinic/api/mutations";
+import { useEditClinic } from "@/features/clinic/hooks/use-edit-clinic";
 import FormClinic from "../form";
 import { createClinicColumns } from "./columns";
 

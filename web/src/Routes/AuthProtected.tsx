@@ -1,5 +1,5 @@
-import { Loading } from "core/ui";
-import { useAuth } from "features/auth/hooks/use-auth";
+import { Loading } from "@/core/ui";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 import { Navigate } from "react-router-dom";
 
 interface AuthProtectedProps {
@@ -17,6 +17,7 @@ const AuthProtected: React.FC<AuthProtectedProps> = ({ children }) => {
   }
 
   if (!session) {
+    console.log("sem session");
     return <Navigate to="/login" replace />;
   }
 

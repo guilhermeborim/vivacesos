@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import {
   LoginFormTypeSchema,
   RegisterFormTypeSchema,
-} from "features/auth/schemas";
+} from "@/features/auth/schemas";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { postLogin, postRegister } from "./routes";

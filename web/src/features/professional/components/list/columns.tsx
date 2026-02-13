@@ -1,6 +1,5 @@
-import { DropdownComponent } from "core/ui";
-import { TableList } from "core/ui/components/Table";
-import { Professional } from "shared/types";
+import { DropdownComponent, TableList } from "@/core/ui";
+import { Professional } from "@/shared/types";
 
 interface CreateProfessionalColumnsProps {
   onEdit: (professional: Professional) => void;

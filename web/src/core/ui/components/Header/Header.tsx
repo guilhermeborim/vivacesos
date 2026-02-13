@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 //import images
-import logoLg from "assets/images/logo_lg.png";
+import logoLg from "@/assets/images/logo_lg.png";
 
 //import Components
 
-import { LightDark, ProfileDropdown } from "core/ui";
+import { LightDark, ProfileDropdown } from "@/core/ui";
+import { changeSidebarVisibility } from "@/slices/thunks";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { changeSidebarVisibility } from "slices/thunks";
 
 export const Header = ({
   onChangeLayoutMode,

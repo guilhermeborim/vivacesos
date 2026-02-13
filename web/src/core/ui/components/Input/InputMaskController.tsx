@@ -1,4 +1,4 @@
-import { FormField } from "core/ui";
+import { FormField } from "@/core/ui";
 import { InputMask, InputMaskProps } from "primereact/inputmask";
 import {
   Control,

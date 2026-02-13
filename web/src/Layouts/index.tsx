@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 //import Components
-import { Header } from "core/ui";
+import { FooterRest, Header } from "@/core/ui";
 import Sidebar from "./Sidebar";
 
 //import actions
@@ -21,9 +21,7 @@ import {
   changeTopbarTheme,
 } from "../slices/thunks";
 
-//redux
-import { FooterRest } from "core/ui";
-import { useAuth } from "features/auth/hooks/use-auth";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 

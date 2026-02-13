@@ -1,10 +1,10 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ButtonPrimitive, InputController, Loading } from "core/ui";
-import { useAuth } from "features/auth/hooks/use-auth";
+import { ButtonPrimitive, InputController, Loading } from "@/core/ui";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 import {
   registerFormSchema,
   RegisterFormTypeSchema,
-} from "features/auth/schemas";
+} from "@/features/auth/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";

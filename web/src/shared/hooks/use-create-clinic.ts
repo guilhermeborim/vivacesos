@@ -1,12 +1,12 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createClinicFormSchema,
   CreateClinicFormTypeSchema,
-} from "features/clinic/schemas";
+} from "@/features/clinic/schemas";
+import { useMutationCreateClinic } from "@/shared/mutations/clinic";
+import { getCep } from "@/shared/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useMutationCreateClinic } from "shared/mutations/clinic";
-import { getCep } from "shared/utils";
 
 export const useCreateClinic = () => {
   const mutationCreateClinic = useMutationCreateClinic();

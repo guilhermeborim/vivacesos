@@ -1,4 +1,4 @@
-import { useAuth } from "features/auth/hooks/use-auth";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {

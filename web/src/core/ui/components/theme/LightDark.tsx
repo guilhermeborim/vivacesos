@@ -1,5 +1,5 @@
 //constants
-import { LAYOUT_MODE_TYPES } from "shared/constants/layout";
+import { LAYOUT_MODE_TYPES } from "@/shared/constants/layout";
 
 interface LightDarkProps {
   layoutMode: string;

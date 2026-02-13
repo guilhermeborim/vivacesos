@@ -1,6 +1,6 @@
+import { CreateClinicFormTypeSchema } from "@/features/clinic/schemas";
+import { useMutationCreateClinic } from "@/shared/mutations/clinic";
 import { useQueryClient } from "@tanstack/react-query";
-import { CreateClinicFormTypeSchema } from "features/clinic/schemas";
-import { useMutationCreateClinic } from "shared/mutations/clinic";
 import { postNextStep } from "../api/routes";
 
 export const useInitialStepClinic = () => {

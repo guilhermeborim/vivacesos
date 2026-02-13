@@ -1,6 +1,6 @@
-import { BaseLayout, ButtonPrimitive, ModalComponent } from "core/ui";
-import { useQueryUsers } from "features/users/api/mutations";
-import { Professional, User } from "shared/types";
+import { BaseLayout, ButtonPrimitive, ModalComponent } from "@/core/ui";
+import { useQueryUsers } from "@/features/users/api/mutations";
+import { Professional, User } from "@/shared/types";
 import { useQueryProfessionals } from "../api/mutations";
 import FormProfessional from "../components/form";
 import ListClinic from "../components/list";

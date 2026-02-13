@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "react-toastify/dist/ReactToastify.css";
 import "./assets/scss/themes.scss";
 
-import { AuthProvider } from "features/auth/hooks/authContext";
+import { AuthProvider } from "@/features/auth/hooks/authContext";
 import { ToastContainer } from "react-toastify";
 import Route from "./Routes";
 

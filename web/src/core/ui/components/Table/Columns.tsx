@@ -1,5 +1,5 @@
+import { DropdownComponent } from "@/core/ui";
 import { ColumnDef } from "@tanstack/react-table";
-import { DropdownComponent } from "core/ui";
 
 interface ColumnsProps<T> {
   columns: ColumnDef<T>[];
