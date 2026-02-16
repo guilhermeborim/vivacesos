@@ -24,3 +24,5 @@ yarn-error.log*
 yarn.lock*
 readme.md
 .env
+*storybook.log
+storybook-static

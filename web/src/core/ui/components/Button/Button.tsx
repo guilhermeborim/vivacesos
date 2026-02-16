@@ -1,4 +1,5 @@
 import { VariantColor } from "@/shared/constants/variant";
+import { useSelector } from "react-redux";
 import { Button, ButtonProps } from "reactstrap";
 import { ActivityIndicator } from "../Loading";
 
@@ -18,6 +19,9 @@ export function ButtonPrimitive({
   children,
   ...props
 }: ButtonPrimitiveProps) {
+  const theme = useSelector((state: any) => state.Layout.layoutThemeColorType);
+  console.log("THEME =", theme);
+
   return (
     <Button
       disabled={disabled || isLoading}
