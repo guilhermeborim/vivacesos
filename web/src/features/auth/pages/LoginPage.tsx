@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Container, Row } from "reactstrap";
 
 import { FooterAuth } from "@/core/ui";
-import Sign from "@/features/auth/components/login";
+import { Login } from "@/features/auth/components";
 
 export function LoginPage() {
   return (
@@ -23,7 +23,7 @@ export function LoginPage() {
               </Col>
             </Row>
 
-            <Sign />
+            <Login />
           </Container>
         </div>
       </FooterAuth>

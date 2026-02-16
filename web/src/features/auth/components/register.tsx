@@ -7,7 +7,7 @@ import { Card, CardBody, Col, Label, Row } from "reactstrap";
 import { useAuth } from "../hooks/use-auth";
 import { registerFormSchema, RegisterFormTypeSchema } from "../schemas";
 
-export default function Register() {
+export function Register() {
   const { register } = useAuth();
   const [registerUser, setRegisterUser] = React.useTransition();
   const [showPassword, setShowPassword] = React.useState(false);

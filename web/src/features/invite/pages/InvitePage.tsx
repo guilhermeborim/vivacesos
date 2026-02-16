@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Container, Row } from "reactstrap";
 
 import { FooterAuth } from "@/core/ui";
-import Invite from "../components/invite";
+import { Invite } from "../components";
 
 export function InvitePage() {
   return (

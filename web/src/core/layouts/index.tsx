@@ -19,7 +19,7 @@ import {
   changeSidebarTheme,
   changeSidebarVisibility,
   changeTopbarTheme,
-} from "../slices/thunks";
+} from "@/slices/thunks";
 
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { useDispatch, useSelector } from "react-redux";

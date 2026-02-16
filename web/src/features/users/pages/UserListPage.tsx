@@ -1,6 +1,5 @@
 import { BaseLayout, ButtonPrimitive, ModalComponent } from "@/core/ui";
-import FormUser from "../components/form";
-import ListUser from "../components/list";
+import { FormUser, ListUser } from "../components";
 import { useInviteUser } from "../hooks";
 
 export function UserListPage() {

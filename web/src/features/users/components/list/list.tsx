@@ -2,7 +2,7 @@ import { TableList } from "@/core/ui/components/Table";
 import { useQueryUsers } from "@/features/users/api/mutations";
 import { createUserColumns } from "./columns";
 
-export default function ListUser() {
+export function ListUser() {
   const { dataUsers } = useQueryUsers();
 
   const columns = createUserColumns({

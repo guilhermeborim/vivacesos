@@ -7,10 +7,7 @@ interface FormClinicProps {
   defaultValues?: any;
 }
 
-export default function FormClinic({
-  formClinic,
-  defaultValues,
-}: FormClinicProps) {
+export function FormClinic({ formClinic, defaultValues }: FormClinicProps) {
   useEffect(() => {
     if (defaultValues) {
       formClinic.reset(defaultValues);

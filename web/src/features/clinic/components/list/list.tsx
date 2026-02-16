@@ -5,10 +5,10 @@ import {
   useQueryClinicById,
 } from "@/features/clinic/api/mutations";
 import { useEditClinic } from "@/features/clinic/hooks/use-edit-clinic";
-import FormClinic from "../form";
+import { FormClinic } from "../form";
 import { createClinicColumns } from "./columns";
 
-export default function ListClinic() {
+export function ListClinic() {
   const {
     formUpdateClinic,
     onSubmitClinicUpdate,

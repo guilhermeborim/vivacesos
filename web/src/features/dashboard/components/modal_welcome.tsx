@@ -6,7 +6,7 @@ interface ModalWelcomeProps {
   isOpen: boolean;
 }
 
-export default function ModalWelcome({ isOpen }: ModalWelcomeProps) {
+export function ModalWelcome({ isOpen }: ModalWelcomeProps) {
   const [modalWelcome, setmodalWelcome] = useState(isOpen);
 
   return (

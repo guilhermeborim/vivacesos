@@ -7,7 +7,7 @@ import { Card, CardBody, Col, Label, Row } from "reactstrap";
 import { useAuth } from "../hooks/use-auth";
 import { type LoginFormTypeSchema, loginFormSchema } from "../schemas";
 
-export default function Login() {
+export function Login() {
   const { login } = useAuth();
   const [connectingUser, setConnectingUser] = React.useTransition();
   const [showPassword, setShowPassword] = React.useState(false);

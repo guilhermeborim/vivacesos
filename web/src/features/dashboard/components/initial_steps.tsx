@@ -5,7 +5,7 @@ import {
   SelectController,
   Tab,
 } from "@/core/ui";
-import FormClinic from "@/features/clinic/components/form";
+import { FormClinic } from "@/features/clinic/components";
 import { useCreateClinic } from "@/shared/hooks";
 import { Col, Progress, Row } from "reactstrap";
 import {
@@ -16,7 +16,7 @@ import {
 } from "../hooks";
 import { CreateNextStepTypeSchema } from "../schemas";
 
-export default function InitialSteps(step: CreateNextStepTypeSchema) {
+export function InitialSteps(step: CreateNextStepTypeSchema) {
   const { activeTab, progressbarvalue } = useInitialSteps(step);
   const { mutationCreateClinic, onSubmitClinic } = useInitialStepClinic();
   const {

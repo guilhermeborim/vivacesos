@@ -1,6 +1,6 @@
 import { BaseLayout, ButtonPrimitive } from "@/core/ui";
 import { useNavigate } from "react-router-dom";
-import ListClinic from "../components/list";
+import { ListClinic } from "../components";
 
 export function ClinicListPage() {
   const navigate = useNavigate();

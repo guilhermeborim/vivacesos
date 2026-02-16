@@ -1,8 +1,10 @@
 import { BaseLayout } from "@/core/ui";
 import { useAuth } from "@/features/auth/hooks/use-auth";
-import InitialSteps from "@/features/dashboard/components/initial_steps";
-import ModalSelectClinic from "../components/modal_select_clinic";
-import ModalWelcome from "../components/modal_welcome";
+import {
+  InitialSteps,
+  ModalSelectClinic,
+  ModalWelcome,
+} from "@/features/dashboard/components";
 
 export function DashboardPage() {
   const { session } = useAuth();

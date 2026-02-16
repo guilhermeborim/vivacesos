@@ -9,7 +9,7 @@ interface FormProfessionalProps {
   users: User[];
 }
 
-export default function FormProfessional({
+export function FormProfessional({
   formProfessional,
   defaultValues,
   users,

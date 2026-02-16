@@ -2,8 +2,7 @@ import { BaseLayout, ButtonPrimitive, ModalComponent } from "@/core/ui";
 import { useQueryUsers } from "@/features/users/api/mutations";
 import { Professional, User } from "@/shared/types";
 import { useQueryProfessionals } from "../api/mutations";
-import FormProfessional from "../components/form";
-import ListClinic from "../components/list";
+import { FormProfessional, ListProfessional } from "../components";
 import { useProfessional } from "../hooks";
 
 export function ProfessionalListPage() {
@@ -31,7 +30,7 @@ export function ProfessionalListPage() {
         </ButtonPrimitive>
       </BaseLayout.Header>
       <BaseLayout.Body>
-        <ListClinic />
+        <ListProfessional />
       </BaseLayout.Body>
 
       {modalOpen && (

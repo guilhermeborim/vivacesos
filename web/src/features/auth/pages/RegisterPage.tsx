@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Container, Row } from "reactstrap";
 
 import { FooterAuth } from "@/core/ui";
-import SignUp from "@/features/auth/components/register";
+import { Register } from "@/features/auth/components";
 
 export function RegisterPage() {
   return (
@@ -23,7 +23,7 @@ export function RegisterPage() {
               </Col>
             </Row>
 
-            <SignUp />
+            <Register />
           </Container>
         </div>
       </FooterAuth>

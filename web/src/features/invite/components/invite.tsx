@@ -11,7 +11,7 @@ import { useSearchParams } from "react-router-dom";
 import { Card, CardBody, Col, Label, Row } from "reactstrap";
 import { useQueryInviteByToken } from "../api/mutations";
 
-export default function Invite() {
+export function Invite() {
   const [params] = useSearchParams();
   const { register } = useAuth();
   const [registerUser, setRegisterUser] = React.useTransition();

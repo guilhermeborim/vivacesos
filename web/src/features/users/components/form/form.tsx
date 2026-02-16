@@ -7,7 +7,7 @@ interface FormUserProps {
   defaultValues?: any;
 }
 
-export default function FormUser({ formUser, defaultValues }: FormUserProps) {
+export function FormUser({ formUser, defaultValues }: FormUserProps) {
   useEffect(() => {
     if (defaultValues) {
       formUser.reset(defaultValues);

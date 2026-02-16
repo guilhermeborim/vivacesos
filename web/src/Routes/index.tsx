@@ -2,8 +2,8 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 //Layouts
-import VerticalLayout from "../Layouts/index";
-import NonAuthLayout from "../Layouts/NonAuthLayout";
+import Layout from "@/core/layouts/index";
+import NonAuthLayout from "@/core/layouts/NonAuthLayout";
 
 //routes
 import { authProtectedRoutes, publicRoutes } from "./allRoutes";
@@ -34,7 +34,7 @@ const Index = () => {
               path={route.path}
               element={
                 <AuthProtected>
-                  <VerticalLayout>{route.component}</VerticalLayout>
+                  <Layout>{route.component}</Layout>
                 </AuthProtected>
               }
               key={idx}
