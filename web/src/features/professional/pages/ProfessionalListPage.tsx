@@ -16,16 +16,21 @@ export function ProfessionalListPage() {
   const { dataProfessionals } = useQueryProfessionals();
   const { dataUsers } = useQueryUsers();
 
-  const usersNotProfessionals = dataUsers?.filter((user: User) =>
-    dataProfessionals?.some(
-      (prof: Professional) => prof.userId === user.id_user,
-    ),
+  const professionals = dataProfessionals ?? [];
+
+  const usersNotProfessionals = dataUsers?.filter(
+    (user: User) =>
+      !professionals.some((prof: Professional) => prof.userId === user.id_user),
   );
 
   return (
     <BaseLayout.Root title="Profissionais da Saúde" pageTitle="Administração">
       <BaseLayout.Header>
-        <ButtonPrimitive variant="success" onClick={toggleModalOpen}>
+        <ButtonPrimitive
+          variant="success"
+          onClick={toggleModalOpen}
+          disabled={usersNotProfessionals.length === 0}
+        >
           Vincular
         </ButtonPrimitive>
       </BaseLayout.Header>
