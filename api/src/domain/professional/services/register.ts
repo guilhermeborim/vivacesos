@@ -1,8 +1,8 @@
-import { hashSync } from "bcrypt";
 import { Professional } from "../../../infra/database/typeorm/sass/entities/Professional";
 import { CreateProfessionalParams } from "../../../infra/database/typeorm/sass/interfaces/professional";
 import { ClinicUsersTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
 import { ProfessionalTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/professional.repository";
+import { encrypt } from "../../../infra/utils/crypto";
 import { UnauthenticatedError } from "../../../shared/errors/unauthenticated.error";
 
 export class RegisterProfessionalService {
@@ -31,7 +31,7 @@ export class RegisterProfessionalService {
     }
 
     if (professional.crm) {
-      const crmHash = hashSync(professional.crm, 10);
+      const crmHash = encrypt(professional.crm);
       professional.crm = crmHash;
     }
 

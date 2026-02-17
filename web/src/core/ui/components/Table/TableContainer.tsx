@@ -151,7 +151,6 @@ export const TableContainer = ({
   } = table;
 
   const pageIndex = getState().pagination.pageIndex;
-  const pageSize = getState().pagination.pageSize;
   const totalPages = getPageCount();
 
   useEffect(() => {
@@ -227,22 +226,31 @@ export const TableContainer = ({
           </thead>
 
           <tbody>
-            {getRowModel().rows.map((row: any) => {
-              return (
+            {getRowModel().rows.length === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="text-center py-5">
+                  <div className="text-muted">
+                    <h5>Nenhum resultado encontrado</h5>
+                    <p>
+                      Tente ajustar os filtros ou adicionar um novo registro.
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              getRowModel().rows.map((row: any) => (
                 <tr key={row.id}>
-                  {row.getVisibleCells().map((cell: any) => {
-                    return (
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </td>
-                    );
-                  })}
+                  {row.getVisibleCells().map((cell: any) => (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
                 </tr>
-              );
-            })}
+              ))
+            )}
           </tbody>
         </Table>
       </div>

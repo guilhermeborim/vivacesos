@@ -19,7 +19,7 @@ const menuData: MenuItem[] = [
     label: "Recepção",
     icon: "ri-contacts-book-line",
     children: [
-      { id: "patient", label: "Pacientes", link: "/patient" },
+      { id: "patient", label: "Pacientes", link: "/patients" },
       { id: "appointment", label: "Consultas", link: "/appointment" },
     ],
   },

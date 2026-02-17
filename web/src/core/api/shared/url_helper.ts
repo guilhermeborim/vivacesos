@@ -25,3 +25,8 @@ export const GET_USERS_BY_CLINIC = "/clinic/users";
 //INVITE
 export const POST_INVITE = "/invite";
 export const GET_INVITE_BY_TOKEN = "/invite/:token";
+
+// PATIENT
+export const POST_PATIENT = "/clinic/patient";
+export const GET_PATIENTS = "/clinic/patients";
+export const GET_PATIENT_BY_ID = "/clinic/:patientId";
