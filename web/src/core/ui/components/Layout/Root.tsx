@@ -1,11 +1,13 @@
 import { Card, Container } from "reactstrap";
 import { BreadCrumb } from "../BreadCrumb/BreadCrumb";
+import { TableProvider } from "../Table/TableContext";
 
 interface RootLayoutProps {
   title: string;
   pageTitle: string;
   modals?: React.ReactElement;
   children: React.ReactNode;
+  tableProvider?: boolean;
 }
 
 export function RootLayout({
@@ -13,21 +15,19 @@ export function RootLayout({
   modals,
   pageTitle,
   title,
+  tableProvider = true,
 }: RootLayoutProps) {
-  return (
+  const content = (
     <>
       <div className="page-content">
         <Container fluid>
           <BreadCrumb title={title} pageTitle={pageTitle} />
-          <Card>
-            {children}
-            {/* {header && header}
-            <CardBody>{children}</CardBody>
-            {footer && <CardFooter className="mt-3">{footer}</CardFooter>} */}
-          </Card>
+          <Card>{children}</Card>
         </Container>
       </div>
       {modals}
     </>
   );
+
+  return tableProvider ? <TableProvider>{content}</TableProvider> : content;
 }

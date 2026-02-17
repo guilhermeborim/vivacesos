@@ -18,6 +18,8 @@ export function createProfessionalColumns({
     TableList.Column<Professional>({
       header: "Tipo",
       accessorFn: (row) => row.type,
+      options: ["MEDICO"],
+      filterType: "select",
     }),
     TableList.Column<Professional>({
       header: "Especialidade",
