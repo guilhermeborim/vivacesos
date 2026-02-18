@@ -28,3 +28,7 @@ export function decrypt(encryptedText: string) {
 
   return decrypted;
 }
+
+export function hash(value: string): string {
+  return crypto.createHash("sha256").update(value).digest("hex");
+}

@@ -1,42 +1,36 @@
-import { InputController, SelectController } from "@/core/ui";
+import { InputController } from "@/core/ui";
 import { useEffect } from "react";
+import { UseFormReturn } from "react-hook-form";
 import { Col, Row } from "reactstrap";
+import { CreatePatientTypeSchema } from "../../schemas";
+import { fields } from "./fields";
 
-interface FormUserProps {
-  formUser: any;
-  defaultValues?: any;
+interface FormPatientProps {
+  formPatient: UseFormReturn<CreatePatientTypeSchema>;
+  defaultValues?: Partial<CreatePatientTypeSchema>;
 }
 
-export function FormUser({ formUser, defaultValues }: FormUserProps) {
+export function FormPatient({ formPatient, defaultValues }: FormPatientProps) {
   useEffect(() => {
     if (defaultValues) {
-      formUser.reset(defaultValues);
+      formPatient.reset(defaultValues);
     }
-  }, [defaultValues]);
+  }, [defaultValues, formPatient]);
 
   return (
-    <>
-      <Row>
-        <Col lg={6}>
+    <Row>
+      {fields.map((field) => (
+        <Col md={field.md} className="mt-3">
           <InputController
-            label="E-mail"
-            control={formUser.control}
-            name={"email"}
-            placeholder="example@example.com"
+            label={field.label}
+            control={formPatient.control}
+            name={field.name}
+            placeholder={field.placeholder}
+            type={field.type}
+            mask={field.mask}
           />
         </Col>
-        <Col lg={6}>
-          <SelectController
-            control={formUser.control}
-            name="role"
-            options={[
-              { label: "Profissional", value: "PROFISSIONAL" },
-              { label: "Recepcionista", value: "RECEPCIONISTA" },
-            ]}
-            label="Cargo"
-          />
-        </Col>
-      </Row>
-    </>
+      ))}
+    </Row>
   );
 }

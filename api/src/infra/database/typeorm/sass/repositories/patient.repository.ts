@@ -43,14 +43,14 @@ export class PatientTypeormRepository implements PatientRepositoryInterface {
   }
 
   async getPatientByCpfInClinic(
-    cpf: string,
+    cpfHash: string,
     clinicId: string,
   ): Promise<Patient | null> {
     try {
       const patientExist = await this.patientRepository.findOne({
         where: {
           clinicId,
-          cpf,
+          cpfHash,
         },
       });
 

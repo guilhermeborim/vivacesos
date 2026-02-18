@@ -5,6 +5,6 @@ export type Patient = {
   email: string;
   cpf: string;
   phone: boolean;
-  birth_date: string | Date;
+  birthDate: string | Date;
   active: boolean;
 };

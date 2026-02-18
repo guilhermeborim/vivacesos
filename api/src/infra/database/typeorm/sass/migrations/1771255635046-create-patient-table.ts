@@ -33,23 +33,33 @@ export class CreatePatientTable1771255635046 implements MigrationInterface {
             name: "email",
             type: "varchar",
             isNullable: false,
-            isUnique: true,
           },
+
           {
             name: "cpf",
             type: "varchar",
             isNullable: false,
-            isUnique: true,
           },
+
+          {
+            name: "cpfHash",
+            type: "varchar",
+            isNullable: false,
+          },
+
           {
             name: "phone",
             type: "varchar",
             isNullable: false,
-            isUnique: true,
+          },
+          {
+            name: "phoneHash",
+            type: "varchar",
+            isNullable: false,
           },
 
           {
-            name: "birth_date",
+            name: "birthDate",
             type: "date",
             isNullable: false,
           },
@@ -74,8 +84,12 @@ export class CreatePatientTable1771255635046 implements MigrationInterface {
         ],
         uniques: [
           new TableUnique({
-            name: "UQ_patients_clinic",
-            columnNames: ["clinicId"],
+            name: "UQ_cpf_clinic",
+            columnNames: ["clinicId", "cpfHash"],
+          }),
+          new TableUnique({
+            name: "UQ_email_clinic",
+            columnNames: ["clinicId", "email"],
           }),
         ],
       }),

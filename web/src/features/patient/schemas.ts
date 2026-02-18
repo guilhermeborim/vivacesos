@@ -11,7 +11,7 @@ export const createPatientTypeSchema = z.object({
     .string("O Telefone é obrigatório")
     .min(11, "O Telefone é obrigatório")
     .max(12, "O Telefone é obrigatório"),
-  birth_date: z.date("A data de aniversário é obrigatória"),
+  birthDate: z.iso.date("A data de aniversário é obrigatória"),
   active: z.boolean().optional(),
 });
 

@@ -2,8 +2,10 @@ export interface CreatePatientParams {
   name: string;
   email: string;
   cpf: string;
+  cpfHash?: string | null;
+  phoneHash?: string | null;
   phone: string;
-  birth_date: Date;
+  birthDate: Date | string;
   active?: boolean;
 }
 

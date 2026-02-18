@@ -28,7 +28,6 @@ export class Patient {
     name: "email",
     type: "varchar",
     nullable: false,
-    unique: true,
   })
   email: string;
 
@@ -36,24 +35,36 @@ export class Patient {
     name: "cpf",
     type: "varchar",
     nullable: false,
-    unique: true,
   })
   cpf: string;
+
+  @Column({
+    name: "cpfHash",
+    type: "varchar",
+    nullable: false,
+  })
+  cpfHash: string;
 
   @Column({
     name: "phone",
     type: "varchar",
     nullable: false,
-    unique: true,
   })
   phone: string;
 
   @Column({
-    name: "birth_date",
+    name: "phoneHash",
+    type: "varchar",
+    nullable: false,
+  })
+  phoneHash: string;
+
+  @Column({
+    name: "birthDate",
     type: "date",
     nullable: false,
   })
-  birth_date: Date;
+  birthDate: Date;
 
   @Column({ name: "active", type: "boolean", default: true, nullable: false })
   active: boolean;

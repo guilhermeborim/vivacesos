@@ -1,1 +1,2 @@
-export { FormUser } from "./form";
+export { fields } from "./fields";
+export { FormPatient } from "./form";

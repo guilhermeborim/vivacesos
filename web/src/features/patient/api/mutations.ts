@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { CreatePatientTypeSchema } from "../schemas";
@@ -32,10 +32,14 @@ export function useQuerypatientById(patientId: string | null) {
 }
 
 export const useMutationPatient = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (payload: CreatePatientTypeSchema) =>
       postPatient(payload),
     onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ["patients"] });
+
       toast.success("Paciente cadastrado com sucesso!");
     },
     onError: (error) => {

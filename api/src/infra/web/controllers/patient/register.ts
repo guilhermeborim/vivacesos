@@ -15,10 +15,7 @@ export class RegisterPatientController {
     reply: FastifyReply,
   ) => {
     const patientData = registerPatientBodySchema.parse(request.body);
-    const patient = await this.patientLogic.execute(
-      request.clinicId,
-      patientData,
-    );
-    reply.send(patient);
+    await this.patientLogic.execute(request.clinicId, patientData);
+    reply.send();
   };
 }
