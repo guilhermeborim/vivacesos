@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { GetInviteByTokenController } from "../controllers/invite/getInviteByToken";
-import { RegisterInviteController } from "../controllers/invite/invite";
+import { GetInviteByTokenController } from "../../../modules/invite/application/controllers/GetInviteByToken";
+import { RegisterInviteController } from "../../../modules/invite/application/controllers/Invite";
 import { CheckAuthenticationMiddleware } from "../middlewares/check-authentication";
 import { CheckClinicUserMiddleware } from "../middlewares/check-clinic";
 

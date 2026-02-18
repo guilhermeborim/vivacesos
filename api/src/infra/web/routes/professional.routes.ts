@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { RegisterProfessionalOnboardingController } from "../controllers/professional/registerOnboarding";
+import { RegisterProfessionalOnboardingController } from "../../../modules/professional/application/controllers/RegisterOnboarding";
 import { CheckAuthenticationMiddleware } from "../middlewares/check-authentication";
 
 export const configure = (fastify: FastifyInstance) => {
