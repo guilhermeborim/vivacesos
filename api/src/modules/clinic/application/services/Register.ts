@@ -1,7 +1,7 @@
-import { Clinic } from "../../../../infra/database/typeorm/sass/entities/Clinic";
 import { ConflictError } from "../../../../shared/errors/conflict.error";
 import { encrypt } from "../../../../shared/utils/crypto";
 import { ClinicTypeormRepository } from "../../database/repositories/ClinicTypeormRepository";
+import { ClinicResponse } from "../dtos/ClinicResponse";
 import { ClinicCreateParams } from "../types";
 
 export class RegisterClinicService {
@@ -11,7 +11,7 @@ export class RegisterClinicService {
     this.clinicRepository = new ClinicTypeormRepository();
   }
 
-  async execute(clinic: ClinicCreateParams): Promise<Clinic> {
+  async execute(clinic: ClinicCreateParams): Promise<ClinicResponse> {
     const clinicExistsByCnpj = await this.clinicRepository.findByCnpj(
       null,
       clinic.cnpj,

@@ -2,6 +2,7 @@ import { Repository } from "typeorm";
 import { SassDataSource } from "../../../../infra/database/typeorm/sass/data-source";
 import { RefreshToken } from "../../../../infra/database/typeorm/sass/entities/RefreshToken";
 import { DatabaseError } from "../../../../shared/errors/database.error";
+import { RefreshTokenResponse } from "../../application/dtos/RefreshTokenResponse";
 import { CreateRefreshTokenParams } from "../../application/types";
 import { RefreshTokenRepositoryInterface } from "../interface/RefreshTokenTypeormInterface";
 
@@ -12,7 +13,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
     this.repository = SassDataSource.getRepository(RefreshToken);
   }
 
-  async create(data: CreateRefreshTokenParams): Promise<RefreshToken> {
+  async create(data: CreateRefreshTokenParams): Promise<RefreshTokenResponse> {
     try {
       const refreshToken = this.repository.create(data);
       return await this.repository.save(refreshToken);
@@ -21,7 +22,7 @@ export class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
     }
   }
 
-  async findByToken(token: string): Promise<RefreshToken | null> {
+  async findByToken(token: string): Promise<RefreshTokenResponse | null> {
     try {
       return await this.repository.findOne({
         where: { token, isRevoked: false },

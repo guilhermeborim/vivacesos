@@ -1,10 +1,10 @@
 import crypto from "crypto";
-import { ClinicInvite } from "../../../../infra/database/typeorm/sass/entities/ClinicInvites";
 import { resend } from "../../../../infra/web/config/resend";
 import { ForbiddenError } from "../../../../shared/errors/forbidden.error";
 import { UnauthenticatedError } from "../../../../shared/errors/unauthenticated.error";
 import { ClinicTypeormRepository } from "../../../clinic/database/repositories/ClinicTypeormRepository";
 import { InviteTypeormRepository } from "../../database/repositories/InviteTypeormRepository";
+import { ClinicInviteResponse } from "../dtos/ClinicInviteResponse";
 import { CreateInviteParams } from "../types";
 
 export class RegisterInviteService {
@@ -19,7 +19,7 @@ export class RegisterInviteService {
   async execute(
     invite: CreateInviteParams,
     clinicId: string,
-  ): Promise<ClinicInvite> {
+  ): Promise<ClinicInviteResponse> {
     if (!clinicId) {
       throw new UnauthenticatedError("Por favor, informe a clínica!");
     }

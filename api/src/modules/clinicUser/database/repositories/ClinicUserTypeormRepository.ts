@@ -3,9 +3,10 @@ import { SassDataSource } from "../../../../infra/database/typeorm/sass/data-sou
 import { ClinicUser } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers";
 import { DatabaseError } from "../../../../shared/errors/database.error";
 import {
-  BindClinicUsersParams,
-  FindUsersByClinic,
-} from "../../application/types";
+  ClinicUserResponse,
+  FindUsersByClinicResponse,
+} from "../../application/dtos/ClinicUserResponse";
+import { BindClinicUsersParams } from "../../application/types";
 import { ClinicUsersRepositoryInterface } from "../interface/ClinicUserRepositoryInterface";
 
 export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterface {
@@ -15,7 +16,9 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
     this.clinicUsersRepository = SassDataSource.getRepository(ClinicUser);
   }
 
-  async bindClinicUser(clinicUser: BindClinicUsersParams): Promise<ClinicUser> {
+  async bindClinicUser(
+    clinicUser: BindClinicUsersParams,
+  ): Promise<ClinicUserResponse> {
     try {
       const clinicUserBinded = await this.clinicUsersRepository.save({
         ...clinicUser,
@@ -31,7 +34,7 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
   async getUserBindedClinic(
     clinicId: string,
     userId: string,
-  ): Promise<ClinicUser | null> {
+  ): Promise<ClinicUserResponse | null> {
     try {
       const clinicUser = await this.clinicUsersRepository.findOne({
         where: {
@@ -49,7 +52,7 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
     }
   }
 
-  async getClinicsByUser(userId: string): Promise<ClinicUser[]> {
+  async getClinicsByUser(userId: string): Promise<ClinicUserResponse[]> {
     try {
       const clinicUsers = await this.clinicUsersRepository.find({
         where: { userId },
@@ -65,7 +68,9 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
     }
   }
 
-  async getUsersByClinic(clinicId: string): Promise<FindUsersByClinic[]> {
+  async getUsersByClinic(
+    clinicId: string,
+  ): Promise<FindUsersByClinicResponse[]> {
     try {
       const clinicUsers = await this.clinicUsersRepository.query(
         `

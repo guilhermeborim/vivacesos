@@ -1,6 +1,6 @@
 import { hashSync } from "bcrypt";
-import { Professional } from "../../../../infra/database/typeorm/sass/entities/Professional";
 import { ProfessionalTypeormRepository } from "../../database/repositories/ProfessionalTypeormRepository";
+import { ProfessionalResponse } from "../dtos/ProfessionalResponse";
 import { CreateProfessionalOnboardingParams } from "../types";
 
 export class RegisterProfessionalOnboardingService {
@@ -12,7 +12,7 @@ export class RegisterProfessionalOnboardingService {
 
   async execute(
     professional: CreateProfessionalOnboardingParams,
-  ): Promise<Professional> {
+  ): Promise<ProfessionalResponse> {
     if (professional.crm) {
       const crmHash = hashSync(professional.crm, 10);
       professional.crm = crmHash;

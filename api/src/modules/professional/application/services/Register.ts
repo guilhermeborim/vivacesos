@@ -1,8 +1,8 @@
-import { Professional } from "../../../../infra/database/typeorm/sass/entities/Professional";
-import { ClinicUsersTypeormRepository } from "../../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
 import { UnauthenticatedError } from "../../../../shared/errors/unauthenticated.error";
 import { encrypt } from "../../../../shared/utils/crypto";
+import { ClinicUsersTypeormRepository } from "../../../clinicUser/database/repositories/ClinicUserTypeormRepository";
 import { ProfessionalTypeormRepository } from "../../database/repositories/ProfessionalTypeormRepository";
+import { ProfessionalResponse } from "../dtos/ProfessionalResponse";
 import { CreateProfessionalParams } from "../types";
 
 export class RegisterProfessionalService {
@@ -17,7 +17,7 @@ export class RegisterProfessionalService {
   async execute(
     clinicId: string,
     professional: CreateProfessionalParams,
-  ): Promise<Professional> {
+  ): Promise<ProfessionalResponse> {
     const professionalVinculedInClinic =
       await this.clinicUserRepository.getUserBindedClinic(
         clinicId,

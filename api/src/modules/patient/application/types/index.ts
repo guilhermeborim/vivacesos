@@ -8,11 +8,3 @@ export type CreatePatientParams = {
   birthDate: Date | string;
   active?: boolean;
 };
-
-// export interface ProfessionalResponse {
-//   professional: Professional;
-// }
-
-// export interface ProfessionalsResponse {
-//   professionals: Professional[];
-// }

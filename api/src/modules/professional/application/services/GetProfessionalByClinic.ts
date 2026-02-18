@@ -1,5 +1,5 @@
-import { Professional } from "../../../../infra/database/typeorm/sass/entities/Professional";
 import { ProfessionalTypeormRepository } from "../../database/repositories/ProfessionalTypeormRepository";
+import { ProfessionalResponse } from "../dtos/ProfessionalResponse";
 
 export class GetProfessionalsByClinicService {
   private professionalRepository: ProfessionalTypeormRepository;
@@ -8,7 +8,7 @@ export class GetProfessionalsByClinicService {
     this.professionalRepository = new ProfessionalTypeormRepository();
   }
 
-  async execute(clinicId: string): Promise<Professional[]> {
+  async execute(clinicId: string): Promise<ProfessionalResponse[]> {
     const professionals =
       await this.professionalRepository.getProfessionalsByClinicId(clinicId);
 

@@ -1,7 +1,7 @@
-import { Clinic } from "../../../../infra/database/typeorm/sass/entities/Clinic";
 import { NotFoundError } from "../../../../shared/errors/not-found.error";
 import { decrypt } from "../../../../shared/utils/crypto";
 import { ClinicTypeormRepository } from "../../database/repositories/ClinicTypeormRepository";
+import { ClinicResponse } from "../dtos/ClinicResponse";
 
 export class FindClinicIdService {
   private clinicRepository: ClinicTypeormRepository;
@@ -10,7 +10,7 @@ export class FindClinicIdService {
     this.clinicRepository = new ClinicTypeormRepository();
   }
 
-  async execute(clinicId: string): Promise<Clinic> {
+  async execute(clinicId: string): Promise<ClinicResponse> {
     const clinicCreated = await this.clinicRepository.findById(clinicId);
 
     if (!clinicCreated) {

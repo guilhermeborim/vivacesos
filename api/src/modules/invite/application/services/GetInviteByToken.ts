@@ -1,6 +1,6 @@
-import { ClinicInvite } from "../../../../infra/database/typeorm/sass/entities/ClinicInvites";
 import { UnauthenticatedError } from "../../../../shared/errors/unauthenticated.error";
 import { InviteTypeormRepository } from "../../database/repositories/InviteTypeormRepository";
+import { ClinicInviteResponse } from "../dtos/ClinicInviteResponse";
 
 export class GetInviteByTokenService {
   private inviteRepository: InviteTypeormRepository;
@@ -9,7 +9,7 @@ export class GetInviteByTokenService {
     this.inviteRepository = new InviteTypeormRepository();
   }
 
-  async execute(token: string): Promise<ClinicInvite> {
+  async execute(token: string): Promise<ClinicInviteResponse> {
     if (!token) {
       throw new UnauthenticatedError("Acesso negado, sem token!");
     }

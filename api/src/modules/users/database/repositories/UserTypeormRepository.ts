@@ -5,6 +5,7 @@ import {
   UserOnboardingStep,
 } from "../../../../infra/database/typeorm/sass/entities/User";
 import { DatabaseError } from "../../../../shared/errors/database.error";
+import { UserResponse } from "../../application/dtos/UserResponse";
 import { UserCreateParams } from "../../application/types";
 import { UserRepositoryInterface } from "../interface/UserRepositoryInterface";
 
@@ -18,7 +19,7 @@ export class UserTypeormRepository implements UserRepositoryInterface {
   async createUser(
     user: UserCreateParams,
     onboardingStep?: UserOnboardingStep,
-  ): Promise<User> {
+  ): Promise<UserResponse> {
     try {
       const userCreated = await this.userRepository.save({
         ...user,
@@ -32,7 +33,7 @@ export class UserTypeormRepository implements UserRepositoryInterface {
     }
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<UserResponse | null> {
     try {
       const user = await this.userRepository.findOne({
         where: {
@@ -46,7 +47,7 @@ export class UserTypeormRepository implements UserRepositoryInterface {
     }
   }
 
-  async findById(id: string): Promise<User | null> {
+  async findById(id: string): Promise<UserResponse | null> {
     try {
       const user = await this.userRepository.findOne({
         where: {

@@ -1,11 +1,9 @@
-import {
-  BindClinicUsersParams,
-  ClinicUserResponse,
-} from "../../../infra/database/typeorm/sass/interfaces/clinicUser";
-import { ClinicUsersTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
-import { UserTypeormRepository } from "../../../infra/database/typeorm/sass/repositories/user.repository";
-import { ConflictError } from "../../../shared/errors/conflict.error";
-import { JWTService } from "../../../shared/services/jwt.service";
+import { ConflictError } from "../../../../shared/errors/conflict.error";
+import { JWTService } from "../../../../shared/services/jwt.service";
+import { UserTypeormRepository } from "../../../users/database/repositories/UserTypeormRepository";
+import { ClinicUsersTypeormRepository } from "../../database/repositories/ClinicUserTypeormRepository";
+import { ClinicUserResponse } from "../dtos/ClinicUserResponse";
+import { BindClinicUsersParams } from "../types";
 
 export class BindClinicUserService {
   private clinicUserRepository: ClinicUsersTypeormRepository;
@@ -46,14 +44,29 @@ export class BindClinicUserService {
         clinicId: clinicUserBinded.clinicId,
       });
 
+      // return {
+      //   token: accessToken,
+      //   clinicUser: clinicUserBinded,
+      // };
+
       return {
         token: accessToken,
-        clinicUser: clinicUserBinded,
+        clinicId: clinicUserBinded.clinicId,
+        role: clinicUserBinded.role,
+        status: clinicUserBinded.status,
+        userId: clinicUserBinded.userId,
       };
     }
 
+    // return {
+    //   clinicUser: clinicUserBinded,
+    // };
+
     return {
-      clinicUser: clinicUserBinded,
+      clinicId: clinicUserBinded.clinicId,
+      role: clinicUserBinded.role,
+      status: clinicUserBinded.status,
+      userId: clinicUserBinded.userId,
     };
   }
 }

@@ -1,4 +1,3 @@
-import { Patient } from "../../../../infra/database/typeorm/sass/entities/Patient";
 import { ForbiddenError } from "../../../../shared/errors/forbidden.error";
 import { encrypt, hash } from "../../../../shared/utils/crypto";
 import { PatientTypeormRepository } from "../../database/repositories/PatientTypeormRepository";
@@ -11,10 +10,7 @@ export class RegisterPatientService {
     this.patientRepository = new PatientTypeormRepository();
   }
 
-  async execute(
-    clinicId: string,
-    patient: CreatePatientParams,
-  ): Promise<Patient> {
+  async execute(clinicId: string, patient: CreatePatientParams): Promise<void> {
     const cpfHash = hash(patient.cpf);
     const phoneHash = hash(patient.phone);
 
@@ -31,11 +27,6 @@ export class RegisterPatientService {
     patient.cpf = encrypt(patient.cpf);
     patient.phone = encrypt(patient.phone);
 
-    const patientCreated = await this.patientRepository.createPatient(
-      clinicId,
-      patient,
-    );
-
-    return patientCreated;
+    return await this.patientRepository.createPatient(clinicId, patient);
   }
 }

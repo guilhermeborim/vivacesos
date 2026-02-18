@@ -1,7 +1,4 @@
-import {
-  Professional,
-  ProfessionalType,
-} from "../../../../infra/database/typeorm/sass/entities/Professional";
+import { ProfessionalType } from "../../../../infra/database/typeorm/sass/entities/Professional";
 
 export interface CreateProfessionalParams {
   userId: string;
@@ -13,12 +10,4 @@ export interface CreateProfessionalParams {
 
 export interface CreateProfessionalOnboardingParams extends CreateProfessionalParams {
   clinicId: string;
-}
-
-export interface ProfessionalResponse {
-  professional: Professional;
-}
-
-export interface ProfessionalsResponse {
-  professionals: Professional[];
 }

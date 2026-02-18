@@ -2,6 +2,7 @@ import { Not, Repository } from "typeorm";
 import { SassDataSource } from "../../../../infra/database/typeorm/sass/data-source";
 import { Clinic } from "../../../../infra/database/typeorm/sass/entities/Clinic";
 import { DatabaseError } from "../../../../shared/errors/database.error";
+import { ClinicResponse } from "../../application/dtos/ClinicResponse";
 import {
   ClinicCreateParams,
   ClinicUpdateParams,
@@ -15,7 +16,7 @@ export class ClinicTypeormRepository implements ClinicRepositoryInterface {
     this.clinicRepository = SassDataSource.getRepository(Clinic);
   }
 
-  async createClinic(clinic: ClinicCreateParams): Promise<Clinic> {
+  async createClinic(clinic: ClinicCreateParams): Promise<ClinicResponse> {
     try {
       const clinicCreated = await this.clinicRepository.save(clinic);
       return clinicCreated;
@@ -27,7 +28,7 @@ export class ClinicTypeormRepository implements ClinicRepositoryInterface {
   async findByCnpj(
     clinicId: string | null,
     cnpj: string,
-  ): Promise<Clinic | null> {
+  ): Promise<ClinicResponse | null> {
     try {
       const clinic = await this.clinicRepository.findOne({
         where: {
@@ -44,7 +45,7 @@ export class ClinicTypeormRepository implements ClinicRepositoryInterface {
   async findByPhone(
     clinicId: string | null,
     phone: string,
-  ): Promise<Clinic | null> {
+  ): Promise<ClinicResponse | null> {
     try {
       const clinic = await this.clinicRepository.findOne({
         where: {
@@ -59,7 +60,7 @@ export class ClinicTypeormRepository implements ClinicRepositoryInterface {
     }
   }
 
-  async findById(clinicId: string): Promise<Clinic | null> {
+  async findById(clinicId: string): Promise<ClinicResponse | null> {
     try {
       const clinic = await this.clinicRepository.findOne({
         where: {

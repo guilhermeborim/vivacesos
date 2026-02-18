@@ -1,8 +1,9 @@
 import { Repository } from "typeorm";
 import { SassDataSource } from "../../../../infra/database/typeorm/sass/data-source";
 import { Patient } from "../../../../infra/database/typeorm/sass/entities/Patient";
-import { CreatePatientParams } from "../../../../infra/database/typeorm/sass/interfaces/patient";
 import { DatabaseError } from "../../../../shared/errors/database.error";
+import { PatientResponse } from "../../application/dtos/PatientResponse";
+import { CreatePatientParams } from "../../application/types";
 import { PatientRepositoryInterface } from "../interface/PatientRepositoryInterface";
 
 export class PatientTypeormRepository implements PatientRepositoryInterface {
@@ -15,20 +16,18 @@ export class PatientTypeormRepository implements PatientRepositoryInterface {
   async createPatient(
     clinicId: string,
     patient: CreatePatientParams,
-  ): Promise<Patient> {
+  ): Promise<void> {
     try {
-      const patientCreated = await this.patientRepository.save({
+      await this.patientRepository.save({
         ...patient,
         clinicId,
       });
-
-      return patientCreated;
     } catch (error) {
       throw new DatabaseError("Falha ao criar paciente!", error);
     }
   }
 
-  async getPatientsByClinic(clinicId: string): Promise<Patient[]> {
+  async getPatientsByClinic(clinicId: string): Promise<PatientResponse[]> {
     try {
       const patientExist = await this.patientRepository.find({
         where: {
@@ -45,7 +44,7 @@ export class PatientTypeormRepository implements PatientRepositoryInterface {
   async getPatientByCpfInClinic(
     cpfHash: string,
     clinicId: string,
-  ): Promise<Patient | null> {
+  ): Promise<PatientResponse | null> {
     try {
       const patientExist = await this.patientRepository.findOne({
         where: {

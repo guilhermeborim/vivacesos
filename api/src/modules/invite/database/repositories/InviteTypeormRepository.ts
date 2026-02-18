@@ -2,6 +2,7 @@ import { Repository } from "typeorm";
 import { SassDataSource } from "../../../../infra/database/typeorm/sass/data-source";
 import { ClinicInvite } from "../../../../infra/database/typeorm/sass/entities/ClinicInvites";
 import { DatabaseError } from "../../../../shared/errors/database.error";
+import { ClinicInviteResponse } from "../../application/dtos/ClinicInviteResponse";
 import { CreateInviteParams } from "../../application/types";
 import { InviteRepositoryInterface } from "../interface/InviteRepositoryInterface";
 
@@ -16,7 +17,7 @@ export class InviteTypeormRepository implements InviteRepositoryInterface {
     payload: CreateInviteParams,
     clinicId: string,
     token: string,
-  ): Promise<ClinicInvite> {
+  ): Promise<ClinicInviteResponse> {
     try {
       const invite = await this.inviteRepository.save({
         ...payload,
@@ -31,7 +32,7 @@ export class InviteTypeormRepository implements InviteRepositoryInterface {
     }
   }
 
-  async getInviteByToken(token: string): Promise<ClinicInvite> {
+  async getInviteByToken(token: string): Promise<ClinicInviteResponse> {
     try {
       const invite = await this.inviteRepository.findOne({
         where: {
@@ -45,7 +46,7 @@ export class InviteTypeormRepository implements InviteRepositoryInterface {
     }
   }
 
-  async getInviteByEmail(email: string): Promise<ClinicInvite> {
+  async getInviteByEmail(email: string): Promise<ClinicInviteResponse> {
     try {
       const invite = await this.inviteRepository.findOne({
         where: {

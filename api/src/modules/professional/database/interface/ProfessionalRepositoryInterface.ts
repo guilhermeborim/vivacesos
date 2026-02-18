@@ -1,4 +1,4 @@
-import { Professional } from "../../../../infra/database/typeorm/sass/entities/Professional";
+import { ProfessionalResponse } from "../../application/dtos/ProfessionalResponse";
 import {
   CreateProfessionalOnboardingParams,
   CreateProfessionalParams,
@@ -8,9 +8,9 @@ export interface ProfessionalRepositoryInterface {
   createProfessional(
     clinicId: string,
     data: CreateProfessionalParams,
-  ): Promise<Professional>;
+  ): Promise<ProfessionalResponse>;
   createProfessionalOnboarding(
     data: CreateProfessionalOnboardingParams,
-  ): Promise<Professional>;
-  getProfessionalsByClinicId(clinicId: string): Promise<Professional[]>;
+  ): Promise<ProfessionalResponse>;
+  getProfessionalsByClinicId(clinicId: string): Promise<ProfessionalResponse[]>;
 }

@@ -1,4 +1,4 @@
-import { ClinicInvite } from "../../../../infra/database/typeorm/sass/entities/ClinicInvites";
+import { ClinicInviteResponse } from "../../application/dtos/ClinicInviteResponse";
 import { CreateInviteParams } from "../../application/types";
 
 export interface InviteRepositoryInterface {
@@ -6,9 +6,9 @@ export interface InviteRepositoryInterface {
     payload: CreateInviteParams,
     clinicId: string,
     token: string,
-  ): Promise<ClinicInvite>;
+  ): Promise<ClinicInviteResponse>;
   updateInvite(id: string): Promise<void>;
   deleteInviteExpires(id: string): Promise<void>;
-  getInviteByToken(token: string): Promise<ClinicInvite>;
-  getInviteByEmail(email: string): Promise<ClinicInvite>;
+  getInviteByToken(token: string): Promise<ClinicInviteResponse>;
+  getInviteByEmail(email: string): Promise<ClinicInviteResponse>;
 }
