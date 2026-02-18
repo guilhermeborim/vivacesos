@@ -1,133 +1,59 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { CardBody, Col, Row, Table } from "reactstrap";
-
 import {
-  Column,
-  ColumnFiltersState,
+  ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  Table as ReactTable,
   useReactTable,
 } from "@tanstack/react-table";
+import { Fragment, useEffect, useState } from "react";
+import {
+  Col,
+  Offcanvas,
+  OffcanvasBody,
+  OffcanvasHeader,
+  Row,
+  Table,
+} from "reactstrap";
+import SimpleBar from "simplebar-react";
+import { ButtonPrimitive } from "../Button";
+import { ColumnFilter } from "./ColumnFilter";
+import { useTableContext } from "./TableContext";
 
-// Column Filter
-const Filter = ({
-  column,
-}: {
-  column: Column<any, unknown>;
-  table: ReactTable<any>;
-}) => {
-  const columnFilterValue = column.getFilterValue();
-
-  return (
-    <>
-      <DebouncedInput
-        type="text"
-        value={(columnFilterValue ?? "") as string}
-        onChange={(value) => column.setFilterValue(value)}
-        placeholder="Search..."
-        className="w-36 border shadow rounded"
-        list={column.id + "list"}
-      />
-      <div className="h-1" />
-    </>
-  );
-};
-
-// Global Filter
-const DebouncedInput = ({
-  value: initialValue,
-  onChange,
-  debounce = 500,
-  ...props
-}: {
-  value: string | number;
-  onChange: (value: string | number) => void;
-  debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) => {
-  const [value, setValue] = useState(initialValue);
-
-  useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value);
-    }, debounce);
-
-    return () => clearTimeout(timeout);
-  }, [debounce, onChange, value]);
-
-  return (
-    <input
-      {...props}
-      value={value}
-      id="search-bar-0"
-      className="form-control search"
-      onChange={(e) => setValue(e.target.value)}
-    />
-  );
-};
-
-interface TableContainerProps {
-  columns?: any;
-  data?: any;
-  isGlobalFilter?: any;
-  isProductsFilter?: any;
-  isCustomerFilter?: any;
-  isOrderFilter?: any;
-  isContactsFilter?: any;
-  isCompaniesFilter?: any;
-  isLeadsFilter?: any;
-  isCryptoOrdersFilter?: any;
-  isInvoiceListFilter?: any;
-  isTicketsListFilter?: any;
-  isNFTRankingFilter?: any;
-  isTaskListFilter?: any;
-  handleTaskClick?: any;
-  customPageSize?: any;
-  tableClass?: any;
-  theadClass?: any;
-  trClass?: any;
-  thClass?: any;
-  divClass?: any;
-  SearchPlaceholder?: any;
-  handleLeadClick?: any;
-  handleCompanyClick?: any;
-  handleContactClick?: any;
-  handleTicketClick?: any;
+interface TableContainerProps<T> {
+  columns: ColumnDef<T, any>[];
+  data: T[];
+  isGlobalFilter?: boolean;
+  isLoading?: boolean;
+  customPageSize?: number;
+  tableClass?: string;
+  theadClass?: string;
+  trClass?: string;
+  thClass?: string;
+  divClass?: string;
 }
 
-export const TableContainer = ({
+export function TableContainer<T>({
   columns,
   data,
-  isGlobalFilter,
-  isProductsFilter,
-  isContactsFilter,
-  isCompaniesFilter,
-  isNFTRankingFilter,
-  customPageSize,
+  isGlobalFilter = true,
+  isLoading = false,
+  customPageSize = 10,
   tableClass,
   theadClass,
   trClass,
   thClass,
   divClass,
-  SearchPlaceholder,
-}: TableContainerProps) => {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+}: TableContainerProps<T>) {
+  const { columnFilters, setColumnFilters, isFilterOpen, toggleFilter } =
+    useTableContext();
   const [globalFilter, setGlobalFilter] = useState("");
 
   const table = useReactTable({
     columns,
     data,
-    state: {
-      columnFilters,
-      globalFilter,
-    },
+    state: { columnFilters, globalFilter },
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
@@ -139,87 +65,51 @@ export const TableContainer = ({
   const {
     getHeaderGroups,
     getRowModel,
-    getCanPreviousPage,
-    getCanNextPage,
-    getPageOptions,
-    setPageIndex,
-    nextPage,
-    previousPage,
-    setPageSize,
     getState,
     getPageCount,
+    nextPage,
+    previousPage,
+    getCanNextPage,
+    getCanPreviousPage,
+    setPageIndex,
+    setPageSize,
+    resetColumnFilters,
+    resetGlobalFilter,
   } = table;
 
   const pageIndex = getState().pagination.pageIndex;
-  const pageSize = getState().pagination.pageSize;
   const totalPages = getPageCount();
+  const totalRows = data.length;
+  const filteredRows = getRowModel().rows.length;
 
   useEffect(() => {
-    Number(customPageSize) && setPageSize(Number(customPageSize));
+    setPageSize(customPageSize);
   }, [customPageSize, setPageSize]);
+
+  const hasData = totalRows > 0;
+  const hasFilteredData = filteredRows > 0;
 
   return (
     <Fragment>
-      {isGlobalFilter && (
-        <Row className="mb-3">
-          <CardBody className="border border-dashed border-end-0 border-start-0">
-            <form>
-              <Row>
-                <Col sm={5}>
-                  <div
-                    className={
-                      isProductsFilter ||
-                      isContactsFilter ||
-                      isCompaniesFilter ||
-                      isNFTRankingFilter
-                        ? "search-box me-2 mb-2 d-inline-block"
-                        : "search-box me-2 mb-2 d-inline-block col-12"
-                    }
-                  >
-                    <DebouncedInput
-                      value={globalFilter ?? ""}
-                      onChange={(value) => setGlobalFilter(String(value))}
-                      placeholder={SearchPlaceholder}
-                    />
-                    <i className="bx bx-search-alt search-icon"></i>
-                  </div>
-                </Col>
-              </Row>
-            </form>
-          </CardBody>
-        </Row>
-      )}
-
+      {/* 📊 TABLE */}
       <div className={divClass}>
-        <Table hover className={tableClass}>
+        <Table hover responsive className={tableClass}>
           <thead className={theadClass}>
-            {getHeaderGroups().map((headerGroup: any) => (
-              <tr className={trClass} key={headerGroup.id}>
-                {headerGroup.headers.map((header: any) => (
+            {getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id} className={trClass}>
+                {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
                     className={thClass}
-                    {...{
-                      onClick: header.column.getToggleSortingHandler(),
-                    }}
+                    onClick={header.column.getToggleSortingHandler()}
+                    style={{ cursor: "pointer" }}
                   >
-                    {header.isPlaceholder ? null : (
-                      <React.Fragment>
-                        {flexRender(
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
                           header.column.columnDef.header,
                           header.getContext(),
                         )}
-                        {{
-                          asc: " ",
-                          desc: " ",
-                        }[header.column.getIsSorted() as string] ?? null}
-                        {header.column.getCanFilter() ? (
-                          <div>
-                            <Filter column={header.column} table={table} />
-                          </div>
-                        ) : null}
-                      </React.Fragment>
-                    )}
                   </th>
                 ))}
               </tr>
@@ -227,75 +117,168 @@ export const TableContainer = ({
           </thead>
 
           <tbody>
-            {getRowModel().rows.map((row: any) => {
-              return (
+            {isLoading ? (
+              <tr>
+                <td colSpan={columns.length} className="text-center py-5">
+                  Carregando...
+                </td>
+              </tr>
+            ) : !hasData ? (
+              <tr>
+                <td colSpan={columns.length} className="text-center py-5">
+                  <h5>Nenhum registro cadastrado</h5>
+                  <p className="text-muted">
+                    Quando houver dados, eles aparecerão aqui.
+                  </p>
+                </td>
+              </tr>
+            ) : !hasFilteredData ? (
+              <tr>
+                <td colSpan={columns.length} className="text-center py-5">
+                  <h5>Nenhum resultado encontrado</h5>
+                  <p className="text-muted">Tente ajustar os filtros.</p>
+                </td>
+              </tr>
+            ) : (
+              getRowModel().rows.map((row) => (
                 <tr key={row.id}>
-                  {row.getVisibleCells().map((cell: any) => {
-                    return (
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </td>
-                    );
-                  })}
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
                 </tr>
-              );
-            })}
+              ))
+            )}
           </tbody>
         </Table>
       </div>
 
-      <Row className="align-items-center mt-2 g-3">
-        {/* ESQUERDA — INFO */}
-        <div className="col-sm">
-          <div className="text-muted">
-            Página <span className="fw-semibold">{pageIndex + 1}</span> de{" "}
-            <span className="fw-semibold">{totalPages}</span>
-          </div>
-        </div>
+      {/* 📄 PAGINATION */}
+      {hasData && (
+        <Row className="align-items-center mt-3 g-3">
+          <Col>
+            <div className="text-muted">
+              Mostrando {filteredRows} de {totalRows} registros
+            </div>
+          </Col>
 
-        {/* DIREITA — CONTROLES */}
-        <div className="col-sm-auto">
-          <ul className="pagination pagination-separated pagination-md mb-0">
-            {/* FIRST */}
-            <li className={`page-item ${pageIndex === 0 ? "disabled" : ""}`}>
-              <button className="page-link" onClick={() => setPageIndex(0)}>
-                «
-              </button>
-            </li>
-
-            {/* PREVIOUS */}
-            <li
-              className={`page-item ${!getCanPreviousPage() ? "disabled" : ""}`}
-            >
-              <button className="page-link" onClick={previousPage}>
-                ‹
-              </button>
-            </li>
-
-            {/* NEXT */}
-            <li className={`page-item ${!getCanNextPage() ? "disabled" : ""}`}>
-              <button className="page-link" onClick={nextPage}>
-                ›
-              </button>
-            </li>
-
-            {/* LAST */}
-            <li
-              className={`page-item ${pageIndex === totalPages - 1 ? "disabled" : ""}`}
-            >
-              <button
-                className="page-link"
-                onClick={() => setPageIndex(totalPages - 1)}
+          <Col xs="auto">
+            <ul className="pagination pagination-separated mb-0">
+              <li
+                className={`page-item ${!getCanPreviousPage() && "disabled"}`}
               >
-                »
-              </button>
-            </li>
-          </ul>
-        </div>
-      </Row>
+                <button className="page-link" onClick={() => setPageIndex(0)}>
+                  «
+                </button>
+              </li>
+
+              <li
+                className={`page-item ${!getCanPreviousPage() && "disabled"}`}
+              >
+                <button className="page-link" onClick={previousPage}>
+                  ‹
+                </button>
+              </li>
+
+              <li className="page-item disabled">
+                <span className="page-link">
+                  {pageIndex + 1} de {totalPages}
+                </span>
+              </li>
+
+              <li className={`page-item ${!getCanNextPage() && "disabled"}`}>
+                <button className="page-link" onClick={nextPage}>
+                  ›
+                </button>
+              </li>
+
+              <li className={`page-item ${!getCanNextPage() && "disabled"}`}>
+                <button
+                  className="page-link"
+                  onClick={() => setPageIndex(totalPages - 1)}
+                >
+                  »
+                </button>
+              </li>
+            </ul>
+          </Col>
+        </Row>
+      )}
+
+      <Fragment>
+        <Offcanvas
+          isOpen={isFilterOpen}
+          toggle={toggleFilter}
+          direction="end"
+          className="offcanvas-end border-0"
+        >
+          <OffcanvasHeader
+            className="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header-dark"
+            toggle={toggleFilter}
+          >
+            <span className="m-0 me-2 text-white">Filtros</span>
+          </OffcanvasHeader>
+          <OffcanvasBody className="p-0">
+            <SimpleBar className="h-100">
+              <div className="p-4">
+                <h6 className="mb-3 fw-semibold text-uppercase">
+                  Filtros ({columnFilters.length})
+                </h6>
+
+                {table.getAllLeafColumns().map((column) => {
+                  const meta = column.columnDef.meta;
+                  if (!meta?.filterType) return null;
+
+                  return (
+                    <div key={column.id} className="mb-4">
+                      <label className="form-label fw-medium">
+                        {typeof column.columnDef.header === "function"
+                          ? column.id
+                          : column.columnDef.header}
+                      </label>
+
+                      <ColumnFilter column={column} />
+                    </div>
+                  );
+                })}
+
+                <div className="d-flex gap-2 mt-4">
+                  <ButtonPrimitive
+                    variant="light"
+                    className="w-100"
+                    onClick={() => {
+                      resetColumnFilters();
+                      resetGlobalFilter();
+                    }}
+                  >
+                    Limpar
+                  </ButtonPrimitive>
+                  {/* <button
+                    className="btn btn-light w-100"
+                    onClick={() => {
+                      resetColumnFilters();
+                      resetGlobalFilter();
+                    }}
+                  >
+                    Limpar
+                  </button> */}
+
+                  {/* <button
+                    className="btn btn-primary w-100"
+                    onClick={toggleFilter}
+                  >
+                    Aplicar
+                  </button> */}
+                </div>
+              </div>
+            </SimpleBar>
+          </OffcanvasBody>
+        </Offcanvas>
+      </Fragment>
     </Fragment>
   );
-};
+}

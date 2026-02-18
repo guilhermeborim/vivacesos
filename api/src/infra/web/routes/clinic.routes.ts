@@ -1,12 +1,13 @@
 import { FastifyInstance } from "fastify";
-import { BindClinicUserController } from "../controllers/clinic/bind";
-import { GetClinicsByUserController } from "../controllers/clinic/getClinicsByUser";
-import { GetProfessionalsByClinicController } from "../controllers/clinic/getProfessionalsByClinic";
-import { GetUsersByClinicController } from "../controllers/clinic/getUsersByClinic";
-import { FindClinicIdController } from "../controllers/clinic/id";
-import { RegisterClinicController } from "../controllers/clinic/register";
-import { RegisterProfessionalController } from "../controllers/clinic/registerProfessional";
-import { UpdateClinicController } from "../controllers/clinic/update";
+
+import { BindClinicUserController } from "../../../modules/clinic/application/controllers/Bind";
+import { FindClinicIdController } from "../../../modules/clinic/application/controllers/GetClinicById";
+import { GetClinicsByUserController } from "../../../modules/clinic/application/controllers/GetClinicsByUser";
+import { GetProfessionalsByClinicController } from "../../../modules/clinic/application/controllers/GetProfessionalsByClinic";
+import { GetUsersByClinicController } from "../../../modules/clinic/application/controllers/GetUsersByClinic";
+import { RegisterClinicController } from "../../../modules/clinic/application/controllers/Register";
+import { RegisterProfessionalController } from "../../../modules/clinic/application/controllers/RegisterProfessional";
+import { UpdateClinicController } from "../../../modules/clinic/application/controllers/Update";
 import { CheckAuthenticationMiddleware } from "../middlewares/check-authentication";
 import { CheckClinicUserMiddleware } from "../middlewares/check-clinic";
 

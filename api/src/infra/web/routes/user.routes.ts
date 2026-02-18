@@ -1,11 +1,11 @@
 import { FastifyInstance } from "fastify";
-import { AuthenticateController } from "../controllers/user/authenticate";
-import { LogoutController } from "../controllers/user/logout";
-import { NextOnboardingStepController } from "../controllers/user/next-onboarding-step";
-import { RefreshTokenController } from "../controllers/user/refresh-token";
-import { RegisterController } from "../controllers/user/register";
-import { SelectClinicController } from "../controllers/user/select-clinic";
-import { SessionController } from "../controllers/user/session";
+import { AuthenticateController } from "../../../modules/users/application/controllers/Authenticate";
+import { LogoutController } from "../../../modules/users/application/controllers/logout";
+import { NextOnboardingStepController } from "../../../modules/users/application/controllers/NextOnboardingStep";
+import { RefreshTokenController } from "../../../modules/users/application/controllers/RefreshToken";
+import { RegisterController } from "../../../modules/users/application/controllers/Register";
+import { SelectClinicController } from "../../../modules/users/application/controllers/SelectClinic";
+import { SessionController } from "../../../modules/users/application/controllers/Session";
 import { CheckAuthenticationMiddleware } from "../middlewares/check-authentication";
 import { CheckClinicUserMiddleware } from "../middlewares/check-clinic";
 

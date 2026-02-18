@@ -14,10 +14,18 @@ export function createUserColumns({
     TableList.Column<User>({
       header: "Nome",
       accessorFn: (row) => row.name,
+      filterType: "text",
     }),
     TableList.Column<User>({
       header: "E-mail",
       accessorFn: (row) => row.email,
+      filterType: "text",
+    }),
+    TableList.Column<User>({
+      header: "Status",
+      accessorFn: (row) => row.status,
+      filterType: "select",
+      options: ["Ativo", "Inativo"],
     }),
   ];
 
