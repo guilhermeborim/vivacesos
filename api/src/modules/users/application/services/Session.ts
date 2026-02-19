@@ -1,6 +1,8 @@
-import { ClinicUsersTypeormRepository } from "../../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
 import { ROLE_PERMISSIONS } from "../../../../shared/permissions/role-permissions";
+import { ClinicUsersTypeormRepository } from "../../../clinicUser/database/repositories/ClinicUserTypeormRepository";
 import { UserTypeormRepository } from "../../database/repositories/UserTypeormRepository";
+import { GetSessionUserResponse } from "../dtos/UserResponse";
+import { GetSessionUserMapper } from "../mappers/UserMapper";
 
 export class SessionService {
   private clinicUserRepository: ClinicUsersTypeormRepository;
@@ -11,7 +13,10 @@ export class SessionService {
     this.UserRepository = new UserTypeormRepository();
   }
 
-  async execute(clinicId: string, userId: string) {
+  async execute(
+    clinicId: string,
+    userId: string,
+  ): Promise<GetSessionUserResponse> {
     const user = await this.UserRepository.findById(userId);
     if (!user) throw new Error("User not found");
 
@@ -25,7 +30,6 @@ export class SessionService {
 
     let activeClinic = clinics.length === 1 ? clinics[0] : null;
     let role = clinics.length === 1 ? clinicUsers[0].role : null;
-    let permissions = ROLE_PERMISSIONS[role] || null;
 
     if (clinicId) {
       const clinicUser = clinicUsers.find((cu) => cu.clinicId === clinicId);
@@ -35,24 +39,20 @@ export class SessionService {
       }
 
       role = clinicUser.role;
-      permissions = ROLE_PERMISSIONS[role];
       activeClinic = {
         clinicId: clinicUser.clinicId,
         name: clinicUser.clinic.name,
       };
     }
 
-    return {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        onboardingStep: user.onboardingStep,
-      },
-      clinics,
+    const permissions = ROLE_PERMISSIONS[role] || null;
+
+    return GetSessionUserMapper.toResponse({
+      user,
+      clinicUsers,
       activeClinic,
       role,
       permissions,
-    };
+    });
   }
 }

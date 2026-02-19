@@ -1,15 +1,12 @@
-import {
-  ClinicUserResponse,
-  FindUsersByClinicResponse,
-} from "../../application/dtos/ClinicUserResponse";
+import { ClinicUser } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers";
 import { BindClinicUsersParams } from "../../application/types";
 
 export interface ClinicUsersRepositoryInterface {
-  bindClinicUser(data: BindClinicUsersParams): Promise<ClinicUserResponse>;
-  getClinicsByUser(userId: string): Promise<ClinicUserResponse[]>; //ClinicUser[]
-  getUsersByClinic(clinicId: string): Promise<FindUsersByClinicResponse[]>; // FindUsersByClinic[]
+  bindClinicUser(data: BindClinicUsersParams): Promise<ClinicUser>;
+  getClinicsByUser(userId: string): Promise<ClinicUser[]>; //ClinicUser[]
+  getUsersByClinic(clinicId: string): Promise<ClinicUser[]>; // FindUsersByClinic[]
   getUserBindedClinic(
     clinicId: string,
     userId: string,
-  ): Promise<ClinicUserResponse | null>;
+  ): Promise<ClinicUser | null>;
 }

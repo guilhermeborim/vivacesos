@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { GetPatientsByClinicController } from "../../../modules/patient/application/controllers/GetPatientsByClinic";
-import { RegisterPatientController } from "../../../modules/patient/application/controllers/Register";
+import { GetPatientsByClinicController } from "../../../modules/patient/application/controllers/getPatientsByClinic";
+import { RegisterPatientController } from "../../../modules/patient/application/controllers/register";
 import { CheckAuthenticationMiddleware } from "../middlewares/check-authentication";
 import { CheckClinicUserMiddleware } from "../middlewares/check-clinic";
 

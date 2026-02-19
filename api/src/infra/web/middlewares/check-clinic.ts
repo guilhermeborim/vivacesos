@@ -1,6 +1,6 @@
 import { FastifyRequest } from "fastify";
+import { ClinicUsersTypeormRepository } from "../../../modules/clinicUser/database/repositories/ClinicUserTypeormRepository";
 import { UnauthenticatedError } from "../../../shared/errors/unauthenticated.error";
-import { ClinicUsersTypeormRepository } from "../../database/typeorm/sass/repositories/clinic-users.repository";
 
 export class CheckClinicUserMiddleware {
   private clinicUserRepository: ClinicUsersTypeormRepository;

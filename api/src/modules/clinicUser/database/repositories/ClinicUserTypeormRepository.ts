@@ -2,10 +2,6 @@ import { Repository } from "typeorm";
 import { SassDataSource } from "../../../../infra/database/typeorm/sass/data-source";
 import { ClinicUser } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers";
 import { DatabaseError } from "../../../../shared/errors/database.error";
-import {
-  ClinicUserResponse,
-  FindUsersByClinicResponse,
-} from "../../application/dtos/ClinicUserResponse";
 import { BindClinicUsersParams } from "../../application/types";
 import { ClinicUsersRepositoryInterface } from "../interface/ClinicUserRepositoryInterface";
 
@@ -16,9 +12,7 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
     this.clinicUsersRepository = SassDataSource.getRepository(ClinicUser);
   }
 
-  async bindClinicUser(
-    clinicUser: BindClinicUsersParams,
-  ): Promise<ClinicUserResponse> {
+  async bindClinicUser(clinicUser: BindClinicUsersParams): Promise<ClinicUser> {
     try {
       const clinicUserBinded = await this.clinicUsersRepository.save({
         ...clinicUser,
@@ -34,7 +28,7 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
   async getUserBindedClinic(
     clinicId: string,
     userId: string,
-  ): Promise<ClinicUserResponse | null> {
+  ): Promise<ClinicUser | null> {
     try {
       const clinicUser = await this.clinicUsersRepository.findOne({
         where: {
@@ -52,7 +46,7 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
     }
   }
 
-  async getClinicsByUser(userId: string): Promise<ClinicUserResponse[]> {
+  async getClinicsByUser(userId: string): Promise<ClinicUser[]> {
     try {
       const clinicUsers = await this.clinicUsersRepository.find({
         where: { userId },
@@ -68,34 +62,21 @@ export class ClinicUsersTypeormRepository implements ClinicUsersRepositoryInterf
     }
   }
 
-  async getUsersByClinic(
-    clinicId: string,
-  ): Promise<FindUsersByClinicResponse[]> {
+  async getUsersByClinic(clinicId: string): Promise<ClinicUser[]> {
     try {
       const clinicUsers = await this.clinicUsersRepository.query(
         `
           SELECT
-          cu.id,
-          cu.role,
-          cu.status,
-          u.id AS "id_user",
-          u.name,
-          u.email
+            cu.*,
+            row_to_json(u) AS "user"
           FROM clinic_users cu
           INNER JOIN users u ON cu."userId" = u.id
-          WHERE cu."clinicId" = $1
+          WHERE cu."clinicId" = $1;
         `,
         [clinicId],
       );
 
-      return clinicUsers.map((clinicUser: any) => ({
-        id: clinicUser.id,
-        role: clinicUser.role,
-        status: clinicUser.status,
-        id_user: clinicUser.id_user,
-        name: clinicUser.name,
-        email: clinicUser.email,
-      }));
+      return clinicUsers;
     } catch (error) {
       throw new DatabaseError(
         "Falha ao buscar usuários vinculados à clínica!",

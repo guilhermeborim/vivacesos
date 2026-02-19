@@ -1,14 +1,12 @@
 import { hashSync } from "bcrypt";
 import { ClinicUserStatus } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers";
-import {
-  User,
-  UserOnboardingStep,
-} from "../../../../infra/database/typeorm/sass/entities/User";
-import { ClinicUsersTypeormRepository } from "../../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
-import { InviteTypeormRepository } from "../../../../infra/database/typeorm/sass/repositories/invite.repository";
+import { UserOnboardingStep } from "../../../../infra/database/typeorm/sass/entities/User";
 import { ConflictError } from "../../../../shared/errors/conflict.error";
 import { ForbiddenError } from "../../../../shared/errors/forbidden.error";
+import { ClinicUsersTypeormRepository } from "../../../clinicUser/database/repositories/ClinicUserTypeormRepository";
+import { InviteTypeormRepository } from "../../../invite/database/repositories/InviteTypeormRepository";
 import { UserTypeormRepository } from "../../database/repositories/UserTypeormRepository";
+import { UserResponse } from "../dtos/UserResponse";
 import { UserCreateParams } from "../types";
 
 export class RegisterService {
@@ -22,7 +20,7 @@ export class RegisterService {
     this.clinicUserRepository = new ClinicUsersTypeormRepository();
   }
 
-  async execute(user: UserCreateParams): Promise<User> {
+  async execute(user: UserCreateParams): Promise<UserResponse> {
     const userExists = await this.authRepository.findByEmail(user.email);
 
     if (userExists) {

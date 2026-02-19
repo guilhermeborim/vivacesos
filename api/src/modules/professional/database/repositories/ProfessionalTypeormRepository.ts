@@ -2,7 +2,6 @@ import { Repository } from "typeorm";
 import { SassDataSource } from "../../../../infra/database/typeorm/sass/data-source";
 import { Professional } from "../../../../infra/database/typeorm/sass/entities/Professional";
 import { DatabaseError } from "../../../../shared/errors/database.error";
-import { ProfessionalResponse } from "../../application/dtos/ProfessionalResponse";
 import {
   CreateProfessionalOnboardingParams,
   CreateProfessionalParams,
@@ -19,7 +18,7 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
   async createProfessional(
     clinicId: string,
     professional: CreateProfessionalParams,
-  ): Promise<ProfessionalResponse> {
+  ): Promise<Professional> {
     try {
       const professionalCreated = await this.professionalRepository.save({
         ...professional,
@@ -34,7 +33,7 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
 
   async createProfessionalOnboarding(
     professional: CreateProfessionalOnboardingParams,
-  ): Promise<ProfessionalResponse> {
+  ): Promise<Professional> {
     try {
       const professionalCreated = await this.professionalRepository.save({
         ...professional,
@@ -46,22 +45,14 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
     }
   }
 
-  async getProfessionalsByClinicId(
-    clinicId: string,
-  ): Promise<ProfessionalResponse[]> {
+  async getProfessionalsByClinicId(clinicId: string): Promise<Professional[]> {
     try {
-      const professionals = await this.professionalRepository.query(
-        `
-          SELECT 
-          pr.*,
-          u.name,
-          u.email
-          FROM professionals pr 
-          INNER JOIN users u ON pr."userId" = u."id"
-          WHERE pr."clinicId" = $1
-        `,
-        [clinicId],
-      );
+      const professionals = await this.professionalRepository.find({
+        where: {
+          clinicId,
+        },
+        relations: ["user"],
+      });
 
       return professionals;
     } catch (error) {

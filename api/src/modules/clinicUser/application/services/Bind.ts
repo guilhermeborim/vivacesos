@@ -3,6 +3,7 @@ import { JWTService } from "../../../../shared/services/jwt.service";
 import { UserTypeormRepository } from "../../../users/database/repositories/UserTypeormRepository";
 import { ClinicUsersTypeormRepository } from "../../database/repositories/ClinicUserTypeormRepository";
 import { ClinicUserResponse } from "../dtos/ClinicUserResponse";
+import { BindClinicUserMapper } from "../mappers/ClinicUserMapper";
 import { BindClinicUsersParams } from "../types";
 
 export class BindClinicUserService {
@@ -37,6 +38,8 @@ export class BindClinicUserService {
 
     const user = await this.userRepository.findById(clinicUser.userId);
 
+    const response = BindClinicUserMapper.toResponse(clinicUserBinded);
+
     if (findClinicsUserBefore.length === 0 && user) {
       const accessToken = this.JWTService.generateAccessToken({
         email: user.email,
@@ -44,29 +47,12 @@ export class BindClinicUserService {
         clinicId: clinicUserBinded.clinicId,
       });
 
-      // return {
-      //   token: accessToken,
-      //   clinicUser: clinicUserBinded,
-      // };
-
       return {
+        ...response,
         token: accessToken,
-        clinicId: clinicUserBinded.clinicId,
-        role: clinicUserBinded.role,
-        status: clinicUserBinded.status,
-        userId: clinicUserBinded.userId,
       };
     }
 
-    // return {
-    //   clinicUser: clinicUserBinded,
-    // };
-
-    return {
-      clinicId: clinicUserBinded.clinicId,
-      role: clinicUserBinded.role,
-      status: clinicUserBinded.status,
-      userId: clinicUserBinded.userId,
-    };
+    return response;
   }
 }

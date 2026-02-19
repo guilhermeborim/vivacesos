@@ -1,5 +1,5 @@
-import { ClinicUsersTypeormRepository } from "../../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
 import { JWTService } from "../../../../shared/services/jwt.service";
+import { ClinicUsersTypeormRepository } from "../../../clinicUser/database/repositories/ClinicUserTypeormRepository";
 import { UserTypeormRepository } from "../../database/repositories/UserTypeormRepository";
 
 export class SelectClinicService {

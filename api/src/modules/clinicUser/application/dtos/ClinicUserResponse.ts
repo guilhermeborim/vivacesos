@@ -3,25 +3,56 @@ import {
   ClinicUserStatus,
 } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers";
 
-interface ClinicUser {
-  userId: string;
+// export type ClinicResponse = {
+//   userId: string;
+//   clinicId: string;
+//   clinic: {
+//     name: string;
+//     city: string;
+//   };
+// }
+
+export type BindClinicUserResponse = {
+  token?: string;
   clinicId: string;
   role: ClinicUserRole;
   status: ClinicUserStatus;
-}
-export interface ClinicUserResponse {
+  userId: string;
+};
+
+export type ClinicUserResponse = {
   userId: string;
   clinicId: string;
   role: ClinicUserRole;
   status: ClinicUserStatus;
   token?: string;
-}
+  clinic?: {
+    name?: string;
+  };
+  user?: {
+    name?: string;
+    email?: string;
+  };
+};
 
-export interface FindUsersByClinicResponse {
+export type GetUsersByClinicResponse = {
   id: string;
   role: ClinicUserRole;
   status: ClinicUserStatus;
-  id_user: string;
-  name: string;
-  email: string;
-}
+  user: {
+    userId: string;
+    name: string;
+    email: string;
+  };
+};
+
+export type GetClinicsByUserResponse = {
+  id: string;
+  role: ClinicUserRole;
+  status: ClinicUserStatus;
+  clinic: {
+    name: string;
+    clinicId: string;
+    city: string;
+  };
+};

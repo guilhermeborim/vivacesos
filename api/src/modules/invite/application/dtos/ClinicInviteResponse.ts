@@ -1,6 +1,6 @@
 import { ClinicUserRole } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers";
 
-export interface ClinicInviteResponse {
+export type ClinicInviteResponse = {
   id: string;
   clinicId: string;
   email: string;
@@ -10,4 +10,4 @@ export interface ClinicInviteResponse {
   expiresAt: Date;
   createdAt: Date;
   acceptedAt: Date;
-}
+};

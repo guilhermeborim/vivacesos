@@ -1,8 +1,8 @@
 import { compare } from "bcrypt";
-import { ClinicUsersTypeormRepository } from "../../../../infra/database/typeorm/sass/repositories/clinic-users.repository";
 import { NotFoundError } from "../../../../shared/errors/not-found.error";
 import { UnauthenticatedError } from "../../../../shared/errors/unauthenticated.error";
 import { JWTService } from "../../../../shared/services/jwt.service";
+import { ClinicUsersTypeormRepository } from "../../../clinicUser/database/repositories/ClinicUserTypeormRepository";
 import { RefreshTokenRepositoryInterface } from "../../../refreshToken/database/interface/RefreshTokenTypeormInterface";
 import { RefreshTokenRepository } from "../../../refreshToken/database/repositories/RefreshTokenTypeormRepository";
 import { UserTypeormRepository } from "../../database/repositories/UserTypeormRepository";

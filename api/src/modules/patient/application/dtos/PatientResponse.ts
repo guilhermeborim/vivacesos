@@ -1,4 +1,4 @@
-export interface PatientResponse {
+export type PatientResponse = {
   id: string;
   name: string;
   email: string;
@@ -6,4 +6,4 @@ export interface PatientResponse {
   phone: string;
   birthDate: Date;
   active: boolean;
-}
+};

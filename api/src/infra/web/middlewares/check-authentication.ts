@@ -1,9 +1,9 @@
 import { FastifyRequest } from "fastify";
 import jwt from "jsonwebtoken";
+import { UserTypeormRepository } from "../../../modules/users/database/repositories/UserTypeormRepository";
 import { JWTError, JWTErrorType } from "../../../shared/errors/jwt.error";
 import { UnauthenticatedError } from "../../../shared/errors/unauthenticated.error";
 import { JWTService } from "../../../shared/services/jwt.service";
-import { UserTypeormRepository } from "../../database/typeorm/sass/repositories/user.repository";
 
 export class CheckAuthenticationMiddleware {
   private authRepository: UserTypeormRepository;

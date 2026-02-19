@@ -1,10 +1,10 @@
 import "fastify";
-import { User } from "../infra/database/typeorm/sass/entities/User";
+import { UserResponse } from "../modules/users/application/dtos/UserResponse";
 import { ClinicUserRole } from "../shared/permissions/roles";
 
 declare module "fastify" {
   interface FastifyRequest {
-    user: User;
+    user: UserResponse;
     clinicId?: string;
     userRole?: ClinicUserRole;
   }

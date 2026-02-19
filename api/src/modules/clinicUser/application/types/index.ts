@@ -3,9 +3,9 @@ import {
   ClinicUserStatus,
 } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers";
 
-export interface BindClinicUsersParams {
+export type BindClinicUsersParams = {
   userId: string;
   clinicId: string;
   role?: ClinicUserRole;
   status?: ClinicUserStatus;
-}
+};

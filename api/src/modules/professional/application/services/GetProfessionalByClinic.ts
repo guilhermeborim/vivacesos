@@ -1,5 +1,6 @@
 import { ProfessionalTypeormRepository } from "../../database/repositories/ProfessionalTypeormRepository";
-import { ProfessionalResponse } from "../dtos/ProfessionalResponse";
+import { GetProfessionalsByClinicResponse } from "../dtos/ProfessionalResponse";
+import { GetProfessionalsByClinicMapper } from "../mappers/ProfessionalMapper";
 
 export class GetProfessionalsByClinicService {
   private professionalRepository: ProfessionalTypeormRepository;
@@ -8,10 +9,10 @@ export class GetProfessionalsByClinicService {
     this.professionalRepository = new ProfessionalTypeormRepository();
   }
 
-  async execute(clinicId: string): Promise<ProfessionalResponse[]> {
+  async execute(clinicId: string): Promise<GetProfessionalsByClinicResponse[]> {
     const professionals =
       await this.professionalRepository.getProfessionalsByClinicId(clinicId);
 
-    return professionals;
+    return professionals.map(GetProfessionalsByClinicMapper.toResponse);
   }
 }

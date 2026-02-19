@@ -1,5 +1,6 @@
 import { ClinicUsersTypeormRepository } from "../../database/repositories/ClinicUserTypeormRepository";
-import { FindUsersByClinicResponse } from "../dtos/ClinicUserResponse";
+import { GetUsersByClinicResponse } from "../dtos/ClinicUserResponse";
+import { GetUsersByClinicMapper } from "../mappers/ClinicUserMapper";
 
 export class GetUsersByClinicService {
   private clinicUserRepository: ClinicUsersTypeormRepository;
@@ -8,10 +9,10 @@ export class GetUsersByClinicService {
     this.clinicUserRepository = new ClinicUsersTypeormRepository();
   }
 
-  async execute(clinicId: string): Promise<FindUsersByClinicResponse[]> {
+  async execute(clinicId: string): Promise<GetUsersByClinicResponse[]> {
     const clinicUsers =
       await this.clinicUserRepository.getUsersByClinic(clinicId);
 
-    return clinicUsers;
+    return clinicUsers.map(GetUsersByClinicMapper.toResponse);
   }
 }

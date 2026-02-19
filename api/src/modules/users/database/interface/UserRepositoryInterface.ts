@@ -1,10 +1,12 @@
-import { UserOnboardingStep } from "../../../../infra/database/typeorm/sass/entities/User";
-import { UserResponse } from "../../application/dtos/UserResponse";
+import {
+  User,
+  UserOnboardingStep,
+} from "../../../../infra/database/typeorm/sass/entities/User";
 import { UserCreateParams } from "../../application/types";
 
 export interface UserRepositoryInterface {
-  createUser(data: UserCreateParams): Promise<UserResponse>;
+  createUser(data: UserCreateParams): Promise<User>;
   nextOnboardingStep(userId: string, step: UserOnboardingStep): Promise<void>;
-  findByEmail(email: string): Promise<UserResponse | null>;
-  findById(id: string): Promise<UserResponse | null>;
+  findByEmail(email: string): Promise<User | null>;
+  findById(id: string): Promise<User | null>;
 }

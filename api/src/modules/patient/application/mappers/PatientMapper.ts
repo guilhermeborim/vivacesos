@@ -1,6 +1,6 @@
 import { Patient } from "../../../../infra/database/typeorm/sass/entities/Patient";
-import { decrypt } from "../../../../infra/utils/crypto";
-import { maskCpf } from "../../../../infra/utils/mask";
+import { decrypt } from "../../../../shared/utils/crypto";
+import { maskCpf } from "../../../../shared/utils/mask";
 import { PatientResponse } from "../dtos/PatientResponse";
 
 export class PatientMapper {

@@ -1,5 +1,6 @@
 import { ClinicUsersTypeormRepository } from "../../database/repositories/ClinicUserTypeormRepository";
-import { ClinicUserResponse } from "../dtos/ClinicUserResponse";
+import { GetClinicsByUserResponse } from "../dtos/ClinicUserResponse";
+import { GetClinicsByUserMapper } from "../mappers/ClinicUserMapper";
 
 export class GetClinicsByUserService {
   private clinicUserRepository: ClinicUsersTypeormRepository;
@@ -8,7 +9,7 @@ export class GetClinicsByUserService {
     this.clinicUserRepository = new ClinicUsersTypeormRepository();
   }
 
-  async execute(userId: string): Promise<ClinicUserResponse[]> {
+  async execute(userId: string): Promise<GetClinicsByUserResponse[]> {
     const clinicUsers =
       await this.clinicUserRepository.getClinicsByUser(userId);
 
@@ -18,6 +19,6 @@ export class GetClinicsByUserService {
     //   clinicUser.clinic.cnpj = decrypt(clinicUser.clinic.cnpj);
     // }
 
-    return clinicUsers;
+    return clinicUsers.map(GetClinicsByUserMapper.toResponse);
   }
 }
