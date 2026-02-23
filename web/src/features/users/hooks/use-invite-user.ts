@@ -8,7 +8,7 @@ export const useInviteUser = () => {
   // STATES
   const [modalInvite, setModalInvite] = useState<boolean | false>(false)
   const mutationInvite = useMutationInvite()
-
+  console.log(modalInvite)
   // FORM
   const formUser = useForm<CreateInviteTypeSchema>({
     resolver: zodResolver(createInviteSchema),
