@@ -1,27 +1,27 @@
-import { Loading } from "@/core/ui";
-import { useAuth } from "@/features/auth/hooks/use-auth";
-import { Navigate } from "react-router-dom";
+import { Loading } from "@/core/ui"
+import { useAuth } from "@/features/auth/hooks/use-auth"
+import { Navigate } from "react-router-dom"
 
 interface AuthProtectedProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
-const AuthProtected: React.FC<AuthProtectedProps> = ({ children }) => {
-  const { loading, session } = useAuth();
+const AuthProtected = ({ children }: AuthProtectedProps) => {
+  const { loading, session } = useAuth()
 
   if (loading) {
-    return <Loading loading />;
+    return <Loading loading />
   }
   if (session?.clinics.length === 0) {
-    console.log(`sem clinica`);
+    console.log(`sem clinica`)
   }
 
   if (!session) {
-    console.log("sem session");
-    return <Navigate to="/login" replace />;
+    console.log("sem session")
+    return <Navigate to="/login" replace />
   }
 
-  return <>{children}</>;
-};
+  return <>{children}</>
+}
 
-export default AuthProtected;
+export default AuthProtected

@@ -1,30 +1,20 @@
-import { ButtonPrimitive, ModalComponent } from "@/core/ui";
-import { TableList } from "@/core/ui/components/Table";
-import {
-  useQueryClinic,
-  useQueryClinicById,
-} from "@/features/clinic/api/mutations";
-import { useEditClinic } from "@/features/clinic/hooks/use-edit-clinic";
-import { FormClinic } from "../form";
-import { createClinicColumns } from "./columns";
+import { ButtonPrimitive, ModalComponent } from "@/core/ui"
+import { TableList } from "@/core/ui/components/Table"
+import { useQueryClinic, useQueryClinicById } from "@/features/clinic/api/mutations"
+import { useEditClinic } from "@/features/clinic/hooks/use-edit-clinic"
+import { FormClinic } from "../form"
+import { createClinicColumns } from "./columns"
 
 export function ListClinic() {
-  const {
-    formUpdateClinic,
-    onSubmitClinicUpdate,
-    handleDelete,
-    handleEdit,
-    modalOpen,
-    toggleModal,
-    editClinicId,
-  } = useEditClinic();
-  const { clinic } = useQueryClinicById(editClinicId);
-  const { dataClinics } = useQueryClinic();
+  const { formUpdateClinic, onSubmitClinicUpdate, modalOpen, toggleModal, editClinicId } =
+    useEditClinic()
+  const { clinic } = useQueryClinicById(editClinicId)
+  const { dataClinics } = useQueryClinic()
 
   const columns = createClinicColumns({
     onEdit: () => console.log("editou"),
     onDelete: () => console.log("excluiu"),
-  });
+  })
 
   return (
     <>
@@ -44,5 +34,5 @@ export function ListClinic() {
         </ModalComponent.Footer>
       </ModalComponent.Root>
     </>
-  );
+  )
 }

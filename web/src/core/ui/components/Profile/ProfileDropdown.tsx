@@ -1,23 +1,18 @@
-import { useAuth } from "@/features/auth/hooks/use-auth";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-} from "reactstrap";
+import { useAuth } from "@/features/auth/hooks/use-auth"
+import React, { useState } from "react"
+import { Link } from "react-router-dom"
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "reactstrap"
 
 //import images
 export const ProfileDropdown = () => {
-  const { signOut, session } = useAuth();
-  const [openSelectClinic, setOpenSelectClinic] = useState(false);
+  const { signOut, session } = useAuth()
+  // const [openSelectClinic, setOpenSelectClinic] = useState(false);
 
   //Dropdown Toggle
-  const [isProfileDropdown, setIsProfileDropdown] = useState(false);
+  const [isProfileDropdown, setIsProfileDropdown] = useState(false)
   const toggleProfileDropdown = () => {
-    setIsProfileDropdown(!isProfileDropdown);
-  };
+    setIsProfileDropdown(!isProfileDropdown)
+  }
 
   return (
     <React.Fragment>
@@ -46,7 +41,7 @@ export const ProfileDropdown = () => {
             <DropdownItem className="p-0">
               <button
                 className="dropdown-item"
-                onClick={() => setOpenSelectClinic(true)}
+                // onClick={() => setOpenSelectClinic(true)}
               >
                 <i className="mdi mdi-swap-horizontal text-muted fs-16 align-middle me-1"></i>
                 <span className="align-middle">Mudar Clínica</span>
@@ -65,5 +60,5 @@ export const ProfileDropdown = () => {
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>
-  );
-};
+  )
+}
