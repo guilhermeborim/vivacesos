@@ -16,9 +16,9 @@ module.exports = {
   },
   rules: {
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "unused-imports/no-unused-imports": "error",
-    "no-console": "error",
+    "no-console": process.env.NODE_ENV === "production" ? "error" : "warn",
     "@typescript-eslint/no-explicit-any": "off",
     "react/jsx-uses-react": "off",
   },

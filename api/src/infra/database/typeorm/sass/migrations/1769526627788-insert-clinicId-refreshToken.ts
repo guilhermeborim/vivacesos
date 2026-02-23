@@ -1,11 +1,11 @@
-import { MigrationInterface, QueryRunner, TableForeignKey } from "typeorm";
+import { MigrationInterface, QueryRunner, TableForeignKey } from "typeorm"
 
 export class InsertClinicIdRefreshToken1769526627788 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
             ALTER TABLE "refresh_tokens"
             ADD COLUMN "clinicId" uuid NULL DEFAULT NULL
-        `);
+        `)
 
     await queryRunner.createForeignKey(
       "refresh_tokens",
@@ -16,8 +16,8 @@ export class InsertClinicIdRefreshToken1769526627788 implements MigrationInterfa
         referencedTableName: "clinics",
         onDelete: "CASCADE",
       }),
-    );
+    )
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(_queryRunner: QueryRunner): Promise<void> {}
 }
