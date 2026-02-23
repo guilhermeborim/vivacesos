@@ -1,26 +1,26 @@
-import { InputController } from "@/core/ui";
-import { useEffect } from "react";
-import { UseFormReturn } from "react-hook-form";
-import { Col, Row } from "reactstrap";
-import { CreatePatientTypeSchema } from "../../schemas";
-import { fields } from "./fields";
+import { InputController } from "@/core/ui"
+import { useEffect } from "react"
+import { UseFormReturn } from "react-hook-form"
+import { Col, Row } from "reactstrap"
+import { CreatePatientTypeSchema } from "../../schemas"
+import { fields } from "./fields"
 
 interface FormPatientProps {
-  formPatient: UseFormReturn<CreatePatientTypeSchema>;
-  defaultValues?: Partial<CreatePatientTypeSchema>;
+  formPatient: UseFormReturn<CreatePatientTypeSchema>
+  defaultValues?: Partial<CreatePatientTypeSchema>
 }
 
 export function FormPatient({ formPatient, defaultValues }: FormPatientProps) {
   useEffect(() => {
     if (defaultValues) {
-      formPatient.reset(defaultValues);
+      formPatient.reset(defaultValues)
     }
-  }, [defaultValues, formPatient]);
+  }, [defaultValues, formPatient])
 
   return (
     <Row>
       {fields.map((field) => (
-        <Col md={field.md} className="mt-3">
+        <Col md={field.md} className="mt-3" key={field.name}>
           <InputController
             label={field.label}
             control={formPatient.control}
@@ -32,5 +32,5 @@ export function FormPatient({ formPatient, defaultValues }: FormPatientProps) {
         </Col>
       ))}
     </Row>
-  );
+  )
 }

@@ -1,6 +1,6 @@
-import classnames from "classnames";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import classnames from "classnames"
+import React, { useState } from "react"
+import { Link } from "react-router-dom"
 import {
   Col,
   Dropdown,
@@ -12,7 +12,7 @@ import {
   Row,
   TabContent,
   TabPane,
-} from "reactstrap";
+} from "reactstrap"
 
 //import images
 // import avatar2 from "../../assets/images/users/avatar-2.jpg";
@@ -22,23 +22,22 @@ import {
 // import bell from "../../assets/images/svg/bell.svg";
 
 //SimpleBar
-import SimpleBar from "simplebar-react";
+import SimpleBar from "simplebar-react"
 
 export const NotificationDropdown = () => {
   //Dropdown Toggle
-  const [isNotificationDropdown, setIsNotificationDropdown] =
-    useState<boolean>(false);
+  const [isNotificationDropdown, setIsNotificationDropdown] = useState<boolean>(false)
   const toggleNotificationDropdown = () => {
-    setIsNotificationDropdown(!isNotificationDropdown);
-  };
+    setIsNotificationDropdown(!isNotificationDropdown)
+  }
 
   //Tab
-  const [activeTab, setActiveTab] = useState("1");
+  const [activeTab, setActiveTab] = useState("1")
   const toggleTab = (tab: any) => {
     if (activeTab !== tab) {
-      setActiveTab(tab);
+      setActiveTab(tab)
     }
-  };
+  }
   return (
     <React.Fragment>
       <Dropdown
@@ -61,16 +60,10 @@ export const NotificationDropdown = () => {
             <div className="p-3">
               <Row className="align-items-center">
                 <Col>
-                  <h6 className="m-0 fs-16 fw-semibold text-white">
-                    {" "}
-                    Notifications{" "}
-                  </h6>
+                  <h6 className="m-0 fs-16 fw-semibold text-white"> Notifications </h6>
                 </Col>
                 <div className="col-auto dropdown-tabs">
-                  <span className="badge bg-light-subtle fs-13 text-body">
-                    {" "}
-                    4 New
-                  </span>
+                  <span className="badge bg-light-subtle fs-13 text-body"> 4 New</span>
                 </div>
               </Row>
             </div>
@@ -82,7 +75,7 @@ export const NotificationDropdown = () => {
                     href="#"
                     className={classnames({ active: activeTab === "1" })}
                     onClick={() => {
-                      toggleTab("1");
+                      toggleTab("1")
                     }}
                   >
                     All (4)
@@ -93,7 +86,7 @@ export const NotificationDropdown = () => {
                     href="#"
                     className={classnames({ active: activeTab === "2" })}
                     onClick={() => {
-                      toggleTab("2");
+                      toggleTab("2")
                     }}
                   >
                     Messages
@@ -104,7 +97,7 @@ export const NotificationDropdown = () => {
                     href="#"
                     className={classnames({ active: activeTab === "3" })}
                     onClick={() => {
-                      toggleTab("3");
+                      toggleTab("3")
                     }}
                   >
                     Alerts
@@ -128,14 +121,12 @@ export const NotificationDropdown = () => {
                       <Link to="#" className="stretched-link">
                         <h6 className="mt-0 mb-2 lh-base">
                           Your <b>Elite</b> author Graphic Optimization{" "}
-                          <span className="text-secondary">reward</span> is
-                          ready!
+                          <span className="text-secondary">reward</span> is ready!
                         </h6>
                       </Link>
                       <p className="mb-0 fs-11 fw-medium text-uppercase text-muted">
                         <span>
-                          <i className="mdi mdi-clock-outline"></i> Just 30 sec
-                          ago
+                          <i className="mdi mdi-clock-outline"></i> Just 30 sec ago
                         </span>
                       </p>
                     </div>
@@ -159,20 +150,14 @@ export const NotificationDropdown = () => {
 
                 <div className="text-reset notification-item d-block dropdown-item position-relative active">
                   <div className="d-flex">
-                    <img
-                      className="me-3 rounded-circle avatar-xs"
-                      alt="user-pic"
-                    />
+                    <img className="me-3 rounded-circle avatar-xs" alt="user-pic" />
                     <div className="flex-grow-1">
                       <Link to="#" className="stretched-link">
-                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">
-                          Angela Bernier
-                        </h6>
+                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>
                       </Link>
                       <div className="fs-13 text-muted">
                         <p className="mb-1">
-                          Answered to your comment on the cash flow forecast's
-                          graph 🔔.
+                          Answered to your comment on the cash flow forecasts graph 🔔.
                         </p>
                       </div>
                       <p className="mb-0 fs-11 fw-medium text-uppercase text-muted">
@@ -209,8 +194,8 @@ export const NotificationDropdown = () => {
                     <div className="flex-grow-1">
                       <Link to="#" className="stretched-link">
                         <h6 className="mt-0 mb-2 fs-13 lh-base">
-                          You have received <b className="text-success">20</b>{" "}
-                          new messages in the conversation
+                          You have received <b className="text-success">20</b> new
+                          messages in the conversation
                         </h6>
                       </Link>
                       <p className="mb-0 fs-11 fw-medium text-uppercase text-muted">
@@ -239,20 +224,13 @@ export const NotificationDropdown = () => {
 
                 <div className="text-reset notification-item d-block dropdown-item position-relative">
                   <div className="d-flex">
-                    <img
-                      className="me-3 rounded-circle avatar-xs"
-                      alt="user-pic"
-                    />
+                    <img className="me-3 rounded-circle avatar-xs" alt="user-pic" />
                     <div className="flex-grow-1">
                       <Link to="#" className="stretched-link">
-                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">
-                          Maureen Gibson
-                        </h6>
+                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>
                       </Link>
                       <div className="fs-13 text-muted">
-                        <p className="mb-1">
-                          We talked about a project on linkedin.
-                        </p>
+                        <p className="mb-1">We talked about a project on linkedin.</p>
                       </div>
                       <p className="mb-0 fs-11 fw-medium text-uppercase text-muted">
                         <span>
@@ -294,20 +272,13 @@ export const NotificationDropdown = () => {
               <SimpleBar style={{ maxHeight: "300px" }} className="pe-2">
                 <div className="text-reset notification-item d-block dropdown-item">
                   <div className="d-flex">
-                    <img
-                      className="me-3 rounded-circle avatar-xs"
-                      alt="user-pic"
-                    />
+                    <img className="me-3 rounded-circle avatar-xs" alt="user-pic" />
                     <div className="flex-grow-1">
                       <Link to="#" className="stretched-link">
-                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">
-                          James Lemire
-                        </h6>
+                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">James Lemire</h6>
                       </Link>
                       <div className="fs-13 text-muted">
-                        <p className="mb-1">
-                          We talked about a project on linkedin.
-                        </p>
+                        <p className="mb-1">We talked about a project on linkedin.</p>
                       </div>
                       <p className="mb-0 fs-11 fw-medium text-uppercase text-muted">
                         <span>
@@ -335,20 +306,14 @@ export const NotificationDropdown = () => {
 
                 <div className="text-reset notification-item d-block dropdown-item">
                   <div className="d-flex">
-                    <img
-                      className="me-3 rounded-circle avatar-xs"
-                      alt="user-pic"
-                    />
+                    <img className="me-3 rounded-circle avatar-xs" alt="user-pic" />
                     <div className="flex-grow-1">
                       <Link to="#" className="stretched-link">
-                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">
-                          Angela Bernier
-                        </h6>
+                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>
                       </Link>
                       <div className="fs-13 text-muted">
                         <p className="mb-1">
-                          Answered to your comment on the cash flow forecast's
-                          graph 🔔.
+                          Answered to your comment on the cash flow forecasts graph 🔔.
                         </p>
                       </div>
                       <p className="mb-0 fs-11 fw-medium text-uppercase text-muted">
@@ -377,20 +342,14 @@ export const NotificationDropdown = () => {
 
                 <div className="text-reset notification-item d-block dropdown-item">
                   <div className="d-flex">
-                    <img
-                      className="me-3 rounded-circle avatar-xs"
-                      alt="user-pic"
-                    />
+                    <img className="me-3 rounded-circle avatar-xs" alt="user-pic" />
                     <div className="flex-grow-1">
                       <Link to="#" className="stretched-link">
-                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">
-                          Kenneth Brown
-                        </h6>
+                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">Kenneth Brown</h6>
                       </Link>
                       <div className="fs-13 text-muted">
                         <p className="mb-1">
-                          Mentionned you in his comment on 📃 invoice
-                          #12501.{" "}
+                          Mentionned you in his comment on 📃 invoice #12501.{" "}
                         </p>
                       </div>
                       <p className="mb-0 fs-11 fw-medium text-uppercase text-muted">
@@ -419,20 +378,13 @@ export const NotificationDropdown = () => {
 
                 <div className="text-reset notification-item d-block dropdown-item">
                   <div className="d-flex">
-                    <img
-                      className="me-3 rounded-circle avatar-xs"
-                      alt="user-pic"
-                    />
+                    <img className="me-3 rounded-circle avatar-xs" alt="user-pic" />
                     <div className="flex-grow-1">
                       <Link to="#" className="stretched-link">
-                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">
-                          Maureen Gibson
-                        </h6>
+                        <h6 className="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>
                       </Link>
                       <div className="fs-13 text-muted">
-                        <p className="mb-1">
-                          We talked about a project on linkedin.
-                        </p>
+                        <p className="mb-1">We talked about a project on linkedin.</p>
                       </div>
                       <p className="mb-0 fs-11 fw-medium text-uppercase text-muted">
                         <span>
@@ -463,8 +415,7 @@ export const NotificationDropdown = () => {
                     type="button"
                     className="btn btn-soft-success waves-effect waves-light"
                   >
-                    View All Messages{" "}
-                    <i className="ri-arrow-right-line align-middle"></i>
+                    View All Messages <i className="ri-arrow-right-line align-middle"></i>
                   </button>
                 </div>
               </SimpleBar>
@@ -483,5 +434,5 @@ export const NotificationDropdown = () => {
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>
-  );
-};
+  )
+}

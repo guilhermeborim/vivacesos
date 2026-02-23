@@ -1,7 +1,7 @@
 import "@tanstack/react-table"
 
 declare module "@tanstack/react-table" {
-  interface ColumnMeta<TData extends unknown, TValue> {
+  interface ColumnMeta {
     filterType?: "text" | "select"
     options?: string[]
   }

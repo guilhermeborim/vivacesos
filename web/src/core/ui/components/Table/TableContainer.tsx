@@ -6,38 +6,30 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { Fragment, useEffect, useState } from "react";
-import {
-  Col,
-  Offcanvas,
-  OffcanvasBody,
-  OffcanvasHeader,
-  Row,
-  Table,
-} from "reactstrap";
-import SimpleBar from "simplebar-react";
-import { ButtonPrimitive } from "../Button";
-import { ColumnFilter } from "./ColumnFilter";
-import { useTableContext } from "./TableContext";
+} from "@tanstack/react-table"
+import { Fragment, useEffect, useState } from "react"
+import { Col, Offcanvas, OffcanvasBody, OffcanvasHeader, Row, Table } from "reactstrap"
+import SimpleBar from "simplebar-react"
+import { ButtonPrimitive } from "../Button"
+import { ColumnFilter } from "./ColumnFilter"
+import { useTableContext } from "./TableContext"
 
 interface TableContainerProps<T> {
-  columns: ColumnDef<T, any>[];
-  data: T[];
-  isGlobalFilter?: boolean;
-  isLoading?: boolean;
-  customPageSize?: number;
-  tableClass?: string;
-  theadClass?: string;
-  trClass?: string;
-  thClass?: string;
-  divClass?: string;
+  columns: ColumnDef<T, any>[]
+  data: T[]
+  isGlobalFilter?: boolean
+  isLoading?: boolean
+  customPageSize?: number
+  tableClass?: string
+  theadClass?: string
+  trClass?: string
+  thClass?: string
+  divClass?: string
 }
 
 export function TableContainer<T>({
   columns,
   data,
-  isGlobalFilter = true,
   isLoading = false,
   customPageSize = 10,
   tableClass,
@@ -47,8 +39,8 @@ export function TableContainer<T>({
   divClass,
 }: TableContainerProps<T>) {
   const { columnFilters, setColumnFilters, isFilterOpen, toggleFilter } =
-    useTableContext();
-  const [globalFilter, setGlobalFilter] = useState("");
+    useTableContext()
+  const [globalFilter, setGlobalFilter] = useState("")
 
   const table = useReactTable({
     columns,
@@ -60,7 +52,7 @@ export function TableContainer<T>({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-  });
+  })
 
   const {
     getHeaderGroups,
@@ -75,19 +67,19 @@ export function TableContainer<T>({
     setPageSize,
     resetColumnFilters,
     resetGlobalFilter,
-  } = table;
+  } = table
 
-  const pageIndex = getState().pagination.pageIndex;
-  const totalPages = getPageCount();
-  const totalRows = data.length;
-  const filteredRows = getRowModel().rows.length;
+  const pageIndex = getState().pagination.pageIndex
+  const totalPages = getPageCount()
+  const totalRows = data.length
+  const filteredRows = getRowModel().rows.length
 
   useEffect(() => {
-    setPageSize(customPageSize);
-  }, [customPageSize, setPageSize]);
+    setPageSize(customPageSize)
+  }, [customPageSize, setPageSize])
 
-  const hasData = totalRows > 0;
-  const hasFilteredData = filteredRows > 0;
+  const hasData = totalRows > 0
+  const hasFilteredData = filteredRows > 0
 
   return (
     <Fragment>
@@ -106,10 +98,7 @@ export function TableContainer<T>({
                   >
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
                 ))}
               </tr>
@@ -127,9 +116,7 @@ export function TableContainer<T>({
               <tr>
                 <td colSpan={columns.length} className="text-center py-5">
                   <h5>Nenhum registro cadastrado</h5>
-                  <p className="text-muted">
-                    Quando houver dados, eles aparecerão aqui.
-                  </p>
+                  <p className="text-muted">Quando houver dados, eles aparecerão aqui.</p>
                 </td>
               </tr>
             ) : !hasFilteredData ? (
@@ -144,10 +131,7 @@ export function TableContainer<T>({
                 <tr key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
                 </tr>
@@ -168,17 +152,13 @@ export function TableContainer<T>({
 
           <Col xs="auto">
             <ul className="pagination pagination-separated mb-0">
-              <li
-                className={`page-item ${!getCanPreviousPage() && "disabled"}`}
-              >
+              <li className={`page-item ${!getCanPreviousPage() && "disabled"}`}>
                 <button className="page-link" onClick={() => setPageIndex(0)}>
                   «
                 </button>
               </li>
 
-              <li
-                className={`page-item ${!getCanPreviousPage() && "disabled"}`}
-              >
+              <li className={`page-item ${!getCanPreviousPage() && "disabled"}`}>
                 <button className="page-link" onClick={previousPage}>
                   ‹
                 </button>
@@ -230,8 +210,8 @@ export function TableContainer<T>({
                 </h6>
 
                 {table.getAllLeafColumns().map((column) => {
-                  const meta = column.columnDef.meta;
-                  if (!meta?.filterType) return null;
+                  const meta = column.columnDef.meta
+                  if (!meta?.filterType) return null
 
                   return (
                     <div key={column.id} className="mb-4">
@@ -243,7 +223,7 @@ export function TableContainer<T>({
 
                       <ColumnFilter column={column} />
                     </div>
-                  );
+                  )
                 })}
 
                 <div className="d-flex gap-2 mt-4">
@@ -251,8 +231,8 @@ export function TableContainer<T>({
                     variant="light"
                     className="w-100"
                     onClick={() => {
-                      resetColumnFilters();
-                      resetGlobalFilter();
+                      resetColumnFilters()
+                      resetGlobalFilter()
                     }}
                   >
                     Limpar
@@ -280,5 +260,5 @@ export function TableContainer<T>({
         </Offcanvas>
       </Fragment>
     </Fragment>
-  );
+  )
 }

@@ -1,24 +1,23 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table"
 
 type ColumnProps<T> =
   | {
-      header: string;
-      data?: keyof T;
-      accessorFn?: (row: T) => any;
-      filterType?: "text";
-      options?: never;
+      header: string
+      data?: keyof T
+      accessorFn?: (row: T) => any
+      filterType?: "text"
+      options?: never
     }
   | {
-      header: string;
-      data?: keyof T;
-      accessorFn?: (row: T) => any;
-      filterType: "select";
-      options: string[];
-    };
+      header: string
+      data?: keyof T
+      accessorFn?: (row: T) => any
+      filterType: "select"
+      options: string[]
+    }
 
 export function Column<T>({
   header,
-  data,
   accessorFn,
   filterType,
   options,
@@ -33,5 +32,5 @@ export function Column<T>({
       options: options,
     },
     cell: ({ getValue }) => <span>{String(getValue())}</span>,
-  };
+  }
 }
