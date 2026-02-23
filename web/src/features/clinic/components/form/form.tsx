@@ -1,18 +1,19 @@
-import { InputController, InputMaskController } from "@/core/ui";
-import { useEffect } from "react";
-import { Col, Row } from "reactstrap";
+import { InputController, InputMaskController } from "@/core/ui"
+import { useEffect } from "react"
+import { Col, Row } from "reactstrap"
 
 interface FormClinicProps {
-  formClinic: any;
-  defaultValues?: any;
+  formClinic: any
+  defaultValues?: any
 }
 
 export function FormClinic({ formClinic, defaultValues }: FormClinicProps) {
   useEffect(() => {
     if (defaultValues) {
-      formClinic.reset(defaultValues);
+      formClinic.reset(defaultValues)
     }
-  }, [defaultValues]);
+  }, [defaultValues, formClinic])
+
   return (
     <>
       <Row>
@@ -95,5 +96,5 @@ export function FormClinic({ formClinic, defaultValues }: FormClinicProps) {
         </Col>
       </Row>
     </>
-  );
+  )
 }

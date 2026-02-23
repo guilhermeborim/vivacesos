@@ -1,9 +1,8 @@
-import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 
 //import Components
-import { FooterRest, Header } from "@/core/ui";
-import Sidebar from "./Sidebar";
+import { FooterRest, Header } from "@/core/ui"
+import Sidebar from "./Sidebar"
 
 //import actions
 import {
@@ -19,36 +18,37 @@ import {
   changeSidebarTheme,
   changeSidebarVisibility,
   changeTopbarTheme,
-} from "@/slices/thunks";
+} from "@/slices/thunks"
 
-import { useAuth } from "@/features/auth/hooks/use-auth";
-import { useDispatch, useSelector } from "react-redux";
-import { createSelector } from "reselect";
+import { useAuth } from "@/features/auth/hooks/use-auth"
+import { useAppDispatch } from "@/index"
+import { useSelector } from "react-redux"
+import { createSelector } from "reselect"
 
-const Layout = (props: any) => {
-  const { session } = useAuth();
-  const [headerClass, setHeaderClass] = useState("");
-  const dispatch: any = useDispatch();
+interface LayoutProps {
+  children: React.ReactNode
+}
+const Layout = ({ children }: LayoutProps) => {
+  const { session } = useAuth()
+  const [headerClass, setHeaderClass] = useState("")
+  const dispatch = useAppDispatch()
 
-  const selectLayoutState = (state: any) => state.Layout;
-  const selectLayoutProperties = createSelector(
-    selectLayoutState,
-    (layout) => ({
-      layoutType: layout.layoutType,
-      leftSidebarType: layout.leftSidebarType,
-      layoutModeType: layout.layoutModeType,
-      layoutThemeColorType: layout.layoutThemeColorType,
-      layoutThemeType: layout.layoutThemeType,
-      layoutWidthType: layout.layoutWidthType,
-      layoutPositionType: layout.layoutPositionType,
-      topbarThemeType: layout.topbarThemeType,
-      leftsidbarSizeType: layout.leftsidbarSizeType,
-      leftSidebarViewType: layout.leftSidebarViewType,
-      leftSidebarImageType: layout.leftSidebarImageType,
-      preloader: layout.preloader,
-      sidebarVisibilitytype: layout.sidebarVisibilitytype,
-    }),
-  );
+  const selectLayoutState = (state: any) => state.Layout
+  const selectLayoutProperties = createSelector(selectLayoutState, (layout) => ({
+    layoutType: layout.layoutType,
+    leftSidebarType: layout.leftSidebarType,
+    layoutModeType: layout.layoutModeType,
+    layoutThemeColorType: layout.layoutThemeColorType,
+    layoutThemeType: layout.layoutThemeType,
+    layoutWidthType: layout.layoutWidthType,
+    layoutPositionType: layout.layoutPositionType,
+    topbarThemeType: layout.topbarThemeType,
+    leftsidbarSizeType: layout.leftsidbarSizeType,
+    leftSidebarViewType: layout.leftSidebarViewType,
+    leftSidebarImageType: layout.leftSidebarImageType,
+    preloader: layout.preloader,
+    sidebarVisibilitytype: layout.sidebarVisibilitytype,
+  }))
   // Inside your component
   const {
     layoutType,
@@ -63,40 +63,26 @@ const Layout = (props: any) => {
     leftSidebarViewType,
     leftSidebarImageType,
     sidebarVisibilitytype,
-  } = useSelector(selectLayoutProperties);
+  } = useSelector(selectLayoutProperties)
 
   /*
     layout settings
     */
   useEffect(() => {
-    if (
-      layoutType ||
-      leftSidebarType ||
-      layoutModeType ||
-      layoutThemeType ||
-      layoutThemeColorType ||
-      layoutWidthType ||
-      layoutPositionType ||
-      topbarThemeType ||
-      leftsidbarSizeType ||
-      leftSidebarViewType ||
-      leftSidebarImageType ||
-      sidebarVisibilitytype
-    ) {
-      window.dispatchEvent(new Event("resize"));
-      dispatch(changeLeftsidebarViewType(leftSidebarViewType));
-      dispatch(changeLeftsidebarSizeType(leftsidbarSizeType));
-      dispatch(changeSidebarTheme(leftSidebarType));
-      dispatch(changeLayoutThemeColor(layoutThemeColorType));
-      dispatch(changeLayoutTheme(layoutThemeType));
-      dispatch(changeLayoutMode(layoutModeType));
-      dispatch(changeLayoutWidth(layoutWidthType));
-      dispatch(changeLayoutPosition(layoutPositionType));
-      dispatch(changeTopbarTheme(topbarThemeType));
-      dispatch(changeLayout(layoutType));
-      dispatch(changeSidebarImageType(leftSidebarImageType));
-      dispatch(changeSidebarVisibility(sidebarVisibilitytype));
-    }
+    window.dispatchEvent(new Event("resize"))
+
+    dispatch(changeLeftsidebarViewType(leftSidebarViewType))
+    dispatch(changeLeftsidebarSizeType(leftsidbarSizeType))
+    dispatch(changeSidebarTheme(leftSidebarType))
+    dispatch(changeLayoutThemeColor(layoutThemeColorType))
+    dispatch(changeLayoutTheme(layoutThemeType))
+    dispatch(changeLayoutMode(layoutModeType))
+    dispatch(changeLayoutWidth(layoutWidthType))
+    dispatch(changeLayoutPosition(layoutPositionType))
+    dispatch(changeTopbarTheme(topbarThemeType))
+    dispatch(changeLayout(layoutType))
+    dispatch(changeSidebarImageType(leftSidebarImageType))
+    dispatch(changeSidebarVisibility(sidebarVisibilitytype))
   }, [
     layoutType,
     leftSidebarType,
@@ -111,42 +97,45 @@ const Layout = (props: any) => {
     leftSidebarImageType,
     sidebarVisibilitytype,
     dispatch,
-  ]);
+  ])
   /*
     call dark/light mode
     */
   const onChangeLayoutMode = (value: any) => {
-    if (changeLayoutMode) {
-      dispatch(changeLayoutMode(value));
-    }
-  };
-
-  // class add remove in header
-  useEffect(() => {
-    window.addEventListener("scroll", scrollNavigation, true);
-  });
+    dispatch(changeLayoutMode(value))
+  }
 
   function scrollNavigation() {
-    const scrollup = document.documentElement.scrollTop;
+    const scrollup = document.documentElement.scrollTop
     if (scrollup > 50) {
-      setHeaderClass("topbar-shadow");
+      setHeaderClass("topbar-shadow")
     } else {
-      setHeaderClass("");
+      setHeaderClass("")
     }
   }
 
+  // class add remove in header
   useEffect(() => {
-    const humberIcon = document.querySelector(".hamburger-icon") as HTMLElement;
+    window.addEventListener("scroll", scrollNavigation, true)
+
+    return () => {
+      window.removeEventListener("scroll", scrollNavigation, true)
+    }
+  }, [])
+
+  useEffect(() => {
+    const humberIcon = document.querySelector(".hamburger-icon") as HTMLElement
+    if (!humberIcon) return
     if (
       sidebarVisibilitytype === "show" ||
       layoutType === "vertical" ||
       layoutType === "twocolumn"
     ) {
-      humberIcon.classList.remove("open");
+      humberIcon.classList.remove("open")
     } else {
-      humberIcon && humberIcon.classList.add("open");
+      humberIcon.classList.add("open")
     }
-  }, [sidebarVisibilitytype, layoutType]);
+  }, [sidebarVisibilitytype, layoutType])
 
   return (
     <React.Fragment>
@@ -156,21 +145,16 @@ const Layout = (props: any) => {
           layoutModeType={layoutModeType}
           onChangeLayoutMode={onChangeLayoutMode}
         />
-        {session?.activeClinic &&
-          session.user.onboardingStep === "FINISHED" && (
-            <Sidebar layoutType={layoutType} />
-          )}
+        {session?.activeClinic && session.user.onboardingStep === "FINISHED" && (
+          <Sidebar layoutType={layoutType} />
+        )}
         <div className="main-content">
-          {props.children}
+          {children}
           <FooterRest />
         </div>
       </div>
     </React.Fragment>
-  );
-};
+  )
+}
 
-Layout.propTypes = {
-  children: PropTypes.object,
-};
-
-export default Layout;
+export default Layout

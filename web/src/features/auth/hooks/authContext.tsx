@@ -1,83 +1,86 @@
-import { useQuerySession } from "@/core/api/shared/queries";
-import { useQueryClient } from "@tanstack/react-query";
-import { createContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Permission } from "../../../../../shared/permissions";
-import { useMutationLogin, useMutationRegister } from "../api/mutations";
-import { postLogout } from "../api/routes";
-import type { LoginFormTypeSchema, RegisterFormTypeSchema } from "../schemas";
+import { useQuerySession } from "@/core/api/shared/queries"
+import { useQueryClient } from "@tanstack/react-query"
+import { createContext, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
+import { Permission } from "../../../../../shared/permissions"
+import { useMutationLogin, useMutationRegister } from "../api/mutations"
+import { postLogout } from "../api/routes"
+import type { LoginFormTypeSchema, RegisterFormTypeSchema } from "../schemas"
 
 interface User {
-  id: string;
-  name: string;
-  email: string;
-  onboardingStep: "CREATE_CLINIC" | "LINK_PROFESSIONAL" | "DONE" | "FINISHED";
+  id: string
+  name: string
+  email: string
+  onboardingStep: "CREATE_CLINIC" | "LINK_PROFESSIONAL" | "DONE" | "FINISHED"
 }
 
 export interface Clinic {
-  clinicId: string;
-  name: string;
+  clinicId: string
+  name: string
 }
 
 export interface activeClinic {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 export interface Session {
-  user: User;
-  clinics: Clinic[];
-  activeClinic: activeClinic | null;
-  role: string;
-  permissions: string[];
+  user: User
+  clinics: Clinic[]
+  activeClinic: activeClinic | null
+  role: string
+  permissions: string[]
 }
 
 interface AuthContextProps {
-  loading: boolean;
-  session: Session | null;
-  login: (payload: LoginFormTypeSchema) => Promise<void>;
-  register: (payload: RegisterFormTypeSchema) => Promise<void>;
-  signOut: () => void;
-  hasPermission: (permission: Permission) => boolean;
+  loading: boolean
+  session: Session | null
+  login: (payload: LoginFormTypeSchema) => Promise<void>
+  register: (payload: RegisterFormTypeSchema) => Promise<void>
+  signOut: () => void
+  hasPermission: (permission: Permission) => boolean
 }
 
-export const AuthContext = createContext<AuthContextProps | undefined>(
-  undefined,
-);
+export const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { data, isLoading, isError, refetch } = useQuerySession();
-  const mutationLogin = useMutationLogin();
-  const mutationRegister = useMutationRegister();
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const { data, isLoading, isError, refetch } = useQuerySession()
+  const mutationLogin = useMutationLogin()
+  const mutationRegister = useMutationRegister()
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (isError) {
-      navigate("/login");
+      navigate("/login")
     }
-  }, [isError]);
+  }, [isError, navigate])
 
   async function login(payload: LoginFormTypeSchema) {
     try {
-      await mutationLogin.mutateAsync(payload);
-      await refetch();
-    } catch (error) {}
+      await mutationLogin.mutateAsync(payload)
+      await refetch()
+    } catch {
+      toast.error("Erro ao fazer login!")
+    }
   }
 
   async function register(payload: RegisterFormTypeSchema) {
     try {
-      await mutationRegister.mutateAsync(payload);
-    } catch (error) {}
+      await mutationRegister.mutateAsync(payload)
+    } catch {
+      toast.error("Erro ao fazer registro!")
+    }
   }
 
   async function signOut() {
-    await postLogout();
-    queryClient.setQueryData(["session"], null);
+    await postLogout()
+    queryClient.setQueryData(["session"], null)
   }
 
   function hasPermission(permission: Permission): boolean {
-    return data?.data?.permissions?.includes(permission) || false;
+    return data?.data?.permissions?.includes(permission) || false
   }
 
   return (
@@ -93,5 +96,5 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     >
       {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
