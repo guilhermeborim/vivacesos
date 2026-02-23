@@ -29,7 +29,10 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "api/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "web/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix"
     ]
   }
