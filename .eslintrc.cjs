@@ -18,7 +18,7 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-unused-vars": "error",
     "unused-imports/no-unused-imports": "error",
-    "no-console": "warn",
+    "no-console": "error",
     "@typescript-eslint/no-explicit-any": "off",
     "react/jsx-uses-react": "off",
   },

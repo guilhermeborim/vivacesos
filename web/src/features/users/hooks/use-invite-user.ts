@@ -10,6 +10,7 @@ export const useInviteUser = () => {
   const mutationInvite = useMutationInvite()
 
   const teste = 123
+  console.log("ola")
   // FORM
   const formUser = useForm<CreateInviteTypeSchema>({
     resolver: zodResolver(createInviteSchema),
