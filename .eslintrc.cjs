@@ -1,4 +1,4 @@
-const isMain = process.env.CI_BRANCH === "develop"
+const isMain = process.env.CI_BRANCH === "main"
 
 module.exports = {
   root: true,
