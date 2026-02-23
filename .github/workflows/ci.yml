@@ -23,7 +23,7 @@ jobs:
 
       # ===== LINT =====
       - name: Lint API
-        run: npx eslint api --ext .ts
+        run: CI_BRANCH=${{ github.base_ref }} npx eslint web --ext .ts,.tsx
 
       - name: Lint Web
         run: CI_BRANCH=${{ github.base_ref }} npx eslint web --ext .ts,.tsx
