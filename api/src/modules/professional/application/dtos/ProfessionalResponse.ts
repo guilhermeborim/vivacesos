@@ -19,5 +19,6 @@ export type GetProfessionalsByClinicResponse = {
     type: ProfessionalType;
     name: string;
     specialty: string;
+    crm: string;
   };
 };

@@ -17,6 +17,14 @@ export class Clinic {
   @Column({ name: "cnpj", type: "varchar", unique: true, nullable: false })
   cnpj: string;
 
+  @Column({
+    name: "cnpjHash",
+    type: "varchar",
+    nullable: false,
+    unique: true,
+  })
+  cnpjHash: string;
+
   @Column({ name: "phone", type: "varchar", unique: true, nullable: false })
   phone: string;
 

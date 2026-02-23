@@ -1,17 +1,12 @@
+import { ClinicUserStatus, Role } from "../enums";
+
 export type Clinic = {
+  id: string;
+  role: Role;
+  status: ClinicUserStatus;
   clinic: {
-    id: string;
     name: string;
-    cnpj: string;
-    phone: string;
-    active: boolean;
-    cep: string;
-    road: string;
-    number: string;
-    neighborhood: string;
     city: string;
-    complement: string;
-    createdAt: string | Date;
-    updatedAt: string | Date;
+    clinicId: string;
   };
 };

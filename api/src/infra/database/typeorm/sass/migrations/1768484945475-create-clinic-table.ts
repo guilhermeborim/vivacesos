@@ -24,6 +24,13 @@ export class CreateClinicTable1768484945475 implements MigrationInterface {
             isUnique: true,
             isNullable: false,
           },
+
+          {
+            name: "cnpjHash",
+            type: "varchar",
+            isUnique: true,
+            isNullable: false,
+          },
           {
             name: "phone",
             type: "varchar(20)",

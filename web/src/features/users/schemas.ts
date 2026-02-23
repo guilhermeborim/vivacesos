@@ -8,3 +8,11 @@ export const createInviteSchema = z.object({
 });
 
 export type CreateInviteTypeSchema = z.infer<typeof createInviteSchema>;
+
+export const updateUserSchema = z.object({
+  name: z.string().optional(),
+  email: z.email().optional(),
+  password: z.string().optional(),
+});
+
+export type UpdateUserTypeSchema = z.infer<typeof updateUserSchema>;

@@ -1,4 +1,5 @@
 import { ClinicUser } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers";
+import { decrypt } from "../../../../shared/utils/crypto";
 import {
   BindClinicUserResponse,
   GetClinicsByUserResponse,
@@ -15,6 +16,7 @@ export class GetClinicsByUserMapper {
         name: clinicUser.clinic.name,
         city: clinicUser.clinic.city,
         clinicId: clinicUser.clinicId,
+        cnpj: decrypt(clinicUser.clinic.cnpj),
       },
     };
   }

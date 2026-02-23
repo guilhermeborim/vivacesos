@@ -20,7 +20,9 @@ export function ProfessionalListPage() {
 
   const usersNotProfessionals = dataUsers?.filter(
     (user: User) =>
-      !professionals.some((prof: Professional) => prof.userId === user.id_user),
+      !professionals.some(
+        (prof: Professional) => prof.userId === user.user.userId,
+      ),
   );
 
   return (
@@ -29,7 +31,7 @@ export function ProfessionalListPage() {
         <ButtonPrimitive
           variant="success"
           onClick={toggleModalOpen}
-          disabled={usersNotProfessionals.length === 0}
+          // disabled={usersNotProfessionals.length === 0}
         >
           Vincular
         </ButtonPrimitive>

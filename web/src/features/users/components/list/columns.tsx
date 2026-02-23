@@ -13,12 +13,12 @@ export function createUserColumns({
   const baseColumns = [
     TableList.Column<User>({
       header: "Nome",
-      accessorFn: (row) => row.name,
+      accessorFn: (row) => row.user.name,
       filterType: "text",
     }),
     TableList.Column<User>({
       header: "E-mail",
-      accessorFn: (row) => row.email,
+      accessorFn: (row) => row.user.email,
       filterType: "text",
     }),
     TableList.Column<User>({

@@ -54,5 +54,6 @@ export type GetClinicsByUserResponse = {
     name: string;
     clinicId: string;
     city: string;
+    cnpj: string;
   };
 };

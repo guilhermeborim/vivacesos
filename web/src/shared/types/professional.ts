@@ -1,17 +1,11 @@
-enum Type {
-  MEDICO = "MEDICO",
-}
+import { Type } from "../enums";
 
 export type Professional = {
-  id: string;
-  userId: string;
   clinicId: string;
-  type: Type;
-  crm: string;
-  specialty: string;
-  active: boolean;
-  createdAt: string | Date;
-  updatedAt: string | Date;
-  name: string;
-  email: string;
+  userId: string;
+  professional: {
+    name: string;
+    specialty: string;
+    type: Type;
+  };
 };

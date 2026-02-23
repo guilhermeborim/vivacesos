@@ -119,6 +119,8 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
                         name="crm"
                         label="CRM"
                         placeholder="CRM do Profissional"
+                        max={10}
+                        min={5}
                       />
                     </Col>
                     <Col lg={3}>

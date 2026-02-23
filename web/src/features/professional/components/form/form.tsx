@@ -31,8 +31,8 @@ export function FormProfessional({
             name="userId"
             options={
               users?.map((user) => ({
-                label: user.name,
-                value: user.id_user,
+                label: user.user.name,
+                value: user.user.userId,
               })) ?? []
             }
             label="Selecione o Usuário"
@@ -61,6 +61,8 @@ export function FormProfessional({
                 name="crm"
                 label="CRM"
                 placeholder="CRM do Profissional"
+                minLength={5}
+                maxLength={10}
               />
             </Col>
             <Col lg={12}>

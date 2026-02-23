@@ -1,6 +1,7 @@
 export interface ClinicCreateParams {
   name: string;
   cnpj: string;
+  cnpjHash: string;
   phone: string;
   cep: string;
   number: string;

@@ -1,14 +1,12 @@
-enum Role {
-  ADMIN = "ADMIN",
-  PROFISSIONAL = "PROFESSIONAL",
-  RECEPCIONISTA = "RECEPCIONISTA",
-}
+import { Role } from "../enums";
 
 export type User = {
   id: string;
   role: Role;
   status: string;
-  id_user: string;
-  name: string;
-  email: string;
+  user: {
+    userId: string;
+    name: string;
+    email: string;
+  };
 };

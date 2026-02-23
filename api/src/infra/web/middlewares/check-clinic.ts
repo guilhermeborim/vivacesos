@@ -11,7 +11,7 @@ export class CheckClinicUserMiddleware {
 
   execute = async (request: FastifyRequest) => {
     const clinicAuthorization = request.clinicId;
-
+    console.log(request.clinicId);
     if (!clinicAuthorization) {
       throw new Error("Cabeçalho de autorização da clínica não fornecido");
     }

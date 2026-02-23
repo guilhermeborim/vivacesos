@@ -59,4 +59,40 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
       throw new DatabaseError("Falha ao buscar profissionais!", error);
     }
   }
+
+  async getProfessionalByClinicId(
+    clinicId: string,
+    userId: string,
+  ): Promise<Professional | null> {
+    try {
+      const professionals = await this.professionalRepository.findOne({
+        where: {
+          clinicId,
+          userId,
+        },
+      });
+
+      return professionals;
+    } catch (error) {
+      throw new DatabaseError("Falha ao buscar profissionais!", error);
+    }
+  }
+
+  async getCrmProfessionalByClinicId(
+    clinicId: string,
+    crmHash: string,
+  ): Promise<Professional | null> {
+    try {
+      const professionals = await this.professionalRepository.findOne({
+        where: {
+          clinicId,
+          crmHash,
+        },
+      });
+
+      return professionals;
+    } catch (error) {
+      throw new DatabaseError("Falha ao buscar profissionais!", error);
+    }
+  }
 }

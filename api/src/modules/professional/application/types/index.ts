@@ -4,6 +4,7 @@ export interface CreateProfessionalParams {
   userId: string;
   type?: ProfessionalType;
   crm?: string;
+  crmHash?: string;
   specialty?: string;
   active?: boolean;
 }

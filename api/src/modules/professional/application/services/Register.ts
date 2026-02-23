@@ -1,25 +1,31 @@
+import { ConflictError } from "../../../../shared/errors/conflict.error";
 import { UnauthenticatedError } from "../../../../shared/errors/unauthenticated.error";
-import { encrypt } from "../../../../shared/utils/crypto";
-import { ClinicUsersTypeormRepository } from "../../../clinicUser/database/repositories/ClinicUserTypeormRepository";
+import { encrypt, hash } from "../../../../shared/utils/crypto";
 import { ProfessionalTypeormRepository } from "../../database/repositories/ProfessionalTypeormRepository";
 import { ProfessionalResponse } from "../dtos/ProfessionalResponse";
 import { CreateProfessionalParams } from "../types";
 
 export class RegisterProfessionalService {
   private professionalRepository: ProfessionalTypeormRepository;
-  private clinicUserRepository: ClinicUsersTypeormRepository;
 
   constructor() {
     this.professionalRepository = new ProfessionalTypeormRepository();
-    this.clinicUserRepository = new ClinicUsersTypeormRepository();
   }
 
   async execute(
     clinicId: string,
     professional: CreateProfessionalParams,
   ): Promise<ProfessionalResponse> {
+    const crmHash = hash(professional.crm);
+
+    const crmProfessionalVinculedInClinic =
+      await this.professionalRepository.getCrmProfessionalByClinicId(
+        clinicId,
+        crmHash,
+      );
+
     const professionalVinculedInClinic =
-      await this.clinicUserRepository.getUserBindedClinic(
+      await this.professionalRepository.getProfessionalByClinicId(
         clinicId,
         professional.userId,
       );
@@ -30,10 +36,12 @@ export class RegisterProfessionalService {
       );
     }
 
-    if (professional.crm) {
-      const crmHash = encrypt(professional.crm);
-      professional.crm = crmHash;
+    if (crmProfessionalVinculedInClinic) {
+      throw new ConflictError("Este CRM já está cadastrado nesta clínica!");
     }
+
+    professional.crmHash = crmHash;
+    professional.crm = encrypt(professional.crm);
 
     const professionalCreated =
       await this.professionalRepository.createProfessional(

@@ -13,17 +13,17 @@ export function createProfessionalColumns({
   const baseColumns = [
     TableList.Column<Professional>({
       header: "Nome",
-      accessorFn: (row) => row.name,
+      accessorFn: (row) => row.professional.name,
     }),
     TableList.Column<Professional>({
       header: "Tipo",
-      accessorFn: (row) => row.type,
+      accessorFn: (row) => row.professional.type,
       options: ["MEDICO"],
       filterType: "select",
     }),
     TableList.Column<Professional>({
       header: "Especialidade",
-      accessorFn: (row) => row.specialty,
+      accessorFn: (row) => row.professional.specialty,
     }),
   ];
 

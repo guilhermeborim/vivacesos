@@ -37,11 +37,18 @@ export class Professional {
   @Column({
     name: "crm",
     type: "varchar",
-    unique: true,
     nullable: true,
     default: null,
   })
   crm: string;
+
+  @Column({
+    name: "crmHash",
+    type: "varchar",
+    nullable: true,
+    default: null,
+  })
+  crmHash: string;
 
   @Column({ name: "specialty", type: "varchar", nullable: true, default: null })
   specialty: string;

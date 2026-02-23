@@ -17,7 +17,6 @@ export class RegisterPatientService {
     const patientExistByClinic =
       await this.patientRepository.getPatientByCpfInClinic(cpfHash, clinicId);
 
-    console.log(patientExistByClinic);
     if (patientExistByClinic) {
       throw new ForbiddenError("Este CPF já está cadastrado!");
     }

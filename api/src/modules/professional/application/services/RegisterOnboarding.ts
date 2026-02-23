@@ -1,4 +1,4 @@
-import { hashSync } from "bcrypt";
+import { encrypt, hash } from "../../../../shared/utils/crypto";
 import { ProfessionalTypeormRepository } from "../../database/repositories/ProfessionalTypeormRepository";
 import { ProfessionalResponse } from "../dtos/ProfessionalResponse";
 import { CreateProfessionalOnboardingParams } from "../types";
@@ -13,10 +13,10 @@ export class RegisterProfessionalOnboardingService {
   async execute(
     professional: CreateProfessionalOnboardingParams,
   ): Promise<ProfessionalResponse> {
-    if (professional.crm) {
-      const crmHash = hashSync(professional.crm, 10);
-      professional.crm = crmHash;
-    }
+    const crmHash = hash(professional.crm);
+
+    professional.crmHash = crmHash;
+    professional.crm = encrypt(professional.crm);
 
     const professionalCreated =
       await this.professionalRepository.createProfessionalOnboarding(

@@ -1,8 +1,10 @@
 import crypto from "crypto";
 import { resend } from "../../../../infra/web/config/resend";
+import { ConflictError } from "../../../../shared/errors/conflict.error";
 import { ForbiddenError } from "../../../../shared/errors/forbidden.error";
 import { UnauthenticatedError } from "../../../../shared/errors/unauthenticated.error";
 import { ClinicTypeormRepository } from "../../../clinic/database/repositories/ClinicTypeormRepository";
+import { UserTypeormRepository } from "../../../users/database/repositories/UserTypeormRepository";
 import { InviteTypeormRepository } from "../../database/repositories/InviteTypeormRepository";
 import { ClinicInviteResponse } from "../dtos/ClinicInviteResponse";
 import { CreateInviteParams } from "../types";
@@ -10,10 +12,12 @@ import { CreateInviteParams } from "../types";
 export class RegisterInviteService {
   private inviteRepository: InviteTypeormRepository;
   private clinicRepository: ClinicTypeormRepository;
+  private userRepository: UserTypeormRepository;
 
   constructor() {
     this.inviteRepository = new InviteTypeormRepository();
     this.clinicRepository = new ClinicTypeormRepository();
+    this.userRepository = new UserTypeormRepository();
   }
 
   async execute(
@@ -31,6 +35,14 @@ export class RegisterInviteService {
     const existInviteByEmail = await this.inviteRepository.getInviteByEmail(
       invite.email,
     );
+
+    const existEmailInUser = await this.userRepository.findByEmail(
+      invite.email,
+    );
+
+    if (existEmailInUser) {
+      throw new ConflictError("Este E-mail já está cadastrado em nossa base!");
+    }
 
     if (
       existInviteByEmail &&
@@ -69,7 +81,7 @@ export class RegisterInviteService {
       to: invite.email,
       subject: "Você foi convidado para uma clínica",
       html: `
-        <p>Você foi convidado para participar da clínica <b>${clinic.name}</b>.</p>
+        <p>Você foi convidado para participar da clínica <b>${clinic.clinic.name}</b>.</p>
 
         <a href="http://localhost:5173/invite/accept?token=${token}">
           Aceitar convite

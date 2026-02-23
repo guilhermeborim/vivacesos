@@ -19,7 +19,7 @@ export class UpdateClinicService {
 
     const clinicExistsByCnpj = await this.clinicRepository.findByCnpj(
       clinicId,
-      clinicExisting.cnpj,
+      clinicExisting.clinic.cnpj,
     );
 
     if (clinicExistsByCnpj) {
@@ -28,7 +28,7 @@ export class UpdateClinicService {
 
     const clinicExistsByPhone = await this.clinicRepository.findByPhone(
       clinicId,
-      clinicExisting.phone,
+      clinicExisting.clinic.phone,
     );
 
     if (clinicExistsByPhone) {

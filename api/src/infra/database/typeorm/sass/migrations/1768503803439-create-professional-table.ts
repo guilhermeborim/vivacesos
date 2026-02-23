@@ -45,6 +45,13 @@ export class CreateProfessionalTable1768503803439 implements MigrationInterface 
             default: null,
           },
           {
+            name: "crmHash",
+            type: "varchar",
+            isUnique: true,
+            isNullable: true,
+            default: null,
+          },
+          {
             name: "specialty",
             type: "varchar",
             isNullable: true,
@@ -70,6 +77,10 @@ export class CreateProfessionalTable1768503803439 implements MigrationInterface 
           },
         ],
         uniques: [
+          new TableUnique({
+            name: "UQ_crm_clinic",
+            columnNames: ["clinicId", "crmHash"],
+          }),
           new TableUnique({
             name: "UQ_professionals_user_clinic",
             columnNames: ["userId", "clinicId"],

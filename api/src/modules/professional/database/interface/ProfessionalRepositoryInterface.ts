@@ -13,4 +13,12 @@ export interface ProfessionalRepositoryInterface {
     data: CreateProfessionalOnboardingParams,
   ): Promise<Professional>;
   getProfessionalsByClinicId(clinicId: string): Promise<Professional[]>;
+  getProfessionalByClinicId(
+    clinicId: string,
+    userId: string,
+  ): Promise<Professional | null>;
+  getCrmProfessionalByClinicId(
+    clinicId: string,
+    crmHash: string,
+  ): Promise<Professional | null>;
 }

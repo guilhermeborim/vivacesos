@@ -1,5 +1,5 @@
 import { ConflictError } from "../../../../shared/errors/conflict.error";
-import { encrypt } from "../../../../shared/utils/crypto";
+import { encrypt, hash } from "../../../../shared/utils/crypto";
 import { ClinicTypeormRepository } from "../../database/repositories/ClinicTypeormRepository";
 import { ClinicResponse } from "../dtos/ClinicResponse";
 import { ClinicCreateParams } from "../types";
@@ -12,6 +12,8 @@ export class RegisterClinicService {
   }
 
   async execute(clinic: ClinicCreateParams): Promise<ClinicResponse> {
+    const cnpjHash = hash(clinic.cnpj);
+
     const clinicExistsByCnpj = await this.clinicRepository.findByCnpj(
       null,
       clinic.cnpj,
@@ -30,9 +32,8 @@ export class RegisterClinicService {
       throw new ConflictError("Telefone já está cadastrado!");
     }
 
-    const encryptedCnpj = encrypt(clinic.cnpj);
-
-    clinic.cnpj = encryptedCnpj;
+    clinic.cnpjHash = cnpjHash;
+    clinic.cnpj = encrypt(clinic.cnpj);
 
     const clinicCreated = await this.clinicRepository.createClinic(clinic);
 

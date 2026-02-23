@@ -24,6 +24,12 @@ export function FormUser({ formUser, defaultValues }: FormUserProps) {
             name={"email"}
             placeholder="example@example.com"
           />
+          <InputController
+            label="Nome"
+            control={formUser.control}
+            name={"name"}
+            placeholder="example@example.com"
+          />
         </Col>
         <Col lg={6}>
           <SelectController
