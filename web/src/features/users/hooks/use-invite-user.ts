@@ -11,6 +11,8 @@ export const useInviteUser = () => {
 
   const teste = 123
   console.log("ola")
+  console.log("ola")
+  console.log("ola")
   // FORM
   const formUser = useForm<CreateInviteTypeSchema>({
     resolver: zodResolver(createInviteSchema),
