@@ -8,7 +8,9 @@
     "start": "ts-node src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:run": "yarn typeorm migration:run -d src/infra/database/typeorm/sass/data-source.ts",
-    "migration:reverse": "yarn typeorm migration:revert -d src/infra/database/typeorm/sass/data-source.ts"
+    "migration:reverse": "yarn typeorm migration:revert -d src/infra/database/typeorm/sass/data-source.ts",
+    "lint": "eslint . --ext .ts",
+    "build": "tsc --noEmit"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",

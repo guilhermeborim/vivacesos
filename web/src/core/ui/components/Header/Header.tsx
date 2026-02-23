@@ -31,7 +31,7 @@ export const Header = ({
   };
 
   const toogleMenuBtn = () => {
-    var windowSize = document.documentElement.clientWidth;
+    const windowSize = document.documentElement.clientWidth;
     const humberIcon = document.querySelector(".hamburger-icon") as HTMLElement;
     dispatch(changeSidebarVisibility("show"));
 

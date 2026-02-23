@@ -42,7 +42,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build"
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext .ts,.tsx"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.6.0",
