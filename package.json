@@ -5,6 +5,7 @@
     "api",
     "web"
   ],
+  "packageManager": "yarn@1.22.19",
   "dependencies": {
     "commitizen": "^4.3.1"
   },
