@@ -1,1 +1,1 @@
-export { LightDark } from "./LightDark";
+export { LightDark } from "./LightDark"
