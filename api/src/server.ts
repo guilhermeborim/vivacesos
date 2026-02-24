@@ -7,7 +7,6 @@ import * as ErrorHandler from "./infra/web/config/error-handler"
 import * as Helmet from "./infra/web/config/helmet"
 import * as RateLimit from "./infra/web/config/rate_limit"
 import * as Routes from "./infra/web/routes"
-
 ;(async () => {
   const app = fastify()
 
@@ -27,7 +26,8 @@ import * as Routes from "./infra/web/routes"
 
   app.listen(
     {
-      port: 3334,
+      port: Number(process.env.PORT) || 3334,
+      host: "0.0.0.0",
     },
     () => {
       console.log(`Api rodando na porta ${process.env.PORT}`)
