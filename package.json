@@ -2,7 +2,8 @@
   "name": "VivaceSOS",
   "private": true,
   "workspaces": [
-    "sass/*"
+    "api",
+    "web"
   ],
   "dependencies": {
     "commitizen": "^4.3.1"
