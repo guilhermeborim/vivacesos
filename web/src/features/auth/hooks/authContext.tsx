@@ -3,7 +3,6 @@ import { useQueryClient } from "@tanstack/react-query"
 import { createContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import { Permission } from "../../../../../shared/permissions"
 import { useMutationLogin, useMutationRegister } from "../api/mutations"
 import { postLogout } from "../api/routes"
 import type { LoginFormTypeSchema, RegisterFormTypeSchema } from "../schemas"
@@ -39,7 +38,7 @@ interface AuthContextProps {
   login: (payload: LoginFormTypeSchema) => Promise<void>
   register: (payload: RegisterFormTypeSchema) => Promise<void>
   signOut: () => void
-  hasPermission: (permission: Permission) => boolean
+  hasPermission: (permission: any) => boolean
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined)
@@ -79,7 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     queryClient.setQueryData(["session"], null)
   }
 
-  function hasPermission(permission: Permission): boolean {
+  function hasPermission(permission: any): boolean {
     return data?.data?.permissions?.includes(permission) || false
   }
 

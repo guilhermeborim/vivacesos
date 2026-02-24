@@ -1,37 +1,37 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify"
 import {
   ClinicUserRole,
   ClinicUserStatus,
-} from "../../../../infra/database/typeorm/sass/entities/ClinicUsers";
-import { registerClinicBodySchema } from "../../../../infra/web/routes/schemas/clinic/register.schema";
-import { BindClinicUserService } from "../../../clinicUser/application/services/Bind";
-import { RegisterClinicService } from "../services/Register";
-import { ClinicCreateParams } from "../types";
+} from "../../../../infra/database/typeorm/sass/entities/ClinicUsers"
+import { registerClinicBodySchema } from "../../../../infra/web/routes/schemas/clinic/register.schema"
+import { BindClinicUserService } from "../../../clinicUser/application/services/Bind"
+import { RegisterClinicService } from "../services/Register"
+import { ClinicCreateParams } from "../types"
 
 export class RegisterClinicController {
-  private clinicLogic: RegisterClinicService;
-  private clinicUserLogic: BindClinicUserService;
+  private clinicLogic: RegisterClinicService
+  private clinicUserLogic: BindClinicUserService
 
   constructor() {
-    this.clinicLogic = new RegisterClinicService();
-    this.clinicUserLogic = new BindClinicUserService();
+    this.clinicLogic = new RegisterClinicService()
+    this.clinicUserLogic = new BindClinicUserService()
   }
 
   execute = async (
     request: FastifyRequest<{ Body: ClinicCreateParams }>,
     reply: FastifyReply,
   ) => {
-    const clinicData = registerClinicBodySchema.parse(request.body);
-    const clinic = await this.clinicLogic.execute(clinicData);
+    const clinicData = registerClinicBodySchema.parse(request.body)
+    const clinic = await this.clinicLogic.execute(clinicData)
 
     const clinicUserData = {
-      clinicId: clinic.id,
+      clinicId: clinic.clinic.id,
       userId: request.user.id,
       role: ClinicUserRole.ADMIN,
       status: ClinicUserStatus.ATIVO,
-    };
+    }
 
-    const { token } = await this.clinicUserLogic.execute(clinicUserData);
+    const { token } = await this.clinicUserLogic.execute(clinicUserData)
 
     if (token) {
       reply
@@ -42,8 +42,8 @@ export class RegisterClinicController {
           sameSite: process.env.NODE_ENV === "PROD" ? "none" : "lax",
           secure: process.env.NODE_ENV === "PROD" ? true : false,
         })
-        .send(clinic);
+        .send(clinic)
     }
-    reply.send(clinic);
-  };
+    reply.send(clinic)
+  }
 }

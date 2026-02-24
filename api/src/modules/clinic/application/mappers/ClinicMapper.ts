@@ -1,6 +1,6 @@
-import { Clinic } from "../../../../infra/database/typeorm/sass/entities/Clinic";
-import { decrypt } from "../../../../shared/utils/crypto";
-import { ClinicResponse } from "../dtos/ClinicResponse";
+import { Clinic } from "../../../../infra/database/typeorm/sass/entities/Clinic"
+import { decrypt } from "../../../../shared/utils/crypto"
+import { ClinicResponse } from "../dtos/ClinicResponse"
 
 export class GetClinicsByUserMapper {
   static toResponse(clinic: Clinic): ClinicResponse {
@@ -10,7 +10,8 @@ export class GetClinicsByUserMapper {
         cnpj: decrypt(clinic.cnpj),
         id: clinic.id,
         name: clinic.name,
+        phone: clinic.phone,
       },
-    };
+    }
   }
 }
