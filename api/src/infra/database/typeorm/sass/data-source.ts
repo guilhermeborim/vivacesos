@@ -1,6 +1,6 @@
-import "dotenv/config";
-import "reflect-metadata";
-import { DataSource } from "typeorm";
+import "dotenv/config"
+import "reflect-metadata"
+import { DataSource } from "typeorm"
 
 export const SassDataSource = new DataSource({
   type: "postgres",
@@ -11,6 +11,6 @@ export const SassDataSource = new DataSource({
   database: process.env.DATABASE_NAME,
   synchronize: false,
   logging: false,
-  entities: ["src/infra/database/typeorm/sass/entities/*.{ts,js}"],
-  migrations: ["src/infra/database/typeorm/sass/migrations/*.{ts,js}"],
-});
+  entities: [__dirname + "/typeorm/sass/entities/*.js"],
+  migrations: [__dirname + "/typeorm/sass/migrations/*.js"],
+})
