@@ -1,31 +1,25 @@
-import {
-  InputController,
-  Loading,
-  Nav,
-  SelectController,
-  Tab,
-} from "@/core/ui";
-import { FormClinic } from "@/features/clinic/components";
-import { useCreateClinic } from "@/shared/hooks";
-import { Col, Progress, Row } from "reactstrap";
+import { InputController, Loading, Nav, SelectController, Tab } from "@/core/ui"
+import { FormClinic } from "@/features/clinic/components"
+import { useCreateClinic } from "@/shared/hooks"
+import { Col, Progress, Row } from "reactstrap"
 import {
   useInitialStepClinic,
   useInitialStepFinished,
   useInitialStepProfessional,
   useInitialSteps,
-} from "../hooks";
-import { CreateNextStepTypeSchema } from "../schemas";
+} from "../hooks"
+import { CreateNextStepTypeSchema } from "../schemas"
 
 export function InitialSteps(step: CreateNextStepTypeSchema) {
-  const { activeTab, progressbarvalue } = useInitialSteps(step);
-  const { mutationCreateClinic, onSubmitClinic } = useInitialStepClinic();
+  const { activeTab, progressBarValue } = useInitialSteps(step)
+  const { mutationCreateClinic, onSubmitClinic } = useInitialStepClinic()
   const {
     mutationCreateProfessionalOnboarding,
     onSubmitProfessionalOnboarding,
     formProfessionalOnboarding,
-  } = useInitialStepProfessional();
-  const { onSubmitFinishedOnboarding } = useInitialStepFinished();
-  const { formCreateClinic } = useCreateClinic();
+  } = useInitialStepProfessional()
+  const { onSubmitFinishedOnboarding } = useInitialStepFinished()
+  const { formCreateClinic } = useCreateClinic()
 
   return (
     <>
@@ -37,7 +31,7 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
       )}
       <div>
         <div className="progress-nav mb-4 mt-3">
-          <Progress value={progressbarvalue} style={{ height: "1px" }} />
+          <Progress value={progressBarValue} style={{ height: "1px" }} />
 
           <Nav.Root>
             <Nav.Item>
@@ -59,9 +53,9 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
                 <div>
                   <h5 className="mb-1">Cadastre sua Clínica</h5>
                   <p className="text-muted">
-                    Para começar a usar o sistema, o primeiro passo é cadastrar
-                    sua clínica. É nela que ficarão organizados os atendimentos,
-                    profissionais e informações do seu negócio.
+                    Para começar a usar o sistema, o primeiro passo é cadastrar sua
+                    clínica. É nela que ficarão organizados os atendimentos, profissionais
+                    e informações do seu negócio.
                   </p>
                 </div>
               </div>
@@ -73,8 +67,7 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
                   type="submit"
                   className="btn btn-primary ms-auto"
                   disabled={
-                    mutationCreateClinic.isPending ||
-                    !formCreateClinic.formState.isValid
+                    mutationCreateClinic.isPending || !formCreateClinic.formState.isValid
                   }
                 >
                   {mutationCreateClinic.isPending
@@ -95,10 +88,9 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
                   <div>
                     <h5 className="mb-1">Cadastre Você como Profissional</h5>
                     <p className="text-muted">
-                      Agora precisamos cadastrar você como profissional da
-                      clínica. Isso permitirá que você realize atendimentos,
-                      tenha acesso ao sistema e convide outros profissionais
-                      futuramente.
+                      Agora precisamos cadastrar você como profissional da clínica. Isso
+                      permitirá que você realize atendimentos, tenha acesso ao sistema e
+                      convide outros profissionais futuramente.
                     </p>
                   </div>
                 </div>
@@ -159,10 +151,9 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
                 <h5>Parábens, tudo pronto!</h5>
                 <div>
                   <p className="text-muted">
-                    Sua clínica já está cadastrada e seu perfil como
-                    profissional foi criado. <br /> A partir de agora, você já
-                    pode começar a usar o sistema e organizar sua rotina de
-                    forma mais simples e eficiente.
+                    Sua clínica já está cadastrada e seu perfil como profissional foi
+                    criado. <br /> A partir de agora, você já pode começar a usar o
+                    sistema e organizar sua rotina de forma mais simples e eficiente.
                   </p>
                 </div>
               </div>
@@ -180,5 +171,5 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
         </Tab.Root>
       </div>
     </>
-  );
+  )
 }
