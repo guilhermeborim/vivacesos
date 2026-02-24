@@ -1,0 +1,37 @@
+FROM node:20-alpine AS base
+RUN npm install -g yarn
+WORKDIR /app
+
+# Copia arquivos de dependências
+COPY package.json yarn.lock ./
+COPY sass/api/package.json ./sass/api/
+
+# Instala apenas as dependências de produção do workspace
+RUN yarn workspace api install --frozen-lockfile
+
+# Copia o código
+COPY sass/api ./sass/api
+
+# Build
+RUN yarn workspace api build
+
+# Runner
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+COPY --from=base /app/node_modules ./node_modules
+COPY --from=base /app/sass/api/dist ./dist
+COPY --from=base /app/sass/api/package.json ./package.json
+
+EXPOSE 3000
+
+CMD ["node", "dist/server.js"]
+```
+
+> Ajusta o `dist/server.js` para o entrypoint real da sua API.
+
+Crie também o `sass/api/.dockerignore`:
+```
+node_modules
+dist
+.env
