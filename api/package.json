@@ -5,12 +5,12 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "start": "ts-node src/index.ts",
+    "start": "node dist/src/server.js",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:run": "yarn typeorm migration:run -d src/infra/database/typeorm/sass/data-source.ts",
     "migration:reverse": "yarn typeorm migration:revert -d src/infra/database/typeorm/sass/data-source.ts",
     "lint": "eslint . --ext .ts",
-    "build": "tsc --noEmit"
+    "build": "tsc"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
