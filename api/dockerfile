@@ -10,9 +10,6 @@ COPY api ./api
 
 RUN yarn workspace api build
 
-# Debug: mostra o que foi gerado
-RUN find /app/api/dist -name "*.js" | head -20
-
 FROM node:20-alpine AS runner
 WORKDIR /app
 
