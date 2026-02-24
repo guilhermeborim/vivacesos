@@ -72,7 +72,7 @@ export class RegisterInviteService {
       to: invite.email,
       subject: "Você foi convidado para uma clínica",
       html: `
-        <p>Você foi convidado para participar da clínica <b>${clinic.clinic.name}</b>.</p>
+        <p>Você foi convidado para participar da clínica <b>${clinic.name}</b>.</p>
 
         <a href="http://localhost:5173/invite/accept?token=${token}">
           Aceitar convite

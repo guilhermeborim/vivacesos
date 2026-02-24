@@ -15,3 +15,17 @@ export class GetClinicsByUserMapper {
     }
   }
 }
+
+export class GetClinicByidMapper {
+  static toResponse(clinic: Clinic): ClinicResponse {
+    return {
+      clinic: {
+        city: clinic.city,
+        cnpj: decrypt(clinic.cnpj),
+        id: clinic.id,
+        name: clinic.name,
+        phone: clinic.phone,
+      },
+    }
+  }
+}

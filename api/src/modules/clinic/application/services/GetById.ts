@@ -2,6 +2,7 @@ import { NotFoundError } from "../../../../shared/errors/not-found.error"
 import { decrypt } from "../../../../shared/utils/crypto"
 import { ClinicTypeormRepository } from "../../database/repositories/ClinicTypeormRepository"
 import { ClinicResponse } from "../dtos/ClinicResponse"
+import { GetClinicByidMapper } from "../mappers/ClinicMapper"
 
 export class FindClinicIdService {
   private clinicRepository: ClinicTypeormRepository
@@ -17,8 +18,10 @@ export class FindClinicIdService {
       throw new NotFoundError("Clinica não encontrada")
     }
 
-    clinicCreated.clinic.cnpj = decrypt(clinicCreated.clinic.cnpj)
+    clinicCreated.cnpj = decrypt(clinicCreated.cnpj)
 
-    return clinicCreated
+    return GetClinicByidMapper.toResponse({
+      ...clinicCreated,
+    })
   }
 }

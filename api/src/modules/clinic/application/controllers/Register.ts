@@ -25,7 +25,7 @@ export class RegisterClinicController {
     const clinic = await this.clinicLogic.execute(clinicData)
 
     const clinicUserData = {
-      clinicId: clinic.clinic.id,
+      clinicId: clinic.id,
       userId: request.user.id,
       role: ClinicUserRole.ADMIN,
       status: ClinicUserStatus.ATIVO,
