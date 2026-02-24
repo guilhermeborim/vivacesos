@@ -1,10 +1,20 @@
 {
   "name": "VivaceSOS",
   "private": true,
-  "workspaces": [
-    "api",
-    "web"
-  ],
+  "workspaces": {
+    "packages": [
+      "api",
+      "web"
+    ],
+    "nohoist": [
+      "**/vite",
+      "**/vite/**",
+      "**/@vitejs/**",
+      "**/@vitejs/**/**",
+      "**/vite-tsconfig-paths",
+      "**/vite-tsconfig-paths/**"
+    ]
+  },
   "packageManager": "yarn@1.22.19",
   "dependencies": {
     "commitizen": "^4.3.1"
