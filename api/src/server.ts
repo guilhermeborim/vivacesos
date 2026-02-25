@@ -24,7 +24,7 @@ import * as Routes from "./infra/web/routes"
     return { status: "ok" }
   })
 
-  console.log("mudanca deploy.yml")
+  console.log("mudanca deploy.yml novamente")
   app.listen(
     {
       port: Number(process.env.PORT) || 3334,
