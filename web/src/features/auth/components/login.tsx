@@ -1,31 +1,31 @@
-import { ButtonPrimitive, InputController, Loading } from "@/core/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { Card, CardBody, Col, Label, Row } from "reactstrap";
-import { useAuth } from "../hooks/use-auth";
-import { type LoginFormTypeSchema, loginFormSchema } from "../schemas";
+import { ButtonPrimitive, InputController, Loading } from "@/core/ui"
+import { zodResolver } from "@hookform/resolvers/zod"
+import React from "react"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import { Card, CardBody, Col, Label, Row } from "reactstrap"
+import { useAuth } from "../hooks/use-auth"
+import { type LoginFormTypeSchema, loginFormSchema } from "../schemas"
 
 export function Login() {
-  const { login } = useAuth();
-  const [connectingUser, setConnectingUser] = React.useTransition();
-  const [showPassword, setShowPassword] = React.useState(false);
+  const { login } = useAuth()
+  const [connectingUser, setConnectingUser] = React.useTransition()
+  const [showPassword, setShowPassword] = React.useState(false)
 
   const toggleShowPassword = () => {
-    setShowPassword((prevState) => !prevState);
-  };
+    setShowPassword((prevState) => !prevState)
+  }
 
   const form = useForm<LoginFormTypeSchema>({
     resolver: zodResolver(loginFormSchema),
-  });
+  })
 
   function handleSubmit(payload: LoginFormTypeSchema) {
     setConnectingUser(async () => {
-      await login(payload);
-    });
+      await login(payload)
+    })
   }
-
+  const navigate = useNavigate()
   return (
     <>
       {connectingUser && <Loading loading={connectingUser} />}
@@ -88,7 +88,13 @@ export function Login() {
                     </ButtonPrimitive>
                   </div>
                   <div className="text-end mt-1">
-                    <Link to="/register">Cadastrar</Link>
+                    <button
+                      type="button"
+                      className="btn btn-link p-0"
+                      onClick={() => navigate("/register")}
+                    >
+                      Cadastrar
+                    </button>
                   </div>
                 </form>
               </div>
@@ -97,5 +103,5 @@ export function Login() {
         </Col>
       </Row>
     </>
-  );
+  )
 }
