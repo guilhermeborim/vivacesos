@@ -21,4 +21,4 @@ EXPOSE 3000
 
 RUN find /app -name "server.js" 2>/dev/null
 
-CMD ["node", "src/server.js"]
+CMD ["node", "server.js"]
