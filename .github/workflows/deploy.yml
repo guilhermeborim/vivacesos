@@ -78,8 +78,7 @@ jobs:
         run: npm install -g vercel
 
       - name: Deploy Web para Produção
-        run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
-        working-directory: web
+        run: vercel ./web --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -96,8 +95,7 @@ jobs:
         run: npm install -g vercel
 
       - name: Deploy Web para Staging (Preview)
-        run: vercel --token=${{ secrets.VERCEL_TOKEN }} --yes
-        working-directory: web
+        run: vercel ./web --token=${{ secrets.VERCEL_TOKEN }} --yes
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
