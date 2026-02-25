@@ -9,7 +9,7 @@ export const connect = async () => {
     console.log("[APP CONTENTS]", fs.readdirSync("/app"))
     console.log("[DIRNAME]", __dirname)
     console.log("[ENTITIES PATH]", path.join(__dirname, "typeorm/sass/entities/*.js"))
-
+    console.log("[ENTITIES DIR]", fs.readdirSync("/app/infra/database/typeorm/sass/"))
     await SassDataSource.initialize()
     console.log(
       "[TODAS ENTIDADES]",
