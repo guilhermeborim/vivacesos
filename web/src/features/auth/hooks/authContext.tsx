@@ -52,7 +52,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (isError) {
-      navigate("/login")
+      const publicPaths = [
+        "/login",
+        "/register",
+        "/invite/accept",
+        "/error-404",
+        "/error-403",
+        "/error-500",
+      ]
+      const isPublicRoute = publicPaths.some((path) =>
+        window.location.pathname.startsWith(path),
+      )
+
+      if (!isPublicRoute) {
+        navigate("/login")
+      }
     }
   }, [isError, navigate])
 
