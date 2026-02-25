@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/railwayapp/cli:latest
     env:
-      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
     steps:
       - uses: actions/checkout@v4
       - run: railway up --service=${{ secrets.RAILWAY_SERVICE_ID_STAGING }} --environment=staging --detach
