@@ -25,6 +25,7 @@ import * as Routes from "./infra/web/routes"
   })
 
   console.log("testando o deploy da api via github actions")
+  console.log("mudanca deploy.yml")
   app.listen(
     {
       port: Number(process.env.PORT) || 3334,
