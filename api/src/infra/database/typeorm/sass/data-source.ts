@@ -1,4 +1,5 @@
 import "dotenv/config"
+import path from "path"
 import "reflect-metadata"
 import { DataSource } from "typeorm"
 
@@ -11,10 +12,6 @@ export const SassDataSource = new DataSource({
   database: process.env.DATABASE_NAME,
   synchronize: false,
   logging: false,
-  entities: [
-    process.env.NODE_ENV === "PROD"
-      ? "dist/infra/database/typeorm/sass/entities/*.{ts,js}"
-      : "src/infra/database/typeorm/sass/entities/*.{ts,js}",
-  ],
-  migrations: ["src/infra/database/typeorm/sass/migrations/*.{ts,js}"],
+  entities: [path.join(__dirname, "typeorm/sass/entities/*.js")],
+  migrations: [path.join(__dirname, "typeorm/sass/migrations/*.js")],
 })
