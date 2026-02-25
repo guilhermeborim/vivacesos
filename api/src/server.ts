@@ -24,7 +24,6 @@ import * as Routes from "./infra/web/routes"
     return { status: "ok" }
   })
 
-  console.log("testando o deploy da api via github actions")
   console.log("mudanca deploy.yml")
   app.listen(
     {
