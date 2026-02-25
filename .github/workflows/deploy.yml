@@ -35,18 +35,15 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Railway CLI
-        run: npm install -g @railway/cli
+        run: npm install -g @railway/cli@3.6.0
 
       - name: Deploy API para Produção
-        run: |
-          railway up \
-            --service ${{ secrets.RAILWAY_SERVICE_ID_PROD }} \
-            --environment production \
-            --detach
+        run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID_PROD }} --environment production --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
 
-  # ─── Deploy API Staging (develop) ─────────────────────────────
+  # ─── Deploy API Staging (develop) ────────────────────────────────
   deploy-api-staging:
     needs: changes
     if: github.ref == 'refs/heads/develop' && needs.changes.outputs.api == 'true'
@@ -55,16 +52,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Railway CLI
-        run: npm install -g @railway/cli
+        run: npm install -g @railway/cli@3.6.0
 
       - name: Deploy API para Staging
-        run: |
-          railway up \
-            --service ${{ secrets.RAILWAY_SERVICE_ID_STAGING }} \
-            --environment staging \
-            --detach
+        run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID_STAGING }} --environment staging --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
 
   # ─── Deploy Web Produção (main) ────────────────────────────────
   deploy-web-prod:
