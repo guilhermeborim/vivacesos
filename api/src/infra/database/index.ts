@@ -1,8 +1,12 @@
+import fs from "fs"
+import path from "path"
 import { SassDataSource } from "./typeorm/sass/data-source"
 
 export const connect = async () => {
   try {
     console.info("[DATABASE] Connecting...")
+    console.info("[__dirname]", __dirname)
+    console.info("[dist contents]", fs.readdirSync(path.join(__dirname, "../../..")))
 
     await SassDataSource.initialize()
     console.log(
@@ -14,7 +18,6 @@ export const connect = async () => {
     console.info("[DATABASE] Connected.")
   } catch (error) {
     console.error("[DATABASE] Conection error.", error)
-
     throw error
   }
 }
