@@ -12,6 +12,6 @@ export const SassDataSource = new DataSource({
   database: process.env.DATABASE_NAME,
   synchronize: false,
   logging: false,
-  entities: [path.join(__dirname, "infra/database/typeorm/sass/entities/*.js")],
-  migrations: [path.join(__dirname, "infra/database/typeorm/sass/migrations/*.js")],
+  entities: [path.join(__dirname, "typeorm/sass/entities/*.js")],
+  migrations: [path.join(__dirname, "typeorm/sass/migrations/*.js")],
 })
