@@ -1,17 +1,18 @@
-import { FastifyInstance } from "fastify";
-import * as ClinicRoutes from "./clinic.routes";
-import * as InviteRoutes from "./invite.routes";
-import * as PatientRoutes from "./patient.routes";
-import * as ProfessionalRoutes from "./professional.routes";
-import * as AuthRoutes from "./user.routes";
+import { FastifyInstance } from "fastify"
+import * as ClinicRoutes from "./clinic.routes"
+import * as InviteRoutes from "./invite.routes"
+import * as PatientRoutes from "./patient.routes"
+import * as ProfessionalRoutes from "./professional.routes"
+import * as AuthRoutes from "./user.routes"
 
 export const register = (fastify: FastifyInstance) => {
+  console.log("oi")
   fastify.register((instance, _, done) => {
-    InviteRoutes.configure(instance);
-    AuthRoutes.configure(instance);
-    ClinicRoutes.configure(instance);
-    ProfessionalRoutes.configure(instance);
-    PatientRoutes.configure(instance);
-    done();
-  });
-};
+    InviteRoutes.configure(instance)
+    AuthRoutes.configure(instance)
+    ClinicRoutes.configure(instance)
+    ProfessionalRoutes.configure(instance)
+    PatientRoutes.configure(instance)
+    done()
+  })
+}
