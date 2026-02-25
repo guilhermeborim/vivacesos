@@ -24,6 +24,7 @@ import * as Routes from "./infra/web/routes"
     return { status: "ok" }
   })
 
+  console.log("testando o deploy da api via github actions")
   app.listen(
     {
       port: Number(process.env.PORT) || 3334,
