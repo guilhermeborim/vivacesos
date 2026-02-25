@@ -1,8 +1,14 @@
+import fs from "fs"
+import path from "path"
 import { SassDataSource } from "./typeorm/sass/data-source"
 
 export const connect = async () => {
   try {
     console.info("[DATABASE] Connecting...")
+    console.info("[DATABASE] Connecting...")
+    console.log("[APP CONTENTS]", fs.readdirSync("/app"))
+    console.log("[DIRNAME]", __dirname)
+    console.log("[ENTITIES PATH]", path.join(__dirname, "typeorm/sass/entities/*.js"))
 
     await SassDataSource.initialize()
     console.log(
