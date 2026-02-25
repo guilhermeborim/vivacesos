@@ -2,20 +2,72 @@ name: Deploy
 
 on:
   push:
-    branches: [develop]
+    branches:
+      - main
+      - develop
 
 jobs:
-  deploy-api-staging:
+  # ─── Detecta o que mudou ───────────────────────────────────────
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+      web: ${{ steps.filter.outputs.web }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detectar mudanças
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'api/**'
+            web:
+              - 'web/**'
+
+  # ─── Deploy API Produção (main) ────────────────────────────────
+  deploy-api-prod:
+    needs: changes
+    if: github.ref == 'refs/heads/main' && needs.changes.outputs.api == 'true'
     runs-on: ubuntu-latest
     container: ghcr.io/railwayapp/cli:latest
-    needs: changes
-    if: github.ref == 'refs/heads/develop' && needs.changes.outputs.api == 'true'
     env:
-      SVC_ID: my-service-id
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
-      - run: railway up --service=${{ env.SVC_ID }}
+      - uses: actions/checkout@v4
+      - run: railway up --service=${{ secrets.RAILWAY_SERVICE_ID_PROD }} --environment=production --detach
+
+  # ─── Deploy API Staging (develop) ─────────────────────────────
+  deploy-api-staging:
+    needs: changes
+    if: github.ref == 'refs/heads/develop' && needs.changes.outputs.api == 'true'
+    runs-on: ubuntu-latest
+    container: ghcr.io/railwayapp/cli:latest
+    env:
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: railway up --service=${{ secrets.RAILWAY_SERVICE_ID_STAGING }} --environment=staging --detach
+
+  # ─── Deploy Web Produção (main) ────────────────────────────────
+  deploy-web-prod:
+    needs: changes
+    if: github.ref == 'refs/heads/main' && needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy Web para Produção
+        run: vercel ./web --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  # ─── Deploy Web Staging (develop) → Preview automático ────────
   deploy-web-staging:
     needs: changes
     if: github.ref == 'refs/heads/develop' && needs.changes.outputs.web == 'true'
