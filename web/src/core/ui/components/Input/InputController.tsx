@@ -1,13 +1,13 @@
-import { FormField, InputPrimitive } from "@/core/ui";
-import { InputMask } from "primereact/inputmask";
-import { Control, Controller, FieldValues, Path } from "react-hook-form";
-import { InputProps } from "reactstrap";
+import { FormField, InputPrimitive } from "@/core/ui"
+import { InputMask } from "primereact/inputmask"
+import { Control, Controller, FieldValues, Path } from "react-hook-form"
+import { InputProps } from "reactstrap"
 
 interface InputControllerProps<T extends FieldValues> extends InputProps {
-  control: Control<T>;
-  name: Path<T>;
-  label?: string;
-  mask?: string;
+  control: Control<T>
+  name: Path<T>
+  label?: string
+  mask?: string
 }
 
 export function InputController<T extends FieldValues>({
@@ -31,9 +31,9 @@ export function InputController<T extends FieldValues>({
               invalid={!!fieldState.error}
               mask={mask}
               className="form-control"
-              onChange={(e) =>
-                field.onChange(e?.target?.value?.replace(/\D/g, ""))
-              }
+              onChange={(e) => {
+                field.onChange(e?.value)
+              }}
             />
           ) : (
             <InputPrimitive {...field} {...rest} invalid={!!fieldState.error} />
@@ -41,5 +41,5 @@ export function InputController<T extends FieldValues>({
         </FormField>
       )}
     />
-  );
+  )
 }

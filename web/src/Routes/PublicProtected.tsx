@@ -9,7 +9,6 @@ interface PublicProtectedProps {
 const PublicProtected = ({ children }: PublicProtectedProps) => {
   const { loading, session } = useAuth()
 
-  console.log(loading, session)
   if (loading) {
     return <Loading loading />
   }
