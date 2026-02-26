@@ -7,7 +7,6 @@ import { useMutationSelectClinic } from "@/shared/mutations/clinic"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 
 export interface UseSelectClinicProps {
   clinics: Clinic[]
@@ -23,13 +22,9 @@ export function useSelectClinic({ isOpen, onClose }: UseSelectClinicProps) {
   })
 
   const onSubmitSelectClinic = async (data: SelectClinicFormTypeSchema) => {
-    try {
-      await mutationSelectClinic.mutateAsync(data.clinicId)
-      queryClient.invalidateQueries({ queryKey: ["session"] })
-      onClose()
-    } catch {
-      toast.error("Erro ao criar clínica!")
-    }
+    await mutationSelectClinic.mutateAsync(data.clinicId)
+    queryClient.invalidateQueries({ queryKey: ["session"] })
+    onClose()
   }
 
   return {

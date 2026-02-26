@@ -1,28 +1,27 @@
-import { encrypt, hash } from "../../../../shared/utils/crypto";
-import { ProfessionalTypeormRepository } from "../../database/repositories/ProfessionalTypeormRepository";
-import { ProfessionalResponse } from "../dtos/ProfessionalResponse";
-import { CreateProfessionalOnboardingParams } from "../types";
+import { encrypt, hash } from "../../../../shared/utils/crypto"
+import { replacePayloadString } from "../../../../shared/utils/format"
+import { ProfessionalTypeormRepository } from "../../database/repositories/ProfessionalTypeormRepository"
+import { ProfessionalResponse } from "../dtos/ProfessionalResponse"
+import { CreateProfessionalOnboardingParams } from "../types"
 
 export class RegisterProfessionalOnboardingService {
-  private professionalRepository: ProfessionalTypeormRepository;
+  private professionalRepository: ProfessionalTypeormRepository
 
   constructor() {
-    this.professionalRepository = new ProfessionalTypeormRepository();
+    this.professionalRepository = new ProfessionalTypeormRepository()
   }
 
   async execute(
     professional: CreateProfessionalOnboardingParams,
   ): Promise<ProfessionalResponse> {
-    const crmHash = hash(professional.crm);
+    const crmHash = hash(replacePayloadString(professional.crm))
 
-    professional.crmHash = crmHash;
-    professional.crm = encrypt(professional.crm);
+    professional.crmHash = crmHash
+    professional.crm = encrypt(replacePayloadString(professional.crm))
 
     const professionalCreated =
-      await this.professionalRepository.createProfessionalOnboarding(
-        professional,
-      );
+      await this.professionalRepository.createProfessionalOnboarding(professional)
 
-    return professionalCreated;
+    return professionalCreated
   }
 }

@@ -21,11 +21,11 @@ export class ClinicTypeormRepository implements ClinicRepositoryInterface {
     }
   }
 
-  async findByCnpj(clinicId: string | null, cnpj: string): Promise<Clinic | null> {
+  async findByCnpj(clinicId: string | null, cnpjHash: string): Promise<Clinic | null> {
     try {
       const clinic = await this.clinicRepository.findOne({
         where: {
-          cnpj,
+          cnpjHash,
           id: clinicId ? Not(clinicId) : null,
         },
       })

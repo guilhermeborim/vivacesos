@@ -4,7 +4,7 @@ import {
   Table,
   TableForeignKey,
   TableUnique,
-} from "typeorm";
+} from "typeorm"
 
 export class CreateProfessionalTable1768503803439 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -40,14 +40,12 @@ export class CreateProfessionalTable1768503803439 implements MigrationInterface 
           {
             name: "crm",
             type: "varchar",
-            isUnique: true,
             isNullable: true,
             default: null,
           },
           {
             name: "crmHash",
             type: "varchar",
-            isUnique: true,
             isNullable: true,
             default: null,
           },
@@ -78,7 +76,7 @@ export class CreateProfessionalTable1768503803439 implements MigrationInterface 
         ],
         uniques: [
           new TableUnique({
-            name: "UQ_crm_clinic",
+            name: "UQ_professionals_clinic_crm",
             columnNames: ["clinicId", "crmHash"],
           }),
           new TableUnique({
@@ -87,7 +85,7 @@ export class CreateProfessionalTable1768503803439 implements MigrationInterface 
           }),
         ],
       }),
-    );
+    )
 
     await queryRunner.createForeignKey(
       "professionals",
@@ -98,7 +96,7 @@ export class CreateProfessionalTable1768503803439 implements MigrationInterface 
         referencedTableName: "users",
         onDelete: "CASCADE",
       }),
-    );
+    )
 
     await queryRunner.createForeignKey(
       "professionals",
@@ -109,19 +107,13 @@ export class CreateProfessionalTable1768503803439 implements MigrationInterface 
         referencedTableName: "clinics",
         onDelete: "CASCADE",
       }),
-    );
+    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey(
-      "professionals",
-      "FK_professionals_userId",
-    );
-    await queryRunner.dropForeignKey(
-      "professionals",
-      "FK_professionals_clinicId",
-    );
-    await queryRunner.dropTable("professionals");
-    await queryRunner.query(`DROP TYPE IF EXISTS professional_type_enum`);
+    await queryRunner.dropForeignKey("professionals", "FK_professionals_userId")
+    await queryRunner.dropForeignKey("professionals", "FK_professionals_clinicId")
+    await queryRunner.dropTable("professionals")
+    await queryRunner.query(`DROP TYPE IF EXISTS professional_type_enum`)
   }
 }

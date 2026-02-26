@@ -1,42 +1,42 @@
-import { ConflictError } from "../../../../shared/errors/conflict.error";
-import { encrypt, hash } from "../../../../shared/utils/crypto";
-import { ClinicTypeormRepository } from "../../database/repositories/ClinicTypeormRepository";
-import { ClinicResponse } from "../dtos/ClinicResponse";
-import { ClinicCreateParams } from "../types";
+import { ConflictError } from "../../../../shared/errors/conflict.error"
+import { encrypt, hash } from "../../../../shared/utils/crypto"
+import { replacePayloadString } from "../../../../shared/utils/format"
+import { ClinicTypeormRepository } from "../../database/repositories/ClinicTypeormRepository"
+import { ClinicResponse } from "../dtos/ClinicResponse"
+import { ClinicCreateParams } from "../types"
 
 export class RegisterClinicService {
-  private clinicRepository: ClinicTypeormRepository;
+  private clinicRepository: ClinicTypeormRepository
 
   constructor() {
-    this.clinicRepository = new ClinicTypeormRepository();
+    this.clinicRepository = new ClinicTypeormRepository()
   }
 
   async execute(clinic: ClinicCreateParams): Promise<ClinicResponse> {
-    const cnpjHash = hash(clinic.cnpj);
+    const cnpjHash = hash(replacePayloadString(clinic.cnpj))
+    const phoneReplace = replacePayloadString(clinic.phone)
 
-    const clinicExistsByCnpj = await this.clinicRepository.findByCnpj(
-      null,
-      clinic.cnpj,
-    );
+    const clinicExistsByCnpj = await this.clinicRepository.findByCnpj(null, cnpjHash)
 
     if (clinicExistsByCnpj) {
-      throw new ConflictError("CNPJ já está cadastrado!");
+      throw new ConflictError("CNPJ já está cadastrado!")
     }
 
     const clinicExistsByPhone = await this.clinicRepository.findByPhone(
       null,
-      clinic.phone,
-    );
+      phoneReplace,
+    )
 
     if (clinicExistsByPhone) {
-      throw new ConflictError("Telefone já está cadastrado!");
+      throw new ConflictError("Telefone já está cadastrado!")
     }
 
-    clinic.cnpjHash = cnpjHash;
-    clinic.cnpj = encrypt(clinic.cnpj);
+    clinic.cnpjHash = cnpjHash
+    clinic.cnpj = encrypt(replacePayloadString(clinic.cnpj))
+    clinic.phone = phoneReplace
 
-    const clinicCreated = await this.clinicRepository.createClinic(clinic);
+    const clinicCreated = await this.clinicRepository.createClinic(clinic)
 
-    return clinicCreated;
+    return clinicCreated
   }
 }
