@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       await mutationLogin.mutateAsync(payload)
       await refetch()
     } catch {
-      toast.error("Erro ao fazer login!")
+      // Erro já tratado pelo onError do useMutationLogin
     }
   }
 
