@@ -2,7 +2,6 @@ import { useQuerySession } from "@/core/api/shared/queries"
 import { useQueryClient } from "@tanstack/react-query"
 import { createContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
 import { useMutationLogin, useMutationRegister } from "../api/mutations"
 import { postLogout } from "../api/routes"
 import type { LoginFormTypeSchema, RegisterFormTypeSchema } from "../schemas"
@@ -83,7 +82,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       await mutationRegister.mutateAsync(payload)
     } catch {
-      toast.error("Erro ao fazer registro!")
+      // Erro já tratado pelo onError do useMutationRegister
     }
   }
 
