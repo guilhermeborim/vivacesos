@@ -9,6 +9,8 @@ export const useInitialStepClinic = () => {
   const mutationCreateClinic = useMutationCreateClinic()
 
   const onSubmitClinic = async (payload: CreateClinicFormTypeSchema) => {
+    console.log(payload)
+    return
     try {
       await mutationCreateClinic.mutateAsync(payload)
       await postNextStep({ step: "LINK_PROFESSIONAL" })
