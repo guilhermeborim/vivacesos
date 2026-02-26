@@ -5,10 +5,11 @@ import {
 import { useMutationCreateClinic } from "@/shared/mutations/clinic"
 import { getCep } from "@/shared/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 export const useCreateClinic = () => {
+  const [loadingCep, setLoadingCep] = useState<boolean>(false)
   const mutationCreateClinic = useMutationCreateClinic()
   const formCreateClinic = useForm<CreateClinicFormTypeSchema>({
     resolver: zodResolver(createClinicFormSchema),
@@ -22,13 +23,14 @@ export const useCreateClinic = () => {
 
   useEffect(() => {
     if (cep) {
-      getCep({ form: formCreateClinic, cep })
+      getCep({ form: formCreateClinic, cep, setLoadingCep })
     }
-  }, [cep])
+  }, [cep, formCreateClinic])
 
   return {
     formCreateClinic,
     mutationCreateClinic,
     onSubmitClinicCreate,
+    loadingCep,
   }
 }

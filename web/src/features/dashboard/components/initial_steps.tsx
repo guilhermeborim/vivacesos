@@ -19,10 +19,11 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
     formProfessionalOnboarding,
   } = useInitialStepProfessional()
   const { onSubmitFinishedOnboarding } = useInitialStepFinished()
-  const { formCreateClinic } = useCreateClinic()
+  const { formCreateClinic, loadingCep } = useCreateClinic()
 
   return (
     <>
+      {loadingCep && <Loading loading={loadingCep} />}
       {mutationCreateClinic.isPending && (
         <Loading loading={mutationCreateClinic.isPending} />
       )}

@@ -1,30 +1,33 @@
-import { BaseLayout, ButtonPrimitive } from "@/core/ui";
-import { useCreateClinic } from "@/shared/hooks";
-import { FormClinic } from "../components";
+import { BaseLayout, ButtonPrimitive, Loading } from "@/core/ui"
+import { useCreateClinic } from "@/shared/hooks"
+import { FormClinic } from "../components"
 
 export function ClinicCreatePage() {
-  const { formCreateClinic, onSubmitClinicCreate, mutationCreateClinic } =
-    useCreateClinic();
+  const { formCreateClinic, onSubmitClinicCreate, mutationCreateClinic, loadingCep } =
+    useCreateClinic()
 
   return (
-    <BaseLayout.Root title="Cadastrar Clínica" pageTitle="Administração">
-      <BaseLayout.Body>
-        <FormClinic formClinic={formCreateClinic} />
-      </BaseLayout.Body>
-      <BaseLayout.Footer>
-        <form onSubmit={formCreateClinic.handleSubmit(onSubmitClinicCreate)}>
-          <div className="d-flex justify-content-end">
-            <ButtonPrimitive
-              type="submit"
-              variant="success"
-              disabled={mutationCreateClinic.isPending}
-              isLoading={mutationCreateClinic.isPending}
-            >
-              Salvar
-            </ButtonPrimitive>
-          </div>
-        </form>
-      </BaseLayout.Footer>
-    </BaseLayout.Root>
-  );
+    <>
+      {loadingCep && <Loading loading={loadingCep} />}
+      <BaseLayout.Root title="Cadastrar Clínica" pageTitle="Administração">
+        <BaseLayout.Body>
+          <FormClinic formClinic={formCreateClinic} />
+        </BaseLayout.Body>
+        <BaseLayout.Footer>
+          <form onSubmit={formCreateClinic.handleSubmit(onSubmitClinicCreate)}>
+            <div className="d-flex justify-content-end">
+              <ButtonPrimitive
+                type="submit"
+                variant="success"
+                disabled={mutationCreateClinic.isPending}
+                isLoading={mutationCreateClinic.isPending}
+              >
+                Salvar
+              </ButtonPrimitive>
+            </div>
+          </form>
+        </BaseLayout.Footer>
+      </BaseLayout.Root>
+    </>
+  )
 }
