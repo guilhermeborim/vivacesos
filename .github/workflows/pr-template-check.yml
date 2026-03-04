@@ -18,7 +18,6 @@ jobs:
               core.setFailed("PR description is empty.");
             }
 
-            // 1️⃣ Verifica se as seções obrigatórias existem
             const requiredSections = [
               "## 🧩 Issue",
               "## 📝 O que foi feito",
