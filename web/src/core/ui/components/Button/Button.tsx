@@ -1,13 +1,13 @@
-import { VariantColor } from "@/shared/constants/variant";
-import { Button, ButtonProps } from "reactstrap";
-import { ActivityIndicator } from "../Loading";
+import { VariantColor } from "@/shared/constants/variant"
+import { Button, ButtonProps } from "reactstrap"
+import { ActivityIndicator } from "../Loading"
 
-type ButtonSize = "sm" | "md" | "lg";
+type ButtonSize = "sm" | "md" | "lg" | "xl"
 
 interface ButtonPrimitiveProps extends ButtonProps {
-  variant?: VariantColor;
-  size?: ButtonSize;
-  isLoading?: boolean;
+  variant?: VariantColor
+  size?: ButtonSize
+  isLoading?: boolean
 }
 
 export function ButtonPrimitive({
@@ -19,13 +19,8 @@ export function ButtonPrimitive({
   ...props
 }: ButtonPrimitiveProps) {
   return (
-    <Button
-      disabled={disabled || isLoading}
-      size={size}
-      color={variant}
-      {...props}
-    >
+    <Button disabled={disabled || isLoading} size={size} color={variant} {...props}>
       {isLoading ? <ActivityIndicator /> : children}
     </Button>
-  );
+  )
 }
