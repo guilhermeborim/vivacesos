@@ -5,7 +5,7 @@ on:
     branches: [main, develop]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,14 +16,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: npm
+          cache: yarn
 
-      - name: Install root dependencies
-        run: npm install
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-      # ===== LINT =====
       - name: Lint API
-        run: CI_BRANCH=${{ github.base_ref }} npx eslint web --ext .ts,.tsx
+        run: CI_BRANCH=${{ github.base_ref }} npx eslint api --ext .ts,.tsx
 
       - name: Lint Web
         run: CI_BRANCH=${{ github.base_ref }} npx eslint web --ext .ts,.tsx
