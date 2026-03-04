@@ -1,2 +1,2 @@
-export { createProfessionalColumns } from "./columns";
-export { ListProfessional } from "./list";
+export { professionalColumns } from "./columns"
+export { ListProfessional } from "./list"

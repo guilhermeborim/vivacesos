@@ -1,15 +1,15 @@
-import { BaseLayout, ButtonPrimitive, ModalComponent } from "@/core/ui";
-import { FormPatient, ListPatient } from "../components";
-import { usePostPatient } from "../hooks";
+import { BaseLayout, ButtonPrimitive, ModalComponent } from "@/core/ui"
+import { FormPatient, ListPatient } from "../components"
+import { usePostPatient } from "../hooks"
 
 export function PatientListPage() {
-  const { formPatient, onSubmitPatient, modal, toggleModal } = usePostPatient();
+  const { formPatient, onSubmitPatient, modal, toggleModal } = usePostPatient()
 
   return (
     <>
       <BaseLayout.Root title="Pacientes" pageTitle="Recepção">
         <BaseLayout.Header>
-          <ButtonPrimitive variant="success" onClick={toggleModal}>
+          <ButtonPrimitive variant="primary" onClick={toggleModal}>
             Cadastrar
           </ButtonPrimitive>
         </BaseLayout.Header>
@@ -32,5 +32,5 @@ export function PatientListPage() {
         </ModalComponent.Footer>
       </ModalComponent.Root>
     </>
-  );
+  )
 }

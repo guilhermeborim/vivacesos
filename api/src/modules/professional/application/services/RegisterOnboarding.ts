@@ -17,7 +17,7 @@ export class RegisterProfessionalOnboardingService {
     const crmHash = hash(replacePayloadString(professional.crm))
 
     professional.crmHash = crmHash
-    professional.crm = encrypt(replacePayloadString(professional.crm))
+    professional.crm = encrypt(professional.crm)
 
     const professionalCreated =
       await this.professionalRepository.createProfessionalOnboarding(professional)

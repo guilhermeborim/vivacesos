@@ -7,12 +7,14 @@ interface FormProfessionalProps {
   formProfessional: any;
   defaultValues?: any;
   users: User[];
+  isEdit?: boolean;
 }
 
 export function FormProfessional({
   formProfessional,
   defaultValues,
   users,
+  isEdit = false,
 }: FormProfessionalProps) {
   const type = formProfessional.watch("type");
 
@@ -25,19 +27,21 @@ export function FormProfessional({
   return (
     <>
       <Row className="gap-3">
-        <Col lg={12}>
-          <SelectController
-            control={formProfessional.control}
-            name="userId"
-            options={
-              users?.map((user) => ({
-                label: user.user.name,
-                value: user.user.userId,
-              })) ?? []
-            }
-            label="Selecione o Usuário"
-          />
-        </Col>
+        {!isEdit && (
+          <Col lg={12}>
+            <SelectController
+              control={formProfessional.control}
+              name="userId"
+              options={
+                users?.map((user) => ({
+                  label: user.user.name,
+                  value: user.user.userId,
+                })) ?? []
+              }
+              label="Selecione o Usuário"
+            />
+          </Col>
+        )}
         <Col lg={12}>
           <SelectController
             control={formProfessional.control}

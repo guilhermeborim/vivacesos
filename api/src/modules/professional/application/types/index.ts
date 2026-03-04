@@ -12,3 +12,11 @@ export interface CreateProfessionalParams {
 export interface CreateProfessionalOnboardingParams extends CreateProfessionalParams {
   clinicId: string;
 }
+
+export interface UpdateProfessionalParams {
+  type?: ProfessionalType;
+  crm?: string;
+  crmHash?: string;
+  specialty?: string;
+  active?: boolean;
+}

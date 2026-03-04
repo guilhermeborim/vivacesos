@@ -1,18 +1,19 @@
-import { Repository } from "typeorm";
-import { SassDataSource } from "../../../../infra/database/typeorm/sass/data-source";
-import { Professional } from "../../../../infra/database/typeorm/sass/entities/Professional";
-import { DatabaseError } from "../../../../shared/errors/database.error";
+import { Not, Repository } from "typeorm"
+import { SassDataSource } from "../../../../infra/database/typeorm/sass/data-source"
+import { Professional } from "../../../../infra/database/typeorm/sass/entities/Professional"
+import { DatabaseError } from "../../../../shared/errors/database.error"
 import {
   CreateProfessionalOnboardingParams,
   CreateProfessionalParams,
-} from "../../application/types";
-import { ProfessionalRepositoryInterface } from "../interface/ProfessionalRepositoryInterface";
+  UpdateProfessionalParams,
+} from "../../application/types"
+import { ProfessionalRepositoryInterface } from "../interface/ProfessionalRepositoryInterface"
 
 export class ProfessionalTypeormRepository implements ProfessionalRepositoryInterface {
-  private professionalRepository: Repository<Professional>;
+  private professionalRepository: Repository<Professional>
 
   constructor() {
-    this.professionalRepository = SassDataSource.getRepository(Professional);
+    this.professionalRepository = SassDataSource.getRepository(Professional)
   }
 
   async createProfessional(
@@ -23,11 +24,11 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
       const professionalCreated = await this.professionalRepository.save({
         ...professional,
         clinicId,
-      });
+      })
 
-      return professionalCreated;
+      return professionalCreated
     } catch (error) {
-      throw new DatabaseError("Falha ao criar profissional!", error);
+      throw new DatabaseError("Falha ao criar profissional!", error)
     }
   }
 
@@ -37,11 +38,11 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
     try {
       const professionalCreated = await this.professionalRepository.save({
         ...professional,
-      });
+      })
 
-      return professionalCreated;
+      return professionalCreated
     } catch (error) {
-      throw new DatabaseError("Falha ao criar profissional!", error);
+      throw new DatabaseError("Falha ao criar profissional!", error)
     }
   }
 
@@ -52,11 +53,11 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
           clinicId,
         },
         relations: ["user"],
-      });
+      })
 
-      return professionals;
+      return professionals
     } catch (error) {
-      throw new DatabaseError("Falha ao buscar profissionais!", error);
+      throw new DatabaseError("Falha ao buscar profissionais!", error)
     }
   }
 
@@ -70,11 +71,11 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
           clinicId,
           userId,
         },
-      });
+      })
 
-      return professionals;
+      return professionals
     } catch (error) {
-      throw new DatabaseError("Falha ao buscar profissionais!", error);
+      throw new DatabaseError("Falha ao buscar profissionais!", error)
     }
   }
 
@@ -88,11 +89,55 @@ export class ProfessionalTypeormRepository implements ProfessionalRepositoryInte
           clinicId,
           crmHash,
         },
-      });
+      })
 
-      return professionals;
+      return professionals
     } catch (error) {
-      throw new DatabaseError("Falha ao buscar profissionais!", error);
+      throw new DatabaseError("Falha ao buscar profissionais!", error)
+    }
+  }
+
+  async findById(professionalId: string): Promise<Professional | null> {
+    try {
+      const professional = await this.professionalRepository.findOne({
+        where: { id: professionalId },
+        relations: ["user"],
+      })
+
+      return professional
+    } catch (error) {
+      throw new DatabaseError("Falha ao buscar profissional!", error)
+    }
+  }
+
+  async updateProfessional(
+    professionalId: string,
+    data: UpdateProfessionalParams,
+  ): Promise<void> {
+    try {
+      await this.professionalRepository.update(professionalId, data)
+    } catch (error) {
+      throw new DatabaseError("Falha ao atualizar profissional!", error)
+    }
+  }
+
+  async getCrmProfessionalByClinicIdExcluding(
+    clinicId: string,
+    crmHash: string,
+    excludeId: string,
+  ): Promise<Professional | null> {
+    try {
+      const professional = await this.professionalRepository.findOne({
+        where: {
+          clinicId,
+          crmHash,
+          id: Not(excludeId),
+        },
+      })
+
+      return professional
+    } catch (error) {
+      throw new DatabaseError("Falha ao buscar profissionais!", error)
     }
   }
 }

@@ -8,6 +8,8 @@ import { GetUsersByClinicController } from "../../../modules/clinic/application/
 import { RegisterClinicController } from "../../../modules/clinic/application/controllers/Register";
 import { RegisterProfessionalController } from "../../../modules/clinic/application/controllers/RegisterProfessional";
 import { UpdateClinicController } from "../../../modules/clinic/application/controllers/Update";
+import { GetProfessionalByIdController } from "../../../modules/professional/application/controllers/GetById";
+import { UpdateProfessionalController } from "../../../modules/professional/application/controllers/Update";
 import { CheckAuthenticationMiddleware } from "../middlewares/check-authentication";
 import { CheckClinicUserMiddleware } from "../middlewares/check-clinic";
 
@@ -21,6 +23,9 @@ export const configure = (fastify: FastifyInstance) => {
   const registerProfessionalController = new RegisterProfessionalController();
   const getProfessionalsByClinicController =
     new GetProfessionalsByClinicController();
+
+  const updateProfessionalController = new UpdateProfessionalController();
+  const getProfessionalByIdController = new GetProfessionalByIdController();
 
   const checkAuthenticationMiddleware = new CheckAuthenticationMiddleware();
   const checkClinicUserMiddleware = new CheckClinicUserMiddleware();
@@ -91,5 +96,25 @@ export const configure = (fastify: FastifyInstance) => {
       checkClinicUserMiddleware.execute,
     ],
     handler: getProfessionalsByClinicController.execute,
+  });
+
+  fastify.route({
+    url: "/clinic/professionals/:professionalId",
+    method: "GET",
+    preHandler: [
+      checkAuthenticationMiddleware.execute,
+      checkClinicUserMiddleware.execute,
+    ],
+    handler: getProfessionalByIdController.execute,
+  });
+
+  fastify.route({
+    url: "/clinic/professionals/:professionalId",
+    method: "PUT",
+    preHandler: [
+      checkAuthenticationMiddleware.execute,
+      checkClinicUserMiddleware.execute,
+    ],
+    handler: updateProfessionalController.execute,
   });
 };

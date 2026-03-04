@@ -5,7 +5,7 @@ import { toast } from "react-toastify"
 import { useMutationCreateProfessional } from "../api/mutations"
 import { CreateProfessionalTypeSchema, createProfessionalSchema } from "../schemas"
 
-export const useProfessional = () => {
+export const useCreateProfessional = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const mutationCreateProfessional = useMutationCreateProfessional()
 

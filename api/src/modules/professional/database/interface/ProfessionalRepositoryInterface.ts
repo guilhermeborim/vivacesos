@@ -2,6 +2,7 @@ import { Professional } from "../../../../infra/database/typeorm/sass/entities/P
 import {
   CreateProfessionalOnboardingParams,
   CreateProfessionalParams,
+  UpdateProfessionalParams,
 } from "../../application/types";
 
 export interface ProfessionalRepositoryInterface {
@@ -20,5 +21,12 @@ export interface ProfessionalRepositoryInterface {
   getCrmProfessionalByClinicId(
     clinicId: string,
     crmHash: string,
+  ): Promise<Professional | null>;
+  findById(professionalId: string): Promise<Professional | null>;
+  updateProfessional(professionalId: string, data: UpdateProfessionalParams): Promise<void>;
+  getCrmProfessionalByClinicIdExcluding(
+    clinicId: string,
+    crmHash: string,
+    excludeId: string,
   ): Promise<Professional | null>;
 }

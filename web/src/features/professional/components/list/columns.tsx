@@ -1,15 +1,12 @@
-import { DropdownComponent, TableList } from "@/core/ui";
-import { Professional } from "@/shared/types";
+import { DropdownComponent, TableList } from "@/core/ui"
+import { Professional } from "@/shared/types"
 
-interface CreateProfessionalColumnsProps {
-  onEdit: (professional: Professional) => void;
-  onDelete: (professional: Professional) => void;
+interface ProfessionalColumnsProps {
+  onEdit: (professionalId: string) => void
+  onInactive: (professional: Professional) => void
 }
 
-export function createProfessionalColumns({
-  onEdit,
-  onDelete,
-}: CreateProfessionalColumnsProps) {
+export function professionalColumns({ onEdit, onInactive }: ProfessionalColumnsProps) {
   const baseColumns = [
     TableList.Column<Professional>({
       header: "Nome",
@@ -25,7 +22,11 @@ export function createProfessionalColumns({
       header: "Especialidade",
       accessorFn: (row) => row.professional.specialty,
     }),
-  ];
+    TableList.Column<Professional>({
+      header: "Status",
+      accessorFn: (row) => (row.professional.active ? "ATIVO" : "INATIVO"),
+    }),
+  ]
 
   return TableList.Columns<Professional>({
     columns: baseColumns,
@@ -34,15 +35,19 @@ export function createProfessionalColumns({
         <DropdownComponent.Item
           label="Editar"
           icon={<i className="mdi mdi-pencil-outline me-1" />}
-          onClick={() => onEdit(professional)}
+          onClick={() => onEdit(professional.id)}
         />
         <DropdownComponent.Item
-          label="Excluir"
-          icon={<i className="mdi mdi-delete-outline me-1" />}
-          variant="danger"
-          onClick={() => onDelete(professional)}
+          label={professional.professional.active ? "Inativar" : "Ativar"}
+          icon={
+            <i
+              className={`mdi ${professional.professional.active ? "mdi-eye-off-outline" : "mdi-eye-outline"} me-1`}
+            />
+          }
+          variant={professional.professional.active ? "danger" : "success"}
+          onClick={() => onInactive(professional)}
         />
       </>
     ),
-  });
+  })
 }

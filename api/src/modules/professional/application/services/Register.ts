@@ -1,7 +1,6 @@
 import { ConflictError } from "../../../../shared/errors/conflict.error"
 import { UnauthenticatedError } from "../../../../shared/errors/unauthenticated.error"
 import { encrypt, hash } from "../../../../shared/utils/crypto"
-import { replacePayloadString } from "../../../../shared/utils/format"
 import { ProfessionalTypeormRepository } from "../../database/repositories/ProfessionalTypeormRepository"
 import { ProfessionalResponse } from "../dtos/ProfessionalResponse"
 import { CreateProfessionalParams } from "../types"
@@ -17,7 +16,7 @@ export class RegisterProfessionalService {
     clinicId: string,
     professional: CreateProfessionalParams,
   ): Promise<ProfessionalResponse> {
-    const crmHash = hash(replacePayloadString(professional.crm))
+    const crmHash = hash(professional.crm)
 
     const crmProfessionalVinculedInClinic =
       await this.professionalRepository.getCrmProfessionalByClinicId(clinicId, crmHash)
@@ -37,7 +36,7 @@ export class RegisterProfessionalService {
     }
 
     professional.crmHash = crmHash
-    professional.crm = encrypt(replacePayloadString(professional.crm))
+    professional.crm = encrypt(professional.crm)
 
     const professionalCreated = await this.professionalRepository.createProfessional(
       clinicId,
