@@ -2,8 +2,7 @@ import { useQuerySession } from "@/core/api/shared/queries"
 import { useQueryClient } from "@tanstack/react-query"
 import { createContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { useMutationLogin, useMutationRegister } from "../api/mutations"
-import { postLogout } from "../api/routes"
+import { postLogout, useMutationLogin, useMutationRegister } from "../api"
 import type { LoginFormTypeSchema, RegisterFormTypeSchema } from "../schemas"
 
 interface User {

@@ -1,13 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { toast } from "react-toastify"
 import { CreateProfessionalTypeSchema, UpdateProfessionalTypeSchema } from "../schemas"
-import {
-  getProfessionalById,
-  getProfessionals,
-  postCreateProfessional,
-  putProfessionalById,
-} from "./routes"
+import { postCreateProfessional, putProfessionalById } from "./"
 
 export const useMutationCreateProfessional = () => {
   const queryClient = useQueryClient()
@@ -43,32 +38,4 @@ export const useMutationUpdateProfessional = (professionalId: string) => {
       }
     },
   })
-}
-
-export function useQueryProfessionals() {
-  const { data } = useQuery({
-    queryKey: ["professional"],
-    queryFn: getProfessionals,
-    retry: false,
-  })
-
-  const dataProfessionals = data?.data
-
-  return {
-    dataProfessionals,
-  }
-}
-
-export function useQueryProfessionalById(professionalId: string | null) {
-  const { data: dataProfessionalById, isLoading: loadingProfessionalById } = useQuery({
-    queryKey: ["professional", professionalId],
-    queryFn: () => getProfessionalById(professionalId!),
-    retry: false,
-    enabled: !!professionalId,
-  })
-
-  return {
-    professional: dataProfessionalById?.data,
-    loadingProfessionalById,
-  }
 }

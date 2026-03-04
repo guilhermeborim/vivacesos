@@ -1,7 +1,7 @@
 import { Loading } from "@/core/ui"
 import { TableList } from "@/core/ui/components/Table"
-import { useQueryProfessionals } from "@/features/professional/api/mutations"
 import { useEditProfessional } from "@/features/professional/hooks"
+import { useQueryProfessionals } from "../../api"
 import { ModalEditProfessional, ModalToggleProfessional } from "../modal"
 import { professionalColumns } from "./columns"
 

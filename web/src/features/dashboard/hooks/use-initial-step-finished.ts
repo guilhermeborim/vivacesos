@@ -1,15 +1,15 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { postNextStep } from "../api/routes";
+import { useQueryClient } from "@tanstack/react-query"
+import { postNextStep } from "../api"
 
 export const useInitialStepFinished = () => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   const onSubmitFinishedOnboarding = async () => {
-    await postNextStep({ step: "FINISHED" });
-    queryClient.invalidateQueries({ queryKey: ["session"] });
-  };
+    await postNextStep({ step: "FINISHED" })
+    queryClient.invalidateQueries({ queryKey: ["session"] })
+  }
 
   return {
     onSubmitFinishedOnboarding,
-  };
-};
+  }
+}

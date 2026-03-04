@@ -1,6 +1,6 @@
 import { useQueryUsers } from "@/features/users/api/mutations"
 import { Professional, User } from "@/shared/types"
-import { useQueryProfessionals } from "../api/mutations"
+import { useQueryProfessionals } from "../api"
 
 export const useListProfessionals = () => {
   const { dataProfessionals } = useQueryProfessionals()

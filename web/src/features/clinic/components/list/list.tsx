@@ -1,5 +1,5 @@
 import { TableList } from "@/core/ui/components/Table"
-import { useQueryClinic, useQueryClinicById } from "@/features/clinic/api/mutations"
+import { useQueryClinic, useQueryClinicById } from "@/features/clinic/api"
 import { useEditClinic } from "@/features/clinic/hooks/use-edit-clinic"
 import { ModalEditClinic } from "../modal"
 import { createClinicColumns } from "./columns"

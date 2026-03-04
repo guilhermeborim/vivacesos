@@ -1,40 +1,37 @@
-import { ButtonPrimitive, InputController, Loading } from "@/core/ui";
-import { useAuth } from "@/features/auth/hooks/use-auth";
-import {
-  registerFormSchema,
-  RegisterFormTypeSchema,
-} from "@/features/auth/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
-import { Card, CardBody, Col, Label, Row } from "reactstrap";
-import { useQueryInviteByToken } from "../api/mutations";
+import { ButtonPrimitive, InputController, Loading } from "@/core/ui"
+import { useAuth } from "@/features/auth/hooks/use-auth"
+import { registerFormSchema, RegisterFormTypeSchema } from "@/features/auth/schemas"
+import { zodResolver } from "@hookform/resolvers/zod"
+import React, { useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { useSearchParams } from "react-router-dom"
+import { Card, CardBody, Col, Label, Row } from "reactstrap"
+import { useQueryInviteByToken } from "../api"
 
 export function Invite() {
-  const [params] = useSearchParams();
-  const { register } = useAuth();
-  const [registerUser, setRegisterUser] = React.useTransition();
-  const [showPassword, setShowPassword] = React.useState(false);
-  const { data } = useQueryInviteByToken(params.get("token") as string);
+  const [params] = useSearchParams()
+  const { register } = useAuth()
+  const [registerUser, setRegisterUser] = React.useTransition()
+  const [showPassword, setShowPassword] = React.useState(false)
+  const { data } = useQueryInviteByToken(params.get("token") as string)
 
   const form = useForm<RegisterFormTypeSchema>({
     resolver: zodResolver(registerFormSchema),
-  });
+  })
 
   useEffect(() => {
     if (data && data.data) {
-      form.setValue("email", data.data.email);
+      form.setValue("email", data.data.email)
     }
-  }, [data]);
+  }, [data])
   const toggleShowPassword = () => {
-    setShowPassword((prevState) => !prevState);
-  };
+    setShowPassword((prevState) => !prevState)
+  }
 
   function handleSubmit(payload: RegisterFormTypeSchema) {
     setRegisterUser(async () => {
-      await register(payload);
-    });
+      await register(payload)
+    })
   }
 
   return (
@@ -46,12 +43,8 @@ export function Invite() {
             <CardBody className="p-4">
               <div className="text-center text-white-50"></div>
               <div className="text-center mt-2">
-                <h5 className="text-primary">
-                  Finalize o cadastro do convite!
-                </h5>
-                <p className="text-muted">
-                  Crie sua conta para acessar a plataforma.
-                </p>
+                <h5 className="text-primary">Finalize o cadastro do convite!</h5>
+                <p className="text-muted">Crie sua conta para acessar a plataforma.</p>
               </div>
               <div className="p-2 mt-4">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -118,5 +111,5 @@ export function Invite() {
         </Col>
       </Row>
     </>
-  );
+  )
 }

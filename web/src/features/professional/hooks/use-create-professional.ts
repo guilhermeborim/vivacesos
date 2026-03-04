@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { useMutationCreateProfessional } from "../api/mutations"
+import { useMutationCreateProfessional } from "../api"
 import { CreateProfessionalTypeSchema, createProfessionalSchema } from "../schemas"
 
 export const useCreateProfessional = () => {

@@ -2,7 +2,7 @@ import { Professional } from "@/shared/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { useMutationUpdateProfessional, useQueryProfessionalById } from "../api/mutations"
+import { useMutationUpdateProfessional, useQueryProfessionalById } from "../api"
 import { updateProfessionalSchema, UpdateProfessionalTypeSchema } from "../schemas"
 
 export const useEditProfessional = () => {
