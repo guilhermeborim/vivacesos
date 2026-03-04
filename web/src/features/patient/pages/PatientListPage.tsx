@@ -1,5 +1,5 @@
-import { BaseLayout, ButtonPrimitive, ModalComponent } from "@/core/ui"
-import { FormPatient, ListPatient } from "../components"
+import { BaseLayout, ButtonPrimitive } from "@/core/ui"
+import { ListPatient, ModalCreatePatient } from "../components"
 import { usePostPatient } from "../hooks"
 
 export function PatientListPage() {
@@ -17,20 +17,15 @@ export function PatientListPage() {
           <ListPatient />
         </BaseLayout.Body>
       </BaseLayout.Root>
-      <ModalComponent.Root isOpen={modal} toggle={toggleModal} size="xl">
-        <ModalComponent.Header>Cadastro de Pacientes</ModalComponent.Header>
-        <ModalComponent.Body>
-          <FormPatient formPatient={formPatient} />
-        </ModalComponent.Body>
-        <ModalComponent.Footer>
-          <ButtonPrimitive
-            variant="success"
-            onClick={formPatient.handleSubmit(onSubmitPatient)}
-          >
-            Salvar
-          </ButtonPrimitive>
-        </ModalComponent.Footer>
-      </ModalComponent.Root>
+
+      {modal && (
+        <ModalCreatePatient
+          isOpen={modal}
+          toggle={toggleModal}
+          formPatient={formPatient}
+          onSubmitPatient={onSubmitPatient}
+        />
+      )}
     </>
   )
 }

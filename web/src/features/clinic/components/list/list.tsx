@@ -1,8 +1,7 @@
-import { ButtonPrimitive, ModalComponent } from "@/core/ui"
 import { TableList } from "@/core/ui/components/Table"
 import { useQueryClinic, useQueryClinicById } from "@/features/clinic/api/mutations"
 import { useEditClinic } from "@/features/clinic/hooks/use-edit-clinic"
-import { FormClinic } from "../form"
+import { ModalEditClinic } from "../modal"
 import { createClinicColumns } from "./columns"
 
 export function ListClinic() {
@@ -20,19 +19,15 @@ export function ListClinic() {
     <>
       <TableList.Root columns={columns} data={dataClinics || []} />
 
-      <ModalComponent.Root isOpen={modalOpen} toggle={toggleModal} size="xl">
-        <ModalComponent.Body>
-          <h5>Atualize os dados da clínica</h5>
-          <div className="p-4">
-            <FormClinic formClinic={formUpdateClinic} defaultValues={clinic} />
-          </div>
-        </ModalComponent.Body>
-        <ModalComponent.Footer>
-          <form onSubmit={formUpdateClinic.handleSubmit(onSubmitClinicUpdate)}>
-            <ButtonPrimitive variant="success">Atualizar</ButtonPrimitive>
-          </form>
-        </ModalComponent.Footer>
-      </ModalComponent.Root>
+      {modalOpen && (
+        <ModalEditClinic
+          isOpen={modalOpen}
+          toggle={toggleModal}
+          formUpdateClinic={formUpdateClinic}
+          clinic={clinic}
+          onSubmitClinicUpdate={onSubmitClinicUpdate}
+        />
+      )}
     </>
   )
 }
