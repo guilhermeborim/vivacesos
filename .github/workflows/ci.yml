@@ -22,8 +22,14 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Lint API
-        run: CI_BRANCH=${{ github.base_ref }} npx eslint api --ext .ts,.tsx
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.ts
+            **/*.tsx
 
-      - name: Lint Web
-        run: CI_BRANCH=${{ github.base_ref }} npx eslint web --ext .ts,.tsx
+      - name: Lint changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: CI_BRANCH=${{ github.base_ref }} npx eslint ${{ steps.changed-files.outputs.all_changed_files }}
