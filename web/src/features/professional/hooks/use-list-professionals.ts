@@ -1,4 +1,4 @@
-import { useQueryUsers } from "@/features/users/api/mutations"
+import { useQueryUsers } from "@/features/users/api"
 import { Professional, User } from "@/shared/types"
 import { useQueryProfessionals } from "../api"
 
