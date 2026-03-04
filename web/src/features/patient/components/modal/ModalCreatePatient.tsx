@@ -22,7 +22,7 @@ export function ModalCreatePatient({
       </ModalComponent.Body>
       <ModalComponent.Footer>
         <ButtonPrimitive
-          variant="success"
+          variant="primary"
           onClick={formPatient.handleSubmit(onSubmitPatient)}
         >
           Salvar

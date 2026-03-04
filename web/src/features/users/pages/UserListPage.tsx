@@ -11,7 +11,7 @@ export function UserListPage() {
       <TableProvider>
         <BaseLayout.Root title="Acessos" pageTitle="Administração">
           <BaseLayout.Header>
-            <ButtonPrimitive variant="success" onClick={toggleModalInvite}>
+            <ButtonPrimitive variant="primary" onClick={toggleModalInvite}>
               Convidar
             </ButtonPrimitive>
           </BaseLayout.Header>

@@ -78,7 +78,7 @@ export function Login() {
 
                   <div className="mt-4">
                     <ButtonPrimitive
-                      variant="success"
+                      variant="primary"
                       className="w-100"
                       type="submit"
                       disabled={connectingUser}

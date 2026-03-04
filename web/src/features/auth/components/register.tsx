@@ -1,28 +1,28 @@
-import { ButtonPrimitive, InputController, Loading } from "@/core/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { Card, CardBody, Col, Label, Row } from "reactstrap";
-import { useAuth } from "../hooks/use-auth";
-import { registerFormSchema, RegisterFormTypeSchema } from "../schemas";
+import { ButtonPrimitive, InputController, Loading } from "@/core/ui"
+import { zodResolver } from "@hookform/resolvers/zod"
+import React from "react"
+import { useForm } from "react-hook-form"
+import { Link } from "react-router-dom"
+import { Card, CardBody, Col, Label, Row } from "reactstrap"
+import { useAuth } from "../hooks/use-auth"
+import { registerFormSchema, RegisterFormTypeSchema } from "../schemas"
 
 export function Register() {
-  const { register } = useAuth();
-  const [registerUser, setRegisterUser] = React.useTransition();
-  const [showPassword, setShowPassword] = React.useState(false);
+  const { register } = useAuth()
+  const [registerUser, setRegisterUser] = React.useTransition()
+  const [showPassword, setShowPassword] = React.useState(false)
 
   const toggleShowPassword = () => {
-    setShowPassword((prevState) => !prevState);
-  };
+    setShowPassword((prevState) => !prevState)
+  }
   const form = useForm<RegisterFormTypeSchema>({
     resolver: zodResolver(registerFormSchema),
-  });
+  })
 
   function handleSubmit(payload: RegisterFormTypeSchema) {
     setRegisterUser(async () => {
-      await register(payload);
-    });
+      await register(payload)
+    })
   }
 
   return (
@@ -35,9 +35,7 @@ export function Register() {
               <div className="text-center text-white-50"></div>
               <div className="text-center mt-2">
                 <h5 className="text-primary">Realize seu cadastro!</h5>
-                <p className="text-muted">
-                  Crie sua conta para acessar a plataforma.
-                </p>
+                <p className="text-muted">Crie sua conta para acessar a plataforma.</p>
               </div>
               <div className="p-2 mt-4">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -87,7 +85,7 @@ export function Register() {
 
                   <div className="mt-4">
                     <ButtonPrimitive
-                      variant="success"
+                      variant="primary"
                       className="w-100"
                       type="submit"
                       disabled={registerUser}
@@ -106,5 +104,5 @@ export function Register() {
         </Col>
       </Row>
     </>
-  );
+  )
 }

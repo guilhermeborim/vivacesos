@@ -12,7 +12,7 @@ export function ProfessionalListPage() {
       <BaseLayout.Root title="Profissionais da Saúde" pageTitle="Administração">
         <BaseLayout.Header>
           <ButtonPrimitive
-            variant="success"
+            variant="primary"
             onClick={toggleModalOpen}
             disabled={usersNotProfessionals?.length === 0}
           >

@@ -1,15 +1,15 @@
-import { BaseLayout, ButtonPrimitive } from "@/core/ui";
-import { useNavigate } from "react-router-dom";
-import { ListClinic } from "../components";
+import { BaseLayout, ButtonPrimitive } from "@/core/ui"
+import { useNavigate } from "react-router-dom"
+import { ListClinic } from "../components"
 
 export function ClinicListPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <BaseLayout.Root title="Clínicas" pageTitle="Administração">
       <BaseLayout.Header>
         <ButtonPrimitive
-          variant="success"
+          variant="primary"
           disabled
           onClick={() => navigate("/clinics/create")}
         >
@@ -20,5 +20,5 @@ export function ClinicListPage() {
         <ListClinic />
       </BaseLayout.Body>
     </BaseLayout.Root>
-  );
+  )
 }

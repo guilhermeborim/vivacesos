@@ -22,8 +22,8 @@ export function ModalToggleProfessional({
         </h5>
         <p>
           Você está prestes a{" "}
-          <strong>{professional.active ? "inativar" : "ativar"}</strong> o
-          profissional <strong>{professional.name ?? "selecionado"}</strong>.{" "}
+          <strong>{professional.active ? "inativar" : "ativar"}</strong> o profissional{" "}
+          <strong>{professional.name ?? "selecionado"}</strong>.{" "}
           {professional.active
             ? "Ele não terá mais acesso ao sistema."
             : "Ele voltará a ter acesso ao sistema."}
@@ -31,13 +31,12 @@ export function ModalToggleProfessional({
       </ModalComponent.Body>
       <ModalComponent.Footer>
         <ButtonPrimitive
-          variant="success"
-          onClick={() => onSubmitInactive({ active: professional.active, id: professional.id })}
+          variant={professional.active ? "danger" : "primary"}
+          onClick={() =>
+            onSubmitInactive({ active: professional.active, id: professional.id })
+          }
         >
-          Sim
-        </ButtonPrimitive>
-        <ButtonPrimitive variant="warning" onClick={toggle}>
-          Não
+          {professional.active ? "Inativar" : "Ativar"}
         </ButtonPrimitive>
       </ModalComponent.Footer>
     </ModalComponent.Root>
