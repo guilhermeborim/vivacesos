@@ -1,4 +1,3 @@
-import { Clinic } from "@/features/auth/hooks/authContext"
 import {
   selectClinicFormSchema,
   SelectClinicFormTypeSchema,
@@ -8,13 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 
-export interface UseSelectClinicProps {
-  clinics: Clinic[]
-  isOpen: boolean
-  onClose: () => void
-}
-
-export function useSelectClinic({ isOpen, onClose }: UseSelectClinicProps) {
+export function useSelectClinic() {
   const queryClient = useQueryClient()
   const mutationSelectClinic = useMutationSelectClinic()
   const formSelectClinic = useForm<SelectClinicFormTypeSchema>({
@@ -25,18 +18,17 @@ export function useSelectClinic({ isOpen, onClose }: UseSelectClinicProps) {
     async (data: SelectClinicFormTypeSchema) => {
       await mutationSelectClinic.mutateAsync(data.clinicId)
       queryClient.invalidateQueries({ queryKey: ["session"] })
-      onClose()
     },
   )
 
   return {
-    data: {
-      isOpen,
-    },
     actions: {
       formSelectClinic,
       mutationSelectClinic,
       handleSubmitSelectClinic,
+    },
+    isLoading: {
+      isPending: mutationSelectClinic.isPending,
     },
   }
 }

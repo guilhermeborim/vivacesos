@@ -3,6 +3,7 @@ import { User } from "@/shared/types"
 import { useEffect } from "react"
 import { useFormContext } from "react-hook-form"
 import { Col, Row } from "reactstrap"
+import { editFields, inviteFields } from "./fields"
 
 interface FormUserProps {
   defaultValues?: User
@@ -21,39 +22,44 @@ export function FormUser({ defaultValues, isEdit = false }: FormUserProps) {
     }
   }, [defaultValues, reset])
 
-  return (
-    <>
+  if (isEdit) {
+    return (
       <Row>
-        <Col lg={isEdit ? 12 : 6}>
-          {!isEdit && (
+        {editFields.map((field) => (
+          <Col lg={12} key={field.name}>
             <InputController
-              label="E-mail"
               control={control}
-              name={"email"}
-              placeholder="example@example.com"
-            />
-          )}
-          <InputController
-            label="Nome"
-            control={control}
-            name={"name"}
-            placeholder="Nome do usuário"
-          />
-        </Col>
-        {!isEdit && (
-          <Col lg={6}>
-            <SelectController
-              control={control}
-              name="role"
-              options={[
-                { label: "Profissional", value: "PROFISSIONAL" },
-                { label: "Recepcionista", value: "RECEPCIONISTA" },
-              ]}
-              label="Cargo"
+              name={field.name}
+              label={field.label}
+              placeholder={field.placeholder}
             />
           </Col>
-        )}
+        ))}
       </Row>
-    </>
+    )
+  }
+  return (
+    <Row>
+      {inviteFields.map((field) => (
+        <Col lg={6} key={field.name}>
+          {field.type === "select" ? (
+            <SelectController
+              control={control}
+              name={field.name}
+              placeholder={field.placeholder}
+              label={field.label}
+              options={field.options ?? []}
+            />
+          ) : (
+            <InputController
+              control={control}
+              name={field.name}
+              label={field.label}
+              placeholder={field.placeholder}
+            />
+          )}
+        </Col>
+      ))}
+    </Row>
   )
 }

@@ -1,7 +1,8 @@
-import { InputController, Loading, Nav, SelectController, Tab } from "@/core/ui"
+import { ButtonPrimitive, Loading, Nav, Tab } from "@/core/ui"
 import { FormClinic } from "@/shared/forms"
 import { useCreateClinic } from "@/shared/hooks"
-import { Col, Progress, Row } from "reactstrap"
+import { FormProvider } from "react-hook-form"
+import { Progress } from "reactstrap"
 import {
   useInitialStepClinic,
   useInitialStepFinished,
@@ -9,21 +10,20 @@ import {
   useInitialSteps,
 } from "../hooks"
 import { CreateNextStepTypeSchema } from "../schemas"
+import { FormProfessionalOnboarding } from "./forms"
 
 export function InitialSteps(step: CreateNextStepTypeSchema) {
   const { activeTab, progressBarValue } = useInitialSteps(step)
   const {
-    actions: { mutationCreateClinic, handleSubmitClinic },
+    actions: { handleSubmitClinic },
+    isLoading: { isPendingClinic },
   } = useInitialStepClinic()
   const {
-    actions: {
-      mutationCreateProfessionalOnboarding,
-      onSubmitProfessionalOnboarding,
-      formProfessionalOnboarding,
-    },
+    actions: { handleSubmitProfessionalOnboarding, formProfessionalOnboarding },
+    isLoading: { isPendingProfessionalOnboarding },
   } = useInitialStepProfessional()
   const {
-    actions: { onSubmitFinishedOnboarding },
+    actions: { handleSubmitFinishedOnboarding },
   } = useInitialStepFinished()
   const {
     actions: { formCreateClinic },
@@ -33,11 +33,9 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
   return (
     <>
       {loadingCep && <Loading loading={loadingCep} />}
-      {mutationCreateClinic.isPending && (
-        <Loading loading={mutationCreateClinic.isPending} />
-      )}
-      {mutationCreateProfessionalOnboarding.isPending && (
-        <Loading loading={mutationCreateProfessionalOnboarding.isPending} />
+      {isPendingClinic && <Loading loading={isPendingClinic} />}
+      {isPendingProfessionalOnboarding && (
+        <Loading loading={isPendingProfessionalOnboarding} />
       )}
       <div>
         <div className="progress-nav mb-4 mt-3">
@@ -70,29 +68,21 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
                 </div>
               </div>
             </div>
-            <form onSubmit={formCreateClinic.handleSubmit(handleSubmitClinic)}>
-              <FormClinic formClinic={formCreateClinic} />
-              <div className="d-flex py-3">
-                <button
+            <FormClinic formClinic={formCreateClinic} />
+            <div className="d-flex py-3 justify-content-end">
+              <form onSubmit={formCreateClinic.handleSubmit(handleSubmitClinic)}>
+                <ButtonPrimitive
                   type="submit"
-                  className="btn btn-primary ms-auto"
-                  disabled={
-                    mutationCreateClinic.isPending || !formCreateClinic.formState.isValid
-                  }
+                  disabled={isPendingClinic || !formCreateClinic.formState.isValid}
+                  isLoading={isPendingClinic}
                 >
-                  {mutationCreateClinic.isPending
-                    ? "Salvando..."
-                    : "Salvar Clínica e Continuar"}
-                </button>
-              </div>
-            </form>
+                  Salvar Clínica e Continuar
+                </ButtonPrimitive>
+              </form>
+            </div>
           </Tab.Item>
           <Tab.Item tabId={2}>
-            <form
-              onSubmit={formProfessionalOnboarding.handleSubmit(
-                onSubmitProfessionalOnboarding,
-              )}
-            >
+            <FormProvider {...formProfessionalOnboarding}>
               <div>
                 <div className="mb-4">
                   <div>
@@ -105,52 +95,31 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
                   </div>
                 </div>
                 <div>
-                  <Row>
-                    <Col lg={3}>
-                      <SelectController
-                        control={formProfessionalOnboarding.control}
-                        name="type"
-                        options={[{ label: "Médico", value: "MEDICO" }]}
-                        label="Tipo de Profissional"
-                        disabled
-                      />
-                    </Col>
-                    <Col lg={3}>
-                      <InputController
-                        control={formProfessionalOnboarding.control}
-                        name="crm"
-                        label="CRM"
-                        placeholder="CRM do Profissional"
-                        max={10}
-                        min={5}
-                      />
-                    </Col>
-                    <Col lg={3}>
-                      <InputController
-                        control={formProfessionalOnboarding.control}
-                        name="specialty"
-                        label="Especialidade"
-                        placeholder="Especialidade do Profissional"
-                      />
-                    </Col>
-                  </Row>
+                  <FormProfessionalOnboarding />
                 </div>
               </div>
-              <div className="d-flex mt-3">
-                <button
-                  type="submit"
-                  className="btn btn-primary ms-auto"
-                  disabled={
-                    mutationCreateProfessionalOnboarding.isPending ||
-                    !formProfessionalOnboarding.formState.isValid
-                  }
+              <div className="d-flex mt-3 justify-content-end gap-2">
+                <form
+                  onSubmit={formProfessionalOnboarding.handleSubmit(
+                    handleSubmitProfessionalOnboarding,
+                  )}
                 >
-                  {mutationCreateProfessionalOnboarding.isPending
-                    ? "Salvando..."
-                    : "Salvar Profissional e Continuar"}
-                </button>
+                  <ButtonPrimitive
+                    type="submit"
+                    disabled={
+                      isPendingProfessionalOnboarding ||
+                      !formProfessionalOnboarding.formState.isValid
+                    }
+                    isLoading={isPendingProfessionalOnboarding}
+                  >
+                    Salvar Profissional e Continuar
+                  </ButtonPrimitive>
+                </form>
+                <ButtonPrimitive type="button" variant="warning">
+                  Pular
+                </ButtonPrimitive>
               </div>
-            </form>
+            </FormProvider>
           </Tab.Item>
           <Tab.Item tabId={3}>
             <div>
@@ -167,14 +136,10 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
                   </p>
                 </div>
               </div>
-              <div className="d-flex mt-3">
-                <button
-                  type="button"
-                  className="btn btn-primary ms-auto"
-                  onClick={onSubmitFinishedOnboarding}
-                >
+              <div className="d-flex mt-3 justify-content-end">
+                <ButtonPrimitive type="button" onClick={handleSubmitFinishedOnboarding}>
                   Vamos Lá!
-                </button>
+                </ButtonPrimitive>
               </div>
             </div>
           </Tab.Item>

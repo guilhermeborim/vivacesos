@@ -3,6 +3,7 @@ import { Professional, User } from "@/shared/types"
 import { useEffect } from "react"
 import { useFormContext } from "react-hook-form"
 import { Col, Row } from "reactstrap"
+import { fields } from "./fields"
 
 interface FormProfessionalProps {
   defaultValues?: Professional
@@ -25,61 +26,44 @@ export function FormProfessional({
   }, [defaultValues, reset])
 
   return (
-    <>
-      <Row className="gap-3">
-        {!isEdit && (
-          <Col lg={12}>
-            <SelectController
-              control={control}
-              name="userId"
-              options={
-                users?.map((user) => ({
-                  label: user.user.name,
-                  value: user.user.userId,
-                })) ?? []
-              }
-              label="Selecione o Usuário"
-            />
-          </Col>
-        )}
+    <Row className="gap-3">
+      {!isEdit && (
         <Col lg={12}>
           <SelectController
             control={control}
-            name="type"
-            options={[
-              { label: "Médico", value: "MEDICO" },
-              {
-                label: "Mais categorias em breve!",
-                value: "",
-                isDisabled: true,
-              },
-            ]}
-            label="Tipo de Profissional"
+            name="userId"
+            options={
+              users?.map((user) => ({
+                label: user.user.name,
+                value: user.user.userId,
+              })) ?? []
+            }
+            label="Selecione o Usuário"
           />
         </Col>
-        {type && (
-          <>
-            <Col lg={12}>
+      )}
+      {type &&
+        fields.map((field) => (
+          <Col lg={12} key={field.name}>
+            {field.type === "select" ? (
+              <SelectController
+                control={control}
+                name={field.name}
+                options={field.options ?? []}
+                label={field.label}
+              />
+            ) : (
               <InputController
                 control={control}
-                name="crm"
-                label="CRM"
-                placeholder="CRM do Profissional"
-                minLength={5}
-                maxLength={10}
+                name={field.name}
+                label={field.label}
+                placeholder={field.placeholder}
+                minLength={field.minLength}
+                maxLength={field.maxLength}
               />
-            </Col>
-            <Col lg={12}>
-              <InputController
-                control={control}
-                name="specialty"
-                label="Especialidade"
-                placeholder="Especialidade do Profissional"
-              />
-            </Col>
-          </>
-        )}
-      </Row>
-    </>
+            )}
+          </Col>
+        ))}
+    </Row>
   )
 }

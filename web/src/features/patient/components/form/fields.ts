@@ -1,16 +1,7 @@
-import { Path } from "react-hook-form";
-import { CreatePatientTypeSchema } from "../../schemas";
+import { FieldConfig } from "@/shared/forms"
+import { CreatePatientTypeSchema } from "../../schemas"
 
-type FieldConfig = {
-  name: Path<CreatePatientTypeSchema>;
-  label: string;
-  placeholder?: string;
-  md?: number | string;
-  type?: React.HTMLInputTypeAttribute | any;
-  mask?: string;
-};
-
-export const fields: FieldConfig[] = [
+export const fields: FieldConfig<CreatePatientTypeSchema>[] = [
   {
     name: "name",
     label: "Nome",
@@ -32,6 +23,8 @@ export const fields: FieldConfig[] = [
     md: 3,
     type: "text",
     mask: "999.999.999-99",
+    minLength: 11,
+    maxLength: 14,
   },
   {
     name: "phone",
@@ -40,6 +33,8 @@ export const fields: FieldConfig[] = [
     md: 3,
     type: "text",
     mask: "(99) 99999-9999",
+    minLength: 11,
+    maxLength: 15,
   },
   {
     name: "birthDate",
@@ -47,4 +42,4 @@ export const fields: FieldConfig[] = [
     md: 3,
     type: "date",
   },
-] as const;
+]

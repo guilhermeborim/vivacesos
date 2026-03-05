@@ -22,7 +22,7 @@ export const useInitialStepProfessional = () => {
     },
   })
 
-  const onSubmitProfessionalOnboarding = async (
+  const handleSubmitProfessionalOnboarding = async (
     payload: CreateProfessionalOnboardingTypeSchema,
   ) => {
     await mutationCreateProfessionalOnboarding.mutateAsync(payload)
@@ -40,8 +40,11 @@ export const useInitialStepProfessional = () => {
   return {
     actions: {
       mutationCreateProfessionalOnboarding,
-      onSubmitProfessionalOnboarding,
+      handleSubmitProfessionalOnboarding,
       formProfessionalOnboarding,
+    },
+    isLoading: {
+      isPendingProfessionalOnboarding: mutationCreateProfessionalOnboarding.isPending,
     },
   }
 }
