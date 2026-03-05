@@ -4,7 +4,11 @@ import { ListUser, ModalInviteUser } from "../components"
 import { useInviteUser } from "../hooks"
 
 export function UserListPage() {
-  const { modalInvite, toggleModalInvite, formUser, onSubmitInvite } = useInviteUser()
+  const {
+    actions: { formInviteUser, handleSubmitInvite, toggleModalInvite },
+    data: { modalInvite },
+    isLoading: { isPending },
+  } = useInviteUser()
 
   return (
     <>
@@ -25,8 +29,9 @@ export function UserListPage() {
         <ModalInviteUser
           isOpen={modalInvite}
           toggle={toggleModalInvite}
-          formUser={formUser}
-          onSubmitInvite={onSubmitInvite}
+          formInviteUser={formInviteUser}
+          handleSubmitInvite={handleSubmitInvite}
+          isPending={isPending}
         />
       )}
     </>

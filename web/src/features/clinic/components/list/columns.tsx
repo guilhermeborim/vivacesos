@@ -1,15 +1,12 @@
-import { DropdownComponent, TableList } from "@/core/ui";
-import { Clinic } from "@/shared/types";
+import { DropdownComponent, TableList } from "@/core/ui"
+import { Clinic } from "@/shared/types"
 
-interface CreateClinicColumnsProps {
-  onEdit: (clinic: Clinic) => void;
-  onDelete: (clinic: Clinic) => void;
+interface ClinicColumnsProps {
+  onEdit: (clinic: Clinic) => void
+  onDelete: (clinic: Clinic) => void
 }
 
-export function createClinicColumns({
-  onEdit,
-  onDelete,
-}: CreateClinicColumnsProps) {
+export function clinicColumns({ onEdit, onDelete }: ClinicColumnsProps) {
   const baseColumns = [
     TableList.Column<Clinic>({
       header: "Nome",
@@ -19,7 +16,7 @@ export function createClinicColumns({
       header: "Cidade",
       accessorFn: (row) => row.clinic.city,
     }),
-  ];
+  ]
 
   return TableList.Columns<Clinic>({
     columns: baseColumns,
@@ -38,5 +35,5 @@ export function createClinicColumns({
         />
       </>
     ),
-  });
+  })
 }

@@ -1,4 +1,4 @@
-import { useQueryUsers } from "@/features/users/api"
+import { useQueryUsers } from "@/shared/queries/users"
 import { Professional, User } from "@/shared/types"
 import { useQueryProfessionals } from "../api"
 
@@ -12,6 +12,9 @@ export const useListProfessionals = () => {
   )
 
   return {
-    usersNotProfessionals,
+    data: {
+      usersNotProfessionals,
+      dataProfessionals,
+    },
   }
 }

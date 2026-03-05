@@ -1,9 +1,10 @@
 import { useQuerySession } from "@/core/api/shared/queries"
+import { RegisterFormTypeSchema } from "@/shared/schemas"
 import { useQueryClient } from "@tanstack/react-query"
 import { createContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { postLogout, useMutationLogin, useMutationRegister } from "../api"
-import type { LoginFormTypeSchema, RegisterFormTypeSchema } from "../schemas"
+import type { LoginFormTypeSchema } from "../schemas"
 
 interface User {
   id: string

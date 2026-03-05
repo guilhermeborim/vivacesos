@@ -1,21 +1,22 @@
 import { InputController } from "@/core/ui"
+import { Patient } from "@/shared/types"
 import { useEffect } from "react"
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { Col, Row } from "reactstrap"
-import { CreatePatientTypeSchema } from "../../schemas"
 import { fields } from "./fields"
 
 interface FormPatientProps {
-  formPatient: UseFormReturn<CreatePatientTypeSchema>
-  defaultValues?: Partial<CreatePatientTypeSchema>
+  defaultValues?: Patient
 }
 
-export function FormPatient({ formPatient, defaultValues }: FormPatientProps) {
+export function FormPatient({ defaultValues }: FormPatientProps) {
+  const { control, reset } = useFormContext()
+
   useEffect(() => {
     if (defaultValues) {
-      formPatient.reset(defaultValues)
+      reset(defaultValues)
     }
-  }, [defaultValues, formPatient])
+  }, [defaultValues, reset])
 
   return (
     <Row>
@@ -23,7 +24,7 @@ export function FormPatient({ formPatient, defaultValues }: FormPatientProps) {
         <Col md={field.md} className="mt-3" key={field.name}>
           <InputController
             label={field.label}
-            control={formPatient.control}
+            control={control}
             name={field.name}
             placeholder={field.placeholder}
             type={field.type}

@@ -1,21 +1,20 @@
-import { BaseLayout } from "@/core/ui";
-import { useAuth } from "@/features/auth/hooks/use-auth";
+import { BaseLayout } from "@/core/ui"
 import {
   InitialSteps,
   ModalSelectClinic,
   ModalWelcome,
-} from "@/features/dashboard/components";
+} from "@/features/dashboard/components"
+import { useAuth } from "@/shared/hooks"
 
 export function DashboardPage() {
-  const { session } = useAuth();
+  const { session } = useAuth()
 
   return (
     <BaseLayout.Root
       title={`Bem Vindo ${session?.activeClinic ? "á " + session.activeClinic.name : ""}`}
       pageTitle={"Início"}
     >
-      {(session?.clinics.length === 0 ||
-        session?.user.onboardingStep !== "FINISHED") && (
+      {(session?.clinics.length === 0 || session?.user.onboardingStep !== "FINISHED") && (
         <BaseLayout.Body>
           <InitialSteps step={session!.user.onboardingStep} />
         </BaseLayout.Body>
@@ -37,5 +36,5 @@ export function DashboardPage() {
         />
       )}
     </BaseLayout.Root>
-  );
+  )
 }

@@ -5,6 +5,7 @@ interface ModalToggleProfessionalProps {
   toggle: () => void
   professional: { id: string; name?: string; active: boolean }
   onSubmitInactive: (data: { active: boolean; id: string }) => void
+  isPending: boolean
 }
 
 export function ModalToggleProfessional({
@@ -12,6 +13,7 @@ export function ModalToggleProfessional({
   toggle,
   professional,
   onSubmitInactive,
+  isPending,
 }: ModalToggleProfessionalProps) {
   return (
     <ModalComponent.Root isOpen={isOpen} toggle={toggle}>
@@ -22,8 +24,10 @@ export function ModalToggleProfessional({
         </h5>
         <p>
           Você está prestes a{" "}
-          <strong>{professional.active ? "inativar" : "ativar"}</strong> o profissional{" "}
+          <strong>{professional.active ? "INATIVAR" : "ATIVAR"}</strong> o profissional{" "}
           <strong>{professional.name ?? "selecionado"}</strong>.{" "}
+        </p>
+        <p>
           {professional.active
             ? "Ele não terá mais acesso ao sistema."
             : "Ele voltará a ter acesso ao sistema."}
@@ -33,8 +37,12 @@ export function ModalToggleProfessional({
         <ButtonPrimitive
           variant={professional.active ? "danger" : "primary"}
           onClick={() =>
-            onSubmitInactive({ active: professional.active, id: professional.id })
+            onSubmitInactive({
+              active: professional.active ? false : true,
+              id: professional.id,
+            })
           }
+          isLoading={isPending}
         >
           {professional.active ? "Inativar" : "Ativar"}
         </ButtonPrimitive>

@@ -10,6 +10,8 @@ export const useInitialStepFinished = () => {
   }
 
   return {
-    onSubmitFinishedOnboarding,
+    actions: {
+      onSubmitFinishedOnboarding,
+    },
   }
 }

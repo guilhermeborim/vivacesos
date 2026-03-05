@@ -1,5 +1,5 @@
 import { InputController, Loading, Nav, SelectController, Tab } from "@/core/ui"
-import { FormClinic } from "@/features/clinic/components"
+import { FormClinic } from "@/shared/forms"
 import { useCreateClinic } from "@/shared/hooks"
 import { Col, Progress, Row } from "reactstrap"
 import {
@@ -12,14 +12,23 @@ import { CreateNextStepTypeSchema } from "../schemas"
 
 export function InitialSteps(step: CreateNextStepTypeSchema) {
   const { activeTab, progressBarValue } = useInitialSteps(step)
-  const { mutationCreateClinic, onSubmitClinic } = useInitialStepClinic()
   const {
-    mutationCreateProfessionalOnboarding,
-    onSubmitProfessionalOnboarding,
-    formProfessionalOnboarding,
+    actions: { mutationCreateClinic, handleSubmitClinic },
+  } = useInitialStepClinic()
+  const {
+    actions: {
+      mutationCreateProfessionalOnboarding,
+      onSubmitProfessionalOnboarding,
+      formProfessionalOnboarding,
+    },
   } = useInitialStepProfessional()
-  const { onSubmitFinishedOnboarding } = useInitialStepFinished()
-  const { formCreateClinic, loadingCep } = useCreateClinic()
+  const {
+    actions: { onSubmitFinishedOnboarding },
+  } = useInitialStepFinished()
+  const {
+    actions: { formCreateClinic },
+    isLoading: { loadingCep },
+  } = useCreateClinic()
 
   return (
     <>
@@ -61,7 +70,7 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
                 </div>
               </div>
             </div>
-            <form onSubmit={formCreateClinic.handleSubmit(onSubmitClinic)}>
+            <form onSubmit={formCreateClinic.handleSubmit(handleSubmitClinic)}>
               <FormClinic formClinic={formCreateClinic} />
               <div className="d-flex py-3">
                 <button

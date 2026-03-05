@@ -9,28 +9,36 @@ export const useCreateProfessional = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const mutationCreateProfessional = useMutationCreateProfessional()
 
-  const form = useForm<CreateProfessionalTypeSchema>({
+  const formCreateProfessional = useForm<CreateProfessionalTypeSchema>({
     resolver: zodResolver(createProfessionalSchema),
   })
   const toggleModalOpen = () => {
     setModalOpen(!modalOpen)
-    form.reset()
+    formCreateProfessional.reset()
   }
 
-  const handleSubmit = async (payload: CreateProfessionalTypeSchema) => {
-    try {
-      await mutationCreateProfessional.mutateAsync(payload)
-      toggleModalOpen()
-    } catch {
-      toast.error("Erro ao criar profissional!")
-    }
-  }
+  const handleSubmit = formCreateProfessional.handleSubmit(
+    async (payload: CreateProfessionalTypeSchema) => {
+      try {
+        await mutationCreateProfessional.mutateAsync(payload)
+        toggleModalOpen()
+      } catch {
+        toast.error("Erro ao criar profissional!")
+      }
+    },
+  )
 
   return {
-    toggleModalOpen,
-    modalOpen,
-    form,
-    handleSubmit,
-    mutationCreateProfessional,
+    actions: {
+      toggleModalOpen,
+      handleSubmit,
+      formCreateProfessional,
+    },
+    data: {
+      modalOpen,
+    },
+    isLoading: {
+      isPending: mutationCreateProfessional.isPending,
+    },
   }
 }

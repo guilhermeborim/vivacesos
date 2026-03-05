@@ -1,15 +1,13 @@
-import { DropdownComponent, TableList } from "@/core/ui";
-import { User } from "@/shared/types";
+import { DropdownComponent, TableList } from "@/core/ui"
+import { User } from "@/shared/types"
+import { Badge } from "reactstrap"
 
-interface CreateUserColumnsProps {
-  onEdit: (user: User) => void;
-  onDelete: (user: User) => void;
+interface UserColumnsProps {
+  onEdit: (userId: string) => void
+  onInactive: (userId: string) => void
 }
 
-export function createUserColumns({
-  onEdit,
-  onDelete,
-}: CreateUserColumnsProps) {
+export function userColumns({ onEdit, onInactive }: UserColumnsProps) {
   const baseColumns = [
     TableList.Column<User>({
       header: "Nome",
@@ -24,10 +22,16 @@ export function createUserColumns({
     TableList.Column<User>({
       header: "Status",
       accessorFn: (row) => row.status,
+      cell: (row) =>
+        row.status ? (
+          <Badge color="success">ATIVO</Badge>
+        ) : (
+          <Badge color="danger">INATIVO</Badge>
+        ),
       filterType: "select",
       options: ["Ativo", "Inativo"],
     }),
-  ];
+  ]
 
   return TableList.Columns<User>({
     columns: baseColumns,
@@ -36,15 +40,19 @@ export function createUserColumns({
         <DropdownComponent.Item
           label="Editar"
           icon={<i className="mdi mdi-pencil-outline me-1" />}
-          onClick={() => onEdit(user)}
+          onClick={() => onEdit(user.user.userId)}
         />
         <DropdownComponent.Item
-          label="Excluir"
-          icon={<i className="mdi mdi-delete-outline me-1" />}
+          label={user.status ? "Inativar" : "Ativar"}
+          icon={
+            <i
+              className={`mdi ${user.status ? "mdi-eye-off-outline" : "mdi-eye-outline"} me-1`}
+            />
+          }
           variant="danger"
-          onClick={() => onDelete(user)}
+          onClick={() => onInactive(user.user.userId)}
         />
       </>
     ),
-  });
+  })
 }

@@ -15,9 +15,11 @@ export const useCreateClinic = () => {
     resolver: zodResolver(createClinicFormSchema),
   })
 
-  const onSubmitClinicCreate = async (data: CreateClinicFormTypeSchema) => {
-    await mutationCreateClinic.mutateAsync(data)
-  }
+  const handleSubmitClinicCreate = formCreateClinic.handleSubmit(
+    async (data: CreateClinicFormTypeSchema) => {
+      await mutationCreateClinic.mutateAsync(data)
+    },
+  )
 
   const cep = formCreateClinic.watch("cep")
 
@@ -28,9 +30,13 @@ export const useCreateClinic = () => {
   }, [cep, formCreateClinic])
 
   return {
-    formCreateClinic,
-    mutationCreateClinic,
-    onSubmitClinicCreate,
-    loadingCep,
+    actions: {
+      formCreateClinic,
+      mutationCreateClinic,
+      handleSubmitClinicCreate,
+    },
+    isLoading: {
+      loadingCep,
+    },
   }
 }

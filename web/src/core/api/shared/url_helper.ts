@@ -23,6 +23,8 @@ export const PUT_PROFESSIONAL_BY_ID = "/clinic/professionals/:professionalId";
 //CLINIC_USER
 export const GET_CLINICS_BY_USER = "/clinics";
 export const GET_USERS_BY_CLINIC = "/clinic/users";
+export const GET_USER_BY_ID = "/clinic/users/:userId";
+export const PUT_USER_BY_ID = "/clinic/users/:userId";
 
 //INVITE
 export const POST_INVITE = "/invite";

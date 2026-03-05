@@ -17,20 +17,26 @@ export interface UseSelectClinicProps {
 export function useSelectClinic({ isOpen, onClose }: UseSelectClinicProps) {
   const queryClient = useQueryClient()
   const mutationSelectClinic = useMutationSelectClinic()
-  const form = useForm<SelectClinicFormTypeSchema>({
+  const formSelectClinic = useForm<SelectClinicFormTypeSchema>({
     resolver: zodResolver(selectClinicFormSchema),
   })
 
-  const onSubmitSelectClinic = async (data: SelectClinicFormTypeSchema) => {
-    await mutationSelectClinic.mutateAsync(data.clinicId)
-    queryClient.invalidateQueries({ queryKey: ["session"] })
-    onClose()
-  }
+  const handleSubmitSelectClinic = formSelectClinic.handleSubmit(
+    async (data: SelectClinicFormTypeSchema) => {
+      await mutationSelectClinic.mutateAsync(data.clinicId)
+      queryClient.invalidateQueries({ queryKey: ["session"] })
+      onClose()
+    },
+  )
 
   return {
-    form,
-    mutationSelectClinic,
-    onSubmitSelectClinic,
-    isOpen,
+    data: {
+      isOpen,
+    },
+    actions: {
+      formSelectClinic,
+      mutationSelectClinic,
+      handleSubmitSelectClinic,
+    },
   }
 }

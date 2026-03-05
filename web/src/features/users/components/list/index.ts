@@ -1,2 +1,2 @@
-export { createUserColumns } from "./columns";
-export { ListUser } from "./list";
+export { userColumns } from "./columns"
+export { ListUser } from "./list"

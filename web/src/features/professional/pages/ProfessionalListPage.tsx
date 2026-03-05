@@ -3,9 +3,14 @@ import { ListProfessional, ModalCreateProfessional } from "../components"
 import { useCreateProfessional, useListProfessionals } from "../hooks"
 
 export function ProfessionalListPage() {
-  const { modalOpen, toggleModalOpen, form, handleSubmit, mutationCreateProfessional } =
-    useCreateProfessional()
-  const { usersNotProfessionals } = useListProfessionals()
+  const {
+    actions: { formCreateProfessional, handleSubmit, toggleModalOpen },
+    data: { modalOpen },
+    isLoading: { isPending },
+  } = useCreateProfessional()
+  const {
+    data: { usersNotProfessionals },
+  } = useListProfessionals()
 
   return (
     <>
@@ -27,10 +32,10 @@ export function ProfessionalListPage() {
         <ModalCreateProfessional
           isOpen={modalOpen}
           toggle={toggleModalOpen}
-          form={form}
+          formCreateProfessional={formCreateProfessional}
           usersNotProfessionals={usersNotProfessionals}
-          handleSubmit={handleSubmit}
-          isPending={mutationCreateProfessional.isPending}
+          onSubmitCreate={handleSubmit}
+          isPending={isPending}
         />
       )}
     </>

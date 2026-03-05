@@ -1,38 +1,12 @@
 import { ButtonPrimitive, InputController, Loading } from "@/core/ui"
-import { useAuth } from "@/features/auth/hooks/use-auth"
-import { registerFormSchema, RegisterFormTypeSchema } from "@/features/auth/schemas"
-import { zodResolver } from "@hookform/resolvers/zod"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import { useSearchParams } from "react-router-dom"
 import { Card, CardBody, Col, Label, Row } from "reactstrap"
-import { useQueryInviteByToken } from "../api"
+import { useInvite } from "../hooks"
 
 export function Invite() {
-  const [params] = useSearchParams()
-  const { register } = useAuth()
-  const [registerUser, setRegisterUser] = React.useTransition()
-  const [showPassword, setShowPassword] = React.useState(false)
-  const { data } = useQueryInviteByToken(params.get("token") as string)
-
-  const form = useForm<RegisterFormTypeSchema>({
-    resolver: zodResolver(registerFormSchema),
-  })
-
-  useEffect(() => {
-    if (data && data.data) {
-      form.setValue("email", data.data.email)
-    }
-  }, [data])
-  const toggleShowPassword = () => {
-    setShowPassword((prevState) => !prevState)
-  }
-
-  function handleSubmit(payload: RegisterFormTypeSchema) {
-    setRegisterUser(async () => {
-      await register(payload)
-    })
-  }
+  const {
+    actions: { form, handleSubmit, toggleShowPassword },
+    data: { data, registerUser, showPassword },
+  } = useInvite()
 
   return (
     <>
@@ -95,7 +69,6 @@ export function Invite() {
 
                   <div className="mt-4">
                     <ButtonPrimitive
-                      variant="primary"
                       className="w-100"
                       type="submit"
                       disabled={registerUser}

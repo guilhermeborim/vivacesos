@@ -1,18 +1,11 @@
 import { BaseLayout, ButtonPrimitive } from "@/core/ui"
-import { useNavigate } from "react-router-dom"
 import { ListClinic } from "../components"
 
 export function ClinicListPage() {
-  const navigate = useNavigate()
-
   return (
     <BaseLayout.Root title="Clínicas" pageTitle="Administração">
       <BaseLayout.Header>
-        <ButtonPrimitive
-          variant="primary"
-          disabled
-          onClick={() => navigate("/clinics/create")}
-        >
+        <ButtonPrimitive variant="primary" disabled>
           Adicionar
         </ButtonPrimitive>
       </BaseLayout.Header>

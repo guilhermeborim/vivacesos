@@ -1,31 +1,17 @@
 import { ButtonPrimitive, InputController, Loading } from "@/core/ui"
-import { zodResolver } from "@hookform/resolvers/zod"
-import React from "react"
-import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
 import { Card, CardBody, Col, Label, Row } from "reactstrap"
-import { useAuth } from "../hooks/use-auth"
-import { type LoginFormTypeSchema, loginFormSchema } from "../schemas"
+import { useLogin } from "../hooks/use-login"
 
 export function Login() {
-  const { login } = useAuth()
-  const [connectingUser, setConnectingUser] = React.useTransition()
-  const [showPassword, setShowPassword] = React.useState(false)
+  const {
+    connectingUser,
+    form,
+    handleSubmit,
+    navigate,
+    showPassword,
+    toggleShowPassword,
+  } = useLogin()
 
-  const toggleShowPassword = () => {
-    setShowPassword((prevState) => !prevState)
-  }
-
-  const form = useForm<LoginFormTypeSchema>({
-    resolver: zodResolver(loginFormSchema),
-  })
-
-  function handleSubmit(payload: LoginFormTypeSchema) {
-    setConnectingUser(async () => {
-      await login(payload)
-    })
-  }
-  const navigate = useNavigate()
   return (
     <>
       {connectingUser && <Loading loading={connectingUser} />}

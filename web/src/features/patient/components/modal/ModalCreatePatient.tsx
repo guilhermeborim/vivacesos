@@ -1,32 +1,40 @@
 import { ButtonPrimitive, ModalComponent } from "@/core/ui"
+import { BaseSyntheticEvent } from "react"
+import { UseFormReturn } from "react-hook-form"
+import { CreatePatientTypeSchema } from "../../schemas"
 import { FormPatient } from "../form"
 
 interface ModalCreatePatientProps {
   isOpen: boolean
   toggle: () => void
-  formPatient: any
-  onSubmitPatient: (data: any) => void
+  formPatient: UseFormReturn<CreatePatientTypeSchema>
+  handleSubmitPatient: (e: BaseSyntheticEvent) => void
+  isPending: boolean
 }
 
 export function ModalCreatePatient({
   isOpen,
   toggle,
   formPatient,
-  onSubmitPatient,
+  handleSubmitPatient,
+  isPending,
 }: ModalCreatePatientProps) {
   return (
     <ModalComponent.Root isOpen={isOpen} toggle={toggle} size="xl">
       <ModalComponent.Header>Cadastro de Pacientes</ModalComponent.Header>
       <ModalComponent.Body>
-        <FormPatient formPatient={formPatient} />
+        <FormPatient />
       </ModalComponent.Body>
       <ModalComponent.Footer>
-        <ButtonPrimitive
-          variant="primary"
-          onClick={formPatient.handleSubmit(onSubmitPatient)}
-        >
-          Salvar
-        </ButtonPrimitive>
+        <form onSubmit={handleSubmitPatient}>
+          <ButtonPrimitive
+            type="submit"
+            disabled={!formPatient.formState.isValid}
+            isLoading={isPending}
+          >
+            Salvar
+          </ButtonPrimitive>
+        </form>
       </ModalComponent.Footer>
     </ModalComponent.Root>
   )

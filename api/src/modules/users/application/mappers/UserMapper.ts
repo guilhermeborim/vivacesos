@@ -1,6 +1,10 @@
-import { ClinicUser } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers";
-import { User } from "../../../../infra/database/typeorm/sass/entities/User";
-import { GetSessionUserResponse, UserResponse } from "../dtos/UserResponse";
+import { ClinicUser } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers"
+import { User } from "../../../../infra/database/typeorm/sass/entities/User"
+import {
+  GetSessionUserResponse,
+  GetUserByIdResponse,
+  UserResponse,
+} from "../dtos/UserResponse"
 
 export class UserMapper {
   static toResponse(user: User): UserResponse {
@@ -11,17 +15,17 @@ export class UserMapper {
       emailVerified: user.emailVerified,
       onboardingStep: user.onboardingStep,
       id: user.id,
-    };
+    }
   }
 }
 
 export class GetSessionUserMapper {
   static toResponse(params: {
-    user: User;
-    clinicUsers: ClinicUser[];
-    activeClinic: { clinicId: string; name: string } | null;
-    role: string | null;
-    permissions: string[] | null;
+    user: User
+    clinicUsers: ClinicUser[]
+    activeClinic: { clinicId: string; name: string } | null
+    role: string | null
+    permissions: string[] | null
   }): GetSessionUserResponse {
     return {
       user: {
@@ -37,6 +41,20 @@ export class GetSessionUserMapper {
       activeClinic: params.activeClinic,
       role: params.role,
       permissions: params.permissions,
-    };
+    }
+  }
+}
+
+export class GetUserByIdMapper {
+  static toResponse(user: ClinicUser): GetUserByIdResponse {
+    return {
+      role: user.role,
+      status: user.status,
+      user: {
+        email: user.user.email,
+        name: user.user.name,
+        userId: user.userId,
+      },
+    }
   }
 }

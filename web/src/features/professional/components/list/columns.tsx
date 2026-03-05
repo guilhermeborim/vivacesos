@@ -1,9 +1,10 @@
 import { DropdownComponent, TableList } from "@/core/ui"
 import { Professional } from "@/shared/types"
+import { Badge } from "reactstrap"
 
 interface ProfessionalColumnsProps {
   onEdit: (professionalId: string) => void
-  onInactive: (professional: Professional) => void
+  onInactive: (professionalId: string) => void
 }
 
 export function professionalColumns({ onEdit, onInactive }: ProfessionalColumnsProps) {
@@ -24,7 +25,13 @@ export function professionalColumns({ onEdit, onInactive }: ProfessionalColumnsP
     }),
     TableList.Column<Professional>({
       header: "Status",
-      accessorFn: (row) => (row.professional.active ? "ATIVO" : "INATIVO"),
+      accessorFn: (row) => row.professional.active,
+      cell: (row) =>
+        row.professional.active ? (
+          <Badge color="success">ATIVO</Badge>
+        ) : (
+          <Badge color="danger">INATIVO</Badge>
+        ),
     }),
   ]
 
@@ -44,8 +51,7 @@ export function professionalColumns({ onEdit, onInactive }: ProfessionalColumnsP
               className={`mdi ${professional.professional.active ? "mdi-eye-off-outline" : "mdi-eye-outline"} me-1`}
             />
           }
-          variant={professional.professional.active ? "danger" : "success"}
-          onClick={() => onInactive(professional)}
+          onClick={() => onInactive(professional.id)}
         />
       </>
     ),

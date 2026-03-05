@@ -1,30 +1,23 @@
 import { Loading } from "@/core/ui"
 import { TableList } from "@/core/ui/components/Table"
-import { useEditProfessional } from "@/features/professional/hooks"
-import { useQueryProfessionals } from "../../api"
+import { useEditProfessional, useListProfessionals } from "@/features/professional/hooks"
 import { ModalEditProfessional, ModalToggleProfessional } from "../modal"
-import { professionalColumns } from "./columns"
 
 export function ListProfessional() {
-  const { dataProfessionals } = useQueryProfessionals()
   const {
-    formUpdateProfessional,
-    onSubmitUpdate,
-    onSubmitInactive,
-    modalOpen,
-    handleInactive,
-    modalInactive,
-    toggleModal,
-    handleEdit,
-    professional,
-    toggleModalInactive,
-    loadingProfessionalById,
+    data: { dataProfessionals },
+  } = useListProfessionals()
+  const {
+    actions: {
+      formUpdateProfessional,
+      handleSubmitUpdate,
+      onSubmitInactive,
+      toggleModal,
+      toggleModalInactive,
+    },
+    data: { columns, modalInactive, modalOpen, professional },
+    isLoading: { loadingProfessionalById, isPending },
   } = useEditProfessional()
-
-  const columns = professionalColumns({
-    onEdit: handleEdit,
-    onInactive: handleInactive,
-  })
 
   return (
     <>
@@ -37,7 +30,8 @@ export function ListProfessional() {
           toggle={toggleModal}
           formUpdateProfessional={formUpdateProfessional}
           professional={professional}
-          onSubmitUpdate={onSubmitUpdate}
+          onSubmitUpdate={handleSubmitUpdate}
+          isPending={isPending}
         />
       )}
 
@@ -47,6 +41,7 @@ export function ListProfessional() {
           toggle={toggleModalInactive}
           professional={professional}
           onSubmitInactive={onSubmitInactive}
+          isPending={isPending}
         />
       )}
     </>

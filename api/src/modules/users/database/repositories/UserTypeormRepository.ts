@@ -5,7 +5,7 @@ import {
   UserOnboardingStep,
 } from "../../../../infra/database/typeorm/sass/entities/User";
 import { DatabaseError } from "../../../../shared/errors/database.error";
-import { UserCreateParams } from "../../application/types";
+import { UserCreateParams, UserUpdateParams } from "../../application/types";
 import { UserRepositoryInterface } from "../interface/UserRepositoryInterface";
 
 export class UserTypeormRepository implements UserRepositoryInterface {
@@ -56,6 +56,14 @@ export class UserTypeormRepository implements UserRepositoryInterface {
       return user;
     } catch (error) {
       throw new DatabaseError("Falha ao buscar usuário!", error);
+    }
+  }
+
+  async updateUser(userId: string, data: UserUpdateParams): Promise<void> {
+    try {
+      await this.userRepository.update(userId, data);
+    } catch (error) {
+      throw new DatabaseError("Falha ao atualizar usuário!", error);
     }
   }
 

@@ -1,2 +1,2 @@
-export { createClinicColumns } from "./columns";
-export { ListClinic } from "./list";
+export { clinicColumns } from "./columns"
+export { ListClinic } from "./list"

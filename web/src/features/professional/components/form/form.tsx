@@ -1,28 +1,28 @@
-import { InputController, SelectController } from "@/core/ui";
-import { User } from "@/shared/types";
-import { useEffect } from "react";
-import { Col, Row } from "reactstrap";
+import { InputController, SelectController } from "@/core/ui"
+import { Professional, User } from "@/shared/types"
+import { useEffect } from "react"
+import { useFormContext } from "react-hook-form"
+import { Col, Row } from "reactstrap"
 
 interface FormProfessionalProps {
-  formProfessional: any;
-  defaultValues?: any;
-  users: User[];
-  isEdit?: boolean;
+  defaultValues?: Professional
+  users?: User[]
+  isEdit?: boolean
 }
 
 export function FormProfessional({
-  formProfessional,
   defaultValues,
-  users,
+  users = [],
   isEdit = false,
 }: FormProfessionalProps) {
-  const type = formProfessional.watch("type");
+  const { watch, control, reset } = useFormContext()
+  const type = watch("type")
 
   useEffect(() => {
     if (defaultValues) {
-      formProfessional.reset(defaultValues);
+      reset(defaultValues)
     }
-  }, [defaultValues]);
+  }, [defaultValues, reset])
 
   return (
     <>
@@ -30,7 +30,7 @@ export function FormProfessional({
         {!isEdit && (
           <Col lg={12}>
             <SelectController
-              control={formProfessional.control}
+              control={control}
               name="userId"
               options={
                 users?.map((user) => ({
@@ -44,7 +44,7 @@ export function FormProfessional({
         )}
         <Col lg={12}>
           <SelectController
-            control={formProfessional.control}
+            control={control}
             name="type"
             options={[
               { label: "Médico", value: "MEDICO" },
@@ -61,7 +61,7 @@ export function FormProfessional({
           <>
             <Col lg={12}>
               <InputController
-                control={formProfessional.control}
+                control={control}
                 name="crm"
                 label="CRM"
                 placeholder="CRM do Profissional"
@@ -71,7 +71,7 @@ export function FormProfessional({
             </Col>
             <Col lg={12}>
               <InputController
-                control={formProfessional.control}
+                control={control}
                 name="specialty"
                 label="Especialidade"
                 placeholder="Especialidade do Profissional"
@@ -81,5 +81,5 @@ export function FormProfessional({
         )}
       </Row>
     </>
-  );
+  )
 }

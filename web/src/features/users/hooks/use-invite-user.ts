@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { useMutationInvite } from "../api"
 import { createInviteSchema, CreateInviteTypeSchema } from "../schemas"
 
@@ -11,29 +10,38 @@ export const useInviteUser = () => {
   const mutationInvite = useMutationInvite()
 
   // FORM
-  const formUser = useForm<CreateInviteTypeSchema>({
+  const formInviteUser = useForm<CreateInviteTypeSchema>({
     resolver: zodResolver(createInviteSchema),
   })
 
   // FUNCTIONS
   const toggleModalInvite = () => {
     setModalInvite(!modalInvite)
-    formUser.reset()
+    formInviteUser.reset()
   }
 
-  const onSubmitInvite = async (payload: CreateInviteTypeSchema) => {
-    try {
-      await mutationInvite.mutateAsync(payload)
-      toggleModalInvite()
-    } catch {
-      toast.error("erro")
-    }
-  }
+  const handleSubmitInvite = formInviteUser.handleSubmit(
+    async (payload: CreateInviteTypeSchema) => {
+      try {
+        await mutationInvite.mutateAsync(payload)
+        toggleModalInvite()
+      } catch {
+        // Erro já tratado no onError do mutationInvite
+      }
+    },
+  )
 
   return {
-    modalInvite,
-    toggleModalInvite,
-    formUser,
-    onSubmitInvite,
+    actions: {
+      toggleModalInvite,
+      formInviteUser,
+      handleSubmitInvite,
+    },
+    data: {
+      modalInvite,
+    },
+    isLoading: {
+      isPending: mutationInvite.isPending,
+    },
   }
 }

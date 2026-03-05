@@ -26,3 +26,8 @@ export type UserNextOnboardingStepParams = {
   userId: string;
   step: UserOnboardingStep;
 };
+
+export type UserUpdateParams = {
+  name?: string;
+  active?: boolean;
+};

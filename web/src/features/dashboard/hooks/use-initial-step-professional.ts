@@ -1,4 +1,4 @@
-import { useAuth } from "@/features/auth/hooks/use-auth"
+import { useAuth } from "@/shared/hooks"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"
@@ -38,8 +38,10 @@ export const useInitialStepProfessional = () => {
   }, [session?.user.id, session?.clinics[0]?.clinicId])
 
   return {
-    mutationCreateProfessionalOnboarding,
-    onSubmitProfessionalOnboarding,
-    formProfessionalOnboarding,
+    actions: {
+      mutationCreateProfessionalOnboarding,
+      onSubmitProfessionalOnboarding,
+      formProfessionalOnboarding,
+    },
   }
 }

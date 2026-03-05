@@ -13,6 +13,7 @@ export const updateUserSchema = z.object({
   name: z.string().optional(),
   email: z.email().optional(),
   password: z.string().min(6).optional(),
+  active: z.boolean().optional(),
 })
 
 export type UpdateUserTypeSchema = z.infer<typeof updateUserSchema>

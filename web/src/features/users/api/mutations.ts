@@ -1,8 +1,8 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { toast } from "react-toastify"
-import { CreateInviteTypeSchema } from "../schemas"
-import { postINvite } from "./"
+import { CreateInviteTypeSchema, UpdateUserTypeSchema } from "../schemas"
+import { postINvite, putUserById } from "./"
 
 export const useMutationInvite = () => {
   return useMutation({
@@ -13,6 +13,23 @@ export const useMutationInvite = () => {
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message || "Erro ao enviar convite")
+      }
+    },
+  })
+}
+
+export const useMutationUpdateUser = (userId: string) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (payload: UpdateUserTypeSchema) => putUserById(userId, payload),
+    onSuccess: () => {
+      toast.success("Usuário atualizado com sucesso!")
+      queryClient.invalidateQueries({ queryKey: ["users"] })
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message || "Erro ao atualizar usuário")
       }
     },
   })

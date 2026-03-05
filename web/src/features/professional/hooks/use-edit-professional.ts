@@ -1,8 +1,8 @@
-import { Professional } from "@/shared/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useMutationUpdateProfessional, useQueryProfessionalById } from "../api"
+import { professionalColumns } from "../components"
 import { updateProfessionalSchema, UpdateProfessionalTypeSchema } from "../schemas"
 
 export const useEditProfessional = () => {
@@ -18,20 +18,18 @@ export const useEditProfessional = () => {
 
   const mutationUpdateProfessional = useMutationUpdateProfessional(editProfessionalId!)
 
-  const onSubmitUpdate = async (payload: UpdateProfessionalTypeSchema) => {
-    try {
-      await mutationUpdateProfessional.mutateAsync(payload)
-      toggleModal()
-    } catch {
-      // Erro já tratado pelo onError do useMutationUpdateProfessional
-    }
-  }
+  const handleSubmitUpdate = formUpdateProfessional.handleSubmit(
+    async (payload: UpdateProfessionalTypeSchema) => {
+      try {
+        await mutationUpdateProfessional.mutateAsync(payload)
+        toggleModal()
+      } catch {
+        // Erro já tratado pelo onError do useMutationUpdateProfessional
+      }
+    },
+  )
 
-  const onSubmitInactive = async ({ active, id }: { active: boolean; id: string }) => {
-    const payload = {
-      active: active ? false : true,
-      id,
-    }
+  const onSubmitInactive = async (payload: { active: boolean; id: string }) => {
     try {
       await mutationUpdateProfessional.mutateAsync(payload)
       toggleModalInactive()
@@ -56,24 +54,33 @@ export const useEditProfessional = () => {
     setEditProfessionalId(professionalId)
   }
 
-  function handleInactive(professional: Professional) {
-    setEditProfessionalId(professional.id)
+  function handleInactive(professionalId: string) {
+    setEditProfessionalId(professionalId)
     setModalInactive(true)
   }
 
+  const columns = professionalColumns({
+    onEdit: handleEdit,
+    onInactive: handleInactive,
+  })
+
   return {
-    formUpdateProfessional,
-    mutationUpdateProfessional,
-    onSubmitUpdate,
-    handleEdit,
-    handleInactive,
-    modalOpen,
-    modalInactive,
-    toggleModal,
-    editProfessionalId,
-    toggleModalInactive,
-    professional,
-    loadingProfessionalById,
-    onSubmitInactive,
+    actions: {
+      formUpdateProfessional,
+      handleSubmitUpdate,
+      onSubmitInactive,
+      toggleModal,
+      toggleModalInactive,
+    },
+    data: {
+      modalOpen,
+      modalInactive,
+      professional,
+      columns,
+    },
+    isLoading: {
+      loadingProfessionalById,
+      isPending: mutationUpdateProfessional.isPending,
+    },
   }
 }

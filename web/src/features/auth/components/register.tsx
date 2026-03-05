@@ -1,29 +1,11 @@
 import { ButtonPrimitive, InputController, Loading } from "@/core/ui"
-import { zodResolver } from "@hookform/resolvers/zod"
-import React from "react"
-import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
 import { Card, CardBody, Col, Label, Row } from "reactstrap"
-import { useAuth } from "../hooks/use-auth"
-import { registerFormSchema, RegisterFormTypeSchema } from "../schemas"
+import { useRegister } from "../hooks/use-register"
 
 export function Register() {
-  const { register } = useAuth()
-  const [registerUser, setRegisterUser] = React.useTransition()
-  const [showPassword, setShowPassword] = React.useState(false)
-
-  const toggleShowPassword = () => {
-    setShowPassword((prevState) => !prevState)
-  }
-  const form = useForm<RegisterFormTypeSchema>({
-    resolver: zodResolver(registerFormSchema),
-  })
-
-  function handleSubmit(payload: RegisterFormTypeSchema) {
-    setRegisterUser(async () => {
-      await register(payload)
-    })
-  }
+  const { form, handleSubmit, registerUser, showPassword, toggleShowPassword } =
+    useRegister()
 
   return (
     <>

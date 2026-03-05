@@ -10,6 +10,8 @@ import { RegisterProfessionalController } from "../../../modules/clinic/applicat
 import { UpdateClinicController } from "../../../modules/clinic/application/controllers/Update";
 import { GetProfessionalByIdController } from "../../../modules/professional/application/controllers/GetById";
 import { UpdateProfessionalController } from "../../../modules/professional/application/controllers/Update";
+import { GetUserByIdController } from "../../../modules/users/application/controllers/GetById";
+import { UpdateUserController } from "../../../modules/users/application/controllers/Update";
 import { CheckAuthenticationMiddleware } from "../middlewares/check-authentication";
 import { CheckClinicUserMiddleware } from "../middlewares/check-clinic";
 
@@ -26,6 +28,8 @@ export const configure = (fastify: FastifyInstance) => {
 
   const updateProfessionalController = new UpdateProfessionalController();
   const getProfessionalByIdController = new GetProfessionalByIdController();
+  const updateUserController = new UpdateUserController();
+  const getUserByIdController = new GetUserByIdController();
 
   const checkAuthenticationMiddleware = new CheckAuthenticationMiddleware();
   const checkClinicUserMiddleware = new CheckClinicUserMiddleware();
@@ -76,6 +80,26 @@ export const configure = (fastify: FastifyInstance) => {
       checkClinicUserMiddleware.execute,
     ],
     handler: getUserByClinicController.execute,
+  });
+
+  fastify.route({
+    url: "/clinic/users/:userId",
+    method: "GET",
+    preHandler: [
+      checkAuthenticationMiddleware.execute,
+      checkClinicUserMiddleware.execute,
+    ],
+    handler: getUserByIdController.execute,
+  });
+
+  fastify.route({
+    url: "/clinic/users/:userId",
+    method: "PUT",
+    preHandler: [
+      checkAuthenticationMiddleware.execute,
+      checkClinicUserMiddleware.execute,
+    ],
+    handler: updateUserController.execute,
   });
 
   fastify.route({

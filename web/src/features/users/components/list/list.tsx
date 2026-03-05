@@ -1,41 +1,50 @@
+import { Loading } from "@/core/ui"
 import { TableList } from "@/core/ui/components/Table"
-import { useQueryUsers } from "../../api"
-import { createUserColumns } from "./columns"
+import { useEditUser, useListUsers } from "@/features/users/hooks"
+import { ModalEditUser, ModalToggleUser } from "../modal"
 
 export function ListUser() {
-  const { dataUsers } = useQueryUsers()
-  // const {
-  //   actions: { toggleModalEdit, formUpdateUser, onSubmitUserUpdate },
-  //   data: { modalEdit },
-  // } = useEditUser()
+  const {
+    data: { dataUsers },
+  } = useListUsers()
 
-  const columns = createUserColumns({
-    onEdit: () => {
-      // toggleModalEdit()
+  const {
+    actions: {
+      formUpdateUser,
+      handleSubmitUpdate,
+      onSubmitInactive,
+      toggleModal,
+      toggleModalInactive,
     },
-    onDelete: () => console.log("excluiu"),
-  })
+    data: { columns, modalInactive, modalOpen, user },
+    isLoading: { loadingUserById, isPending },
+  } = useEditUser()
 
   return (
     <>
+      {loadingUserById && <Loading loading={loadingUserById} />}
       <TableList.Root columns={columns} data={dataUsers || []} />
 
-      {/* {modalEdit && (
-        <ModalComponent.Root isOpen={modalEdit} toggle={toggleModalEdit}>
-          <ModalComponent.Header>Editar Usuário</ModalComponent.Header>
-          <ModalComponent.Body>
-            <FormUser formUser={formUpdateUser} />
-          </ModalComponent.Body>
-          <ModalComponent.Footer>
-            <ButtonPrimitive
-              variant="info"
-              onClick={formUpdateUser.handleSubmit(onSubmitUserUpdate)}
-            >
-              Atualizar
-            </ButtonPrimitive>
-          </ModalComponent.Footer>
-        </ModalComponent.Root>
-      )} */}
+      {modalOpen && user && (
+        <ModalEditUser
+          isOpen={modalOpen}
+          toggle={toggleModal}
+          formUpdateUser={formUpdateUser}
+          user={user}
+          onSubmitUpdate={handleSubmitUpdate}
+          isPending={isPending}
+        />
+      )}
+
+      {modalInactive && user && (
+        <ModalToggleUser
+          isOpen={modalInactive}
+          toggle={toggleModalInactive}
+          user={user}
+          onSubmitInactive={onSubmitInactive}
+          isPending={isPending}
+        />
+      )}
     </>
   )
 }

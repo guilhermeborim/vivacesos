@@ -1,48 +1,59 @@
-import { InputController, SelectController } from "@/core/ui";
-import { useEffect } from "react";
-import { Col, Row } from "reactstrap";
+import { InputController, SelectController } from "@/core/ui"
+import { User } from "@/shared/types"
+import { useEffect } from "react"
+import { useFormContext } from "react-hook-form"
+import { Col, Row } from "reactstrap"
 
 interface FormUserProps {
-  formUser: any;
-  defaultValues?: any;
+  defaultValues?: User
+  isEdit?: boolean
 }
 
-export function FormUser({ formUser, defaultValues }: FormUserProps) {
+export function FormUser({ defaultValues, isEdit = false }: FormUserProps) {
+  const { control, reset } = useFormContext()
+
   useEffect(() => {
     if (defaultValues) {
-      formUser.reset(defaultValues);
+      reset({
+        name: defaultValues.user.name,
+        email: defaultValues.user.email,
+      })
     }
-  }, [defaultValues]);
+  }, [defaultValues, reset])
 
   return (
     <>
       <Row>
-        <Col lg={6}>
-          <InputController
-            label="E-mail"
-            control={formUser.control}
-            name={"email"}
-            placeholder="example@example.com"
-          />
+        <Col lg={isEdit ? 12 : 6}>
+          {!isEdit && (
+            <InputController
+              label="E-mail"
+              control={control}
+              name={"email"}
+              placeholder="example@example.com"
+            />
+          )}
           <InputController
             label="Nome"
-            control={formUser.control}
+            control={control}
             name={"name"}
-            placeholder="example@example.com"
+            placeholder="Nome do usuário"
           />
         </Col>
-        <Col lg={6}>
-          <SelectController
-            control={formUser.control}
-            name="role"
-            options={[
-              { label: "Profissional", value: "PROFISSIONAL" },
-              { label: "Recepcionista", value: "RECEPCIONISTA" },
-            ]}
-            label="Cargo"
-          />
-        </Col>
+        {!isEdit && (
+          <Col lg={6}>
+            <SelectController
+              control={control}
+              name="role"
+              options={[
+                { label: "Profissional", value: "PROFISSIONAL" },
+                { label: "Recepcionista", value: "RECEPCIONISTA" },
+              ]}
+              label="Cargo"
+            />
+          </Col>
+        )}
       </Row>
     </>
-  );
+  )
 }

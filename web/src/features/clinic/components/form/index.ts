@@ -1,1 +1,0 @@
-export { FormClinic } from "./form";

@@ -1,9 +1,13 @@
 import { BaseLayout, ButtonPrimitive } from "@/core/ui"
 import { ListPatient, ModalCreatePatient } from "../components"
-import { usePostPatient } from "../hooks"
+import { useCreatePatient } from "../hooks"
 
 export function PatientListPage() {
-  const { formPatient, onSubmitPatient, modal, toggleModal } = usePostPatient()
+  const {
+    actions: { formCreatePatient, handleSubmitPatient, toggleModal },
+    data: { modal },
+    isLoading: { isPending },
+  } = useCreatePatient()
 
   return (
     <>
@@ -22,8 +26,9 @@ export function PatientListPage() {
         <ModalCreatePatient
           isOpen={modal}
           toggle={toggleModal}
-          formPatient={formPatient}
-          onSubmitPatient={onSubmitPatient}
+          formPatient={formCreatePatient}
+          handleSubmitPatient={handleSubmitPatient}
+          isPending={isPending}
         />
       )}
     </>
