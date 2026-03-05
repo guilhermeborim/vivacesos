@@ -1,6 +1,6 @@
 ## 🧩 Issue
 
-VIV-XXX
+`VIV-XXX`
 
 ## 📝 O que foi feito
 
@@ -10,19 +10,9 @@ VIV-XXX
 
 ## 🎯 Objetivo
 
-Explique o problema que essa PR resolve.
-
-## 🛠 Como testar
-
-1.
-2.
-3.
+`Explique o problema que essa PR resolve`.
 
 ## 📸 Prints (se houver)
-
-## 🚨 Pontos de atenção
-
--
 
 ## ✅ Checklist
 

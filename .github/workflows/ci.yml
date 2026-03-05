@@ -1,11 +1,11 @@
-name: Sass CI
+name: Lint CI
 
 on:
   pull_request:
     branches: [main, develop]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,14 +16,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: npm
+          cache: yarn
+          cache-dependency-path: yarn.lock
 
-      - name: Install root dependencies
-        run: npm install
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-      # ===== LINT =====
-      - name: Lint API
-        run: CI_BRANCH=${{ github.base_ref }} npx eslint web --ext .ts,.tsx
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            **/*.ts
+            **/*.tsx
 
-      - name: Lint Web
-        run: CI_BRANCH=${{ github.base_ref }} npx eslint web --ext .ts,.tsx
+      - name: Lint changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: CI_BRANCH=${{ github.base_ref }} npx eslint ${{ steps.changed-files.outputs.all_changed_files }}
