@@ -1,12 +1,9 @@
-import {
-  createClinicFormSchema,
-  CreateClinicFormTypeSchema,
-} from "@/features/clinic/schemas"
 import { useMutationCreateClinic } from "@/shared/mutations/clinic"
 import { getCep } from "@/shared/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { createClinicFormSchema, CreateClinicFormTypeSchema } from "../schemas"
 
 export const useCreateClinic = () => {
   const [loadingCep, setLoadingCep] = useState<boolean>(false)

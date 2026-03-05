@@ -20,8 +20,8 @@ import {
   changeTopbarTheme,
 } from "@/slices/thunks"
 
-import { useAuth } from "@/features/auth/hooks/use-auth"
 import { useAppDispatch } from "@/index"
+import { useAuth } from "@/shared/hooks"
 import { useSelector } from "react-redux"
 import { createSelector } from "reselect"
 

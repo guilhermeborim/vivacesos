@@ -1,5 +1,5 @@
 import { Loading } from "@/core/ui"
-import { useAuth } from "@/features/auth/hooks/use-auth"
+import { useAuth } from "@/shared/hooks"
 import { Navigate } from "react-router-dom"
 
 interface AuthProtectedProps {
