@@ -32,7 +32,6 @@ export function DashboardPage() {
         <ModalSelectClinic
           clinics={session?.clinics ?? []}
           isOpen={!session?.activeClinic}
-          onClose={() => console.log("close")}
         />
       )}
     </BaseLayout.Root>

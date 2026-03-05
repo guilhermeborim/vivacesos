@@ -18,5 +18,8 @@ export const useInitialStepClinic = () => {
       handleSubmitClinic,
       mutationCreateClinic,
     },
+    isLoading: {
+      isPendingClinic: mutationCreateClinic.isPending,
+    },
   }
 }

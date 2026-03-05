@@ -2,6 +2,7 @@ import { ButtonPrimitive, InputController, Loading } from "@/core/ui"
 import { Link } from "react-router-dom"
 import { Card, CardBody, Col, Label, Row } from "reactstrap"
 import { useRegister } from "../hooks/use-register"
+import { registerFields } from "./forms"
 
 export function Register() {
   const { form, handleSubmit, registerUser, showPassword, toggleShowPassword } =
@@ -21,24 +22,17 @@ export function Register() {
               </div>
               <div className="p-2 mt-4">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
-                  <div className="mb-3">
-                    <InputController
-                      control={form.control}
-                      name="name"
-                      label="Nome"
-                      placeholder="Seu nome"
-                      errors={form.formState.errors}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <InputController
-                      control={form.control}
-                      name="email"
-                      label="Email"
-                      placeholder="example@example.com"
-                      errors={form.formState.errors}
-                    />
-                  </div>
+                  {registerFields.map((field) => (
+                    <div className="mb-3" key={field.name}>
+                      <InputController
+                        control={form.control}
+                        name={field.name}
+                        label={field.label}
+                        placeholder={field.placeholder}
+                        errors={form.formState.errors}
+                      />
+                    </div>
+                  ))}
 
                   <div className="mb-3">
                     <Label className="form-label" htmlFor="password-input">

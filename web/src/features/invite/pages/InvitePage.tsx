@@ -1,8 +1,8 @@
-import React from "react";
-import { Col, Container, Row } from "reactstrap";
+import React from "react"
+import { Col, Container, Row } from "reactstrap"
 
-import { FooterAuth } from "@/core/ui";
-import { Invite } from "../components";
+import { FooterAuth } from "@/core/ui"
+import { Invite } from "../components/invite"
 
 export function InvitePage() {
   return (
@@ -14,10 +14,7 @@ export function InvitePage() {
               <Col lg={12}>
                 <div className="text-center mt-sm-5 mb-4 text-white-50">
                   <div>
-                    <span
-                      className=" d-block"
-                      style={{ height: "100px", opacity: 0 }}
-                    />
+                    <span className=" d-block" style={{ height: "100px", opacity: 0 }} />
                   </div>
                 </div>
               </Col>
@@ -28,5 +25,5 @@ export function InvitePage() {
         </div>
       </FooterAuth>
     </React.Fragment>
-  );
+  )
 }

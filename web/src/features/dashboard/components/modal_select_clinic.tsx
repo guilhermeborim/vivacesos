@@ -1,15 +1,18 @@
 import { ButtonPrimitive, ModalComponent, SelectController } from "@/core/ui"
-import { useSelectClinic, UseSelectClinicProps } from "@/shared/hooks"
+import { useSelectClinic } from "@/shared/hooks"
+import { ClinicAuthContext } from "@/shared/types"
 import ImgSelect from "../../../assets/images/select.svg"
 
-export function ModalSelectClinic({ clinics, isOpen, onClose }: UseSelectClinicProps) {
+export interface ModalSelectClinicProps {
+  clinics: ClinicAuthContext[]
+  isOpen: boolean
+}
+
+export function ModalSelectClinic({ clinics, isOpen }: ModalSelectClinicProps) {
   const {
-    actions: { formSelectClinic, handleSubmitSelectClinic, mutationSelectClinic },
-  } = useSelectClinic({
-    clinics,
-    isOpen,
-    onClose,
-  })
+    actions: { formSelectClinic, handleSubmitSelectClinic },
+    isLoading: { isPending },
+  } = useSelectClinic()
 
   return (
     <ModalComponent.Root isOpen={isOpen} toggle={() => {}}>
@@ -26,29 +29,29 @@ export function ModalSelectClinic({ clinics, isOpen, onClose }: UseSelectClinicP
           </div>
         </div>
 
-        <form onSubmit={handleSubmitSelectClinic}>
-          <SelectController
-            label="Selecione a Clínica"
-            options={
-              clinics?.map((clinic) => ({
-                label: clinic.name,
-                value: clinic.clinicId,
-              })) ?? []
-            }
-            control={formSelectClinic.control}
-            name={"clinicId"}
-          />
-          <div className="d-grid mt-4 mb-2">
+        <SelectController
+          label="Selecione a Clínica"
+          options={
+            clinics?.map((clinic) => ({
+              label: clinic.name,
+              value: clinic.clinicId,
+            })) ?? []
+          }
+          control={formSelectClinic.control}
+          name={"clinicId"}
+        />
+        <div className="d-grid mt-4 mb-2">
+          <form onSubmit={handleSubmitSelectClinic}>
             <ButtonPrimitive
               type="submit"
               variant="primary"
-              disabled={!formSelectClinic.watch("clinicId")}
-              isLoading={mutationSelectClinic.isPending}
+              disabled={!formSelectClinic.formState.isValid || isPending}
+              isLoading={isPending}
             >
               Selecionar Clínica
             </ButtonPrimitive>
-          </div>
-        </form>
+          </form>
+        </div>
       </ModalComponent.Body>
     </ModalComponent.Root>
   )

@@ -1,6 +1,8 @@
 import { ButtonPrimitive, InputController, Loading } from "@/core/ui"
+import { FormProvider } from "react-hook-form"
 import { Card, CardBody, Col, Label, Row } from "reactstrap"
 import { useInvite } from "../hooks"
+import { FormInvite } from "./forms"
 
 export function Invite() {
   const {
@@ -9,7 +11,7 @@ export function Invite() {
   } = useInvite()
 
   return (
-    <>
+    <FormProvider {...form}>
       {registerUser && <Loading loading={registerUser} />}
       <Row className="justify-content-center">
         <Col md={8} lg={6} xl={5}>
@@ -32,15 +34,8 @@ export function Invite() {
                       disabled
                     />
                   </div>
-                  <div className="mb-3">
-                    <InputController
-                      control={form.control}
-                      name="name"
-                      label="Nome"
-                      placeholder="Seu nome"
-                      errors={form.formState.errors}
-                    />
-                  </div>
+
+                  <FormInvite />
 
                   <div className="mb-3">
                     <Label className="form-label" htmlFor="password-input">
@@ -83,6 +78,6 @@ export function Invite() {
           </Card>
         </Col>
       </Row>
-    </>
+    </FormProvider>
   )
 }

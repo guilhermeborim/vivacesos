@@ -1,28 +1,22 @@
-import { FormField } from "@/core/ui";
-import {
-  Control,
-  Controller,
-  FieldErrors,
-  FieldValues,
-  Path,
-} from "react-hook-form";
-import Select from "react-select";
+import { FormField } from "@/core/ui"
+import { Control, Controller, FieldErrors, FieldValues, Path } from "react-hook-form"
+import Select from "react-select"
 
 interface Option {
-  label: string;
-  value: string;
-  isDisabled?: boolean;
+  label: string
+  value: string | number
+  isDisabled?: boolean
 }
 
 interface SelectControllerProps<T extends FieldValues> {
-  control: Control<T>;
-  name: Path<T>;
-  errors?: FieldErrors<T>;
-  label?: string;
-  options: Option[];
-  placeholder?: string;
-  isClearable?: boolean;
-  disabled?: boolean;
+  control: Control<T>
+  name: Path<T>
+  errors?: FieldErrors<T>
+  label?: string
+  options: Option[]
+  placeholder?: string
+  isClearable?: boolean
+  disabled?: boolean
 }
 
 export function SelectController<T extends FieldValues>({
@@ -35,15 +29,14 @@ export function SelectController<T extends FieldValues>({
   isClearable = true,
   disabled,
 }: SelectControllerProps<T>) {
-  const error = errors?.[name]?.message as string | undefined;
+  const error = errors?.[name]?.message as string | undefined
 
   return (
     <Controller
       control={control}
       name={name}
       render={({ field, fieldState }) => {
-        const selectedOption =
-          options.find((opt) => opt.value === field.value) ?? null;
+        const selectedOption = options.find((opt) => opt.value === field.value) ?? null
 
         return (
           <FormField label={label} error={fieldState.error?.message}>
@@ -59,8 +52,8 @@ export function SelectController<T extends FieldValues>({
               isDisabled={disabled}
             />
           </FormField>
-        );
+        )
       }}
     />
-  );
+  )
 }

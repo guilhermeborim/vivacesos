@@ -1,6 +1,7 @@
 import { ButtonPrimitive, InputController, Loading } from "@/core/ui"
 import { Card, CardBody, Col, Label, Row } from "reactstrap"
 import { useLogin } from "../hooks/use-login"
+import { loginFields } from "./forms"
 
 export function Login() {
   const {
@@ -26,16 +27,18 @@ export function Login() {
               </div>
               <div className="p-2 mt-4">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
-                  <div className="mb-3">
-                    <InputController
-                      control={form.control}
-                      name="email"
-                      label="Email"
-                      type="email"
-                      placeholder="example@example.com"
-                      errors={form.formState.errors}
-                    />
-                  </div>
+                  {loginFields.map((field) => (
+                    <div className="mb-3" key={field.name}>
+                      <InputController
+                        control={form.control}
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        placeholder={field.placeholder}
+                        errors={form.formState.errors}
+                      />
+                    </div>
+                  ))}
 
                   <div className="mb-3">
                     <Label className="form-label" htmlFor="password-input">

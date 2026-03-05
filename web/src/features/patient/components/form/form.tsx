@@ -22,14 +22,16 @@ export function FormPatient({ defaultValues }: FormPatientProps) {
     <Row>
       {fields.map((field) => (
         <Col md={field.md} className="mt-3" key={field.name}>
-          <InputController
-            label={field.label}
-            control={control}
-            name={field.name}
-            placeholder={field.placeholder}
-            type={field.type}
-            mask={field.mask}
-          />
+          {field.type !== "select" && (
+            <InputController
+              label={field.label}
+              control={control}
+              name={field.name}
+              placeholder={field.placeholder}
+              type={field.type}
+              mask={field.mask}
+            />
+          )}
         </Col>
       ))}
     </Row>

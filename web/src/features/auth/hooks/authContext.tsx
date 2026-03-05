@@ -1,5 +1,6 @@
 import { useQuerySession } from "@/core/api/shared/queries"
 import { RegisterFormTypeSchema } from "@/shared/schemas"
+import { ClinicAuthContext } from "@/shared/types"
 import { useQueryClient } from "@tanstack/react-query"
 import { createContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
@@ -13,11 +14,6 @@ interface User {
   onboardingStep: "CREATE_CLINIC" | "LINK_PROFESSIONAL" | "DONE" | "FINISHED"
 }
 
-export interface Clinic {
-  clinicId: string
-  name: string
-}
-
 export interface activeClinic {
   id: string
   name: string
@@ -25,7 +21,7 @@ export interface activeClinic {
 
 export interface Session {
   user: User
-  clinics: Clinic[]
+  clinics: ClinicAuthContext[]
   activeClinic: activeClinic | null
   role: string
   permissions: string[]
