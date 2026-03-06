@@ -1,5 +1,6 @@
 import { ConflictError } from "../../../../shared/errors/conflict.error"
-import { encrypt } from "../../../../shared/utils/crypto"
+import { encrypt, hash } from "../../../../shared/utils/crypto"
+import { replacePayloadString } from "../../../../shared/utils/format"
 import { ClinicTypeormRepository } from "../../database/repositories/ClinicTypeormRepository"
 import { ClinicUpdateParams } from "../types"
 
@@ -19,7 +20,7 @@ export class UpdateClinicService {
 
     const clinicExistsByCnpj = await this.clinicRepository.findByCnpj(
       clinicId,
-      clinicExisting.cnpj,
+      clinicExisting.cnpjHash,
     )
 
     if (clinicExistsByCnpj) {
@@ -36,9 +37,8 @@ export class UpdateClinicService {
     }
 
     if (clinic.cnpj) {
-      const encryptedCnpj = encrypt(clinic.cnpj)
-
-      clinic.cnpj = encryptedCnpj
+      clinic.cnpjHash = hash(replacePayloadString(clinic.cnpj))
+      clinic.cnpj = encrypt(replacePayloadString(clinic.cnpj))
     }
 
     await this.clinicRepository.updateClinic(clinicId, clinic)

@@ -1,7 +1,7 @@
+import { UpdateClinicFormTypeSchema } from "@/shared/schemas"
 import { useMutation } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { toast } from "react-toastify"
-import { UpdateClinicFormTypeSchema } from "../schemas"
 import { putClinicById } from "./"
 
 export const useMutationUpdateClinic = (clinicId: string) => {

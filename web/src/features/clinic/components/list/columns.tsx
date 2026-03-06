@@ -1,12 +1,13 @@
 import { DropdownComponent, TableList } from "@/core/ui"
 import { Clinic } from "@/shared/types"
+import { Badge } from "reactstrap"
 
 interface ClinicColumnsProps {
-  onEdit: (clinic: Clinic) => void
-  onDelete: (clinic: Clinic) => void
+  onEdit: (clinicId: string) => void
+  onInactive: (clinicId: string) => void
 }
 
-export function clinicColumns({ onEdit, onDelete }: ClinicColumnsProps) {
+export function clinicColumns({ onEdit, onInactive }: ClinicColumnsProps) {
   const baseColumns = [
     TableList.Column<Clinic>({
       header: "Nome",
@@ -15,6 +16,16 @@ export function clinicColumns({ onEdit, onDelete }: ClinicColumnsProps) {
     TableList.Column<Clinic>({
       header: "Cidade",
       accessorFn: (row) => row.clinic.city,
+    }),
+    TableList.Column<Clinic>({
+      header: "Status",
+      accessorFn: (row) => row.status,
+      cell: (row) =>
+        row.status ? (
+          <Badge color="success">ATIVO</Badge>
+        ) : (
+          <Badge color="danger">INATIVO</Badge>
+        ),
     }),
   ]
 
@@ -25,13 +36,16 @@ export function clinicColumns({ onEdit, onDelete }: ClinicColumnsProps) {
         <DropdownComponent.Item
           label="Editar"
           icon={<i className="mdi mdi-pencil-outline me-1" />}
-          onClick={() => onEdit(clinic)}
+          onClick={() => onEdit(clinic.clinic.clinicId)}
         />
         <DropdownComponent.Item
-          label="Excluir"
-          icon={<i className="mdi mdi-delete-outline me-1" />}
-          variant="danger"
-          onClick={() => onDelete(clinic)}
+          label={clinic.status ? "Inativar" : "Ativar"}
+          icon={
+            <i
+              className={`mdi ${clinic.status ? "mdi-eye-off-outline" : "mdi-eye-outline"} me-1`}
+            />
+          }
+          onClick={() => onInactive(clinic.clinic.clinicId)}
         />
       </>
     ),

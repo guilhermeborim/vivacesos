@@ -15,6 +15,7 @@ export interface ClinicCreateParams {
 export interface ClinicUpdateParams {
   name?: string | null
   cnpj?: string | null
+  cnpjHash?: string | null
   phone?: string | null
   cep?: string | null
   number?: string | null

@@ -14,7 +14,7 @@ export function useQueryClinic() {
 }
 
 export function useQueryClinicById(clinicId: string | null) {
-  const { data: dataClinicById } = useQuery({
+  const { data: dataClinicById, isLoading } = useQuery({
     queryKey: ["clinic", clinicId],
     queryFn: () => getClinicById(clinicId!),
     retry: false,
@@ -23,5 +23,6 @@ export function useQueryClinicById(clinicId: string | null) {
 
   return {
     clinic: dataClinicById?.data,
+    loadingClinicById: isLoading,
   }
 }

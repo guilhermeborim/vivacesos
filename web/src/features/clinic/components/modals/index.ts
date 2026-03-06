@@ -1,0 +1,1 @@
+export { ModalEditClinic } from "./ModalEditClinic"
