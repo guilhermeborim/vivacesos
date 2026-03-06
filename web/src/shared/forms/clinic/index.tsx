@@ -1,16 +1,17 @@
 import { InputController, InputMaskController } from "@/core/ui"
+import { Clinic } from "@/shared/types"
 import { useEffect } from "react"
 import { Col, Row } from "reactstrap"
 
 interface FormClinicProps {
   formClinic: any
-  defaultValues?: any
+  defaultValues?: Clinic
 }
 
 export function FormClinic({ formClinic, defaultValues }: FormClinicProps) {
   useEffect(() => {
     if (defaultValues) {
-      formClinic.reset(defaultValues)
+      formClinic.reset(defaultValues.clinic)
     }
   }, [defaultValues, formClinic])
 

@@ -1,25 +1,22 @@
-import { DropdownComponent, TableList } from "@/core/ui";
-import { Patient } from "@/shared/types";
+import { DropdownComponent, TableList } from "@/core/ui"
+import { Patient } from "@/shared/types"
 
 interface CreatePatientColumnsProps {
-  onEdit: (user: Patient) => void;
-  onDelete: (user: Patient) => void;
+  onEdit: (user: Patient) => void
+  onDelete: (user: Patient) => void
 }
 
-export function createPatientColumns({
-  onEdit,
-  onDelete,
-}: CreatePatientColumnsProps) {
+export function createPatientColumns({ onEdit, onDelete }: CreatePatientColumnsProps) {
   const baseColumns = [
     TableList.Column<Patient>({
       header: "Nome",
-      accessorFn: (row) => row.name,
+      accessorFn: (row) => row.patients.name,
     }),
     TableList.Column<Patient>({
       header: "E-mail",
-      accessorFn: (row) => row.email,
+      accessorFn: (row) => row.patients.email,
     }),
-  ];
+  ]
 
   return TableList.Columns<Patient>({
     columns: baseColumns,
@@ -38,5 +35,5 @@ export function createPatientColumns({
         />
       </>
     ),
-  });
+  })
 }

@@ -16,8 +16,7 @@ export function FormUser({ defaultValues, isEdit = false }: FormUserProps) {
   useEffect(() => {
     if (defaultValues) {
       reset({
-        name: defaultValues.user.name,
-        email: defaultValues.user.email,
+        ...defaultValues.user,
       })
     }
   }, [defaultValues, reset])

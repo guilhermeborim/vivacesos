@@ -5,9 +5,16 @@ export type Clinic = {
   role: Role
   status: ClinicUserStatus
   clinic: {
-    name: string
-    city: string
     clinicId: string
+    name: string
+    cnpj: string
+    city: string
+    phone: string
+    road: string
+    number: string
+    complement?: string | null
+    cep: string
+    neighborhood: string
   }
 }
 

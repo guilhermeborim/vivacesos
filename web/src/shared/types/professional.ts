@@ -1,7 +1,6 @@
 import { Type } from "../enums"
 
 export type Professional = {
-  id: string
   clinicId: string
   userId: string
   professional: {
@@ -9,5 +8,7 @@ export type Professional = {
     specialty: string
     type: Type
     active: boolean
+    crm: string
+    professionalId: string
   }
 }

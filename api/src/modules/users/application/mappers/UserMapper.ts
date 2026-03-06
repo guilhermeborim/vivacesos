@@ -46,14 +46,20 @@ export class GetSessionUserMapper {
 }
 
 export class GetUserByIdMapper {
-  static toResponse(user: ClinicUser): GetUserByIdResponse {
+  static toResponse(params: {
+    user: User
+    clinicUserId: string
+    role: string
+    status: string
+  }): GetUserByIdResponse {
     return {
-      role: user.role,
-      status: user.status,
+      clinicUserId: params.clinicUserId,
+      role: params.role,
+      status: params.status,
       user: {
-        email: user.user.email,
-        name: user.user.name,
-        userId: user.userId,
+        email: params.user.email,
+        name: params.user.name,
+        userId: params.user.id,
       },
     }
   }

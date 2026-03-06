@@ -1,15 +1,15 @@
-import { ClinicUser } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers";
-import { decrypt } from "../../../../shared/utils/crypto";
+import { ClinicUser } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers"
+import { decrypt } from "../../../../shared/utils/crypto"
 import {
   BindClinicUserResponse,
   GetClinicsByUserResponse,
   GetUsersByClinicResponse,
-} from "../dtos/ClinicUserResponse";
+} from "../dtos/ClinicUserResponse"
 
 export class GetClinicsByUserMapper {
   static toResponse(clinicUser: ClinicUser): GetClinicsByUserResponse {
     return {
-      id: clinicUser.id,
+      clinicUserId: clinicUser.id,
       role: clinicUser.role,
       status: clinicUser.status,
       clinic: {
@@ -18,7 +18,7 @@ export class GetClinicsByUserMapper {
         clinicId: clinicUser.clinicId,
         cnpj: decrypt(clinicUser.clinic.cnpj),
       },
-    };
+    }
   }
 }
 
@@ -29,13 +29,14 @@ export class BindClinicUserMapper {
       role: clinicUser.role,
       status: clinicUser.status,
       userId: clinicUser.userId,
-    };
+    }
   }
 }
 
 export class GetUsersByClinicMapper {
   static toResponse(clinicUser: ClinicUser): GetUsersByClinicResponse {
     return {
+      clinicUserId: clinicUser.id,
       role: clinicUser.role,
       status: clinicUser.status,
       user: {
@@ -43,7 +44,6 @@ export class GetUsersByClinicMapper {
         name: clinicUser.user.name,
         userId: clinicUser.userId,
       },
-      id: clinicUser.id,
-    };
+    }
   }
 }

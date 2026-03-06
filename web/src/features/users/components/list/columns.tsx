@@ -20,14 +20,14 @@ export function userColumns({ onEdit, onInactive }: UserColumnsProps) {
       filterType: "text",
     }),
     TableList.Column<User>({
+      header: "Cargo",
+      accessorFn: (row) => row.role,
+      filterType: "text",
+    }),
+    TableList.Column<User>({
       header: "Status",
       accessorFn: (row) => row.status,
-      cell: (row) =>
-        row.status ? (
-          <Badge color="success">ATIVO</Badge>
-        ) : (
-          <Badge color="danger">INATIVO</Badge>
-        ),
+      cell: (row) => <Badge color="success">{row.status}</Badge>,
       filterType: "select",
       options: ["Ativo", "Inativo"],
     }),
@@ -43,7 +43,7 @@ export function userColumns({ onEdit, onInactive }: UserColumnsProps) {
           onClick={() => onEdit(user.user.userId)}
         />
         <DropdownComponent.Item
-          label={user.status ? "Inativar" : "Ativar"}
+          label={user.status}
           icon={
             <i
               className={`mdi ${user.status ? "mdi-eye-off-outline" : "mdi-eye-outline"} me-1`}

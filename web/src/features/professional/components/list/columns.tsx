@@ -42,7 +42,7 @@ export function professionalColumns({ onEdit, onInactive }: ProfessionalColumnsP
         <DropdownComponent.Item
           label="Editar"
           icon={<i className="mdi mdi-pencil-outline me-1" />}
-          onClick={() => onEdit(professional.id)}
+          onClick={() => onEdit(professional.professional.professionalId)}
         />
         <DropdownComponent.Item
           label={professional.professional.active ? "Inativar" : "Ativar"}
@@ -51,7 +51,7 @@ export function professionalColumns({ onEdit, onInactive }: ProfessionalColumnsP
               className={`mdi ${professional.professional.active ? "mdi-eye-off-outline" : "mdi-eye-outline"} me-1`}
             />
           }
-          onClick={() => onInactive(professional.id)}
+          onClick={() => onInactive(professional.professional.professionalId)}
         />
       </>
     ),
