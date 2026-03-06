@@ -1,5 +1,4 @@
 import { NotFoundError } from "../../../../shared/errors/not-found.error"
-import { decrypt } from "../../../../shared/utils/crypto"
 import { ClinicTypeormRepository } from "../../database/repositories/ClinicTypeormRepository"
 import { ClinicResponse } from "../dtos/ClinicResponse"
 import { GetClinicByidMapper } from "../mappers/ClinicMapper"
@@ -17,8 +16,6 @@ export class FindClinicIdService {
     if (!clinicCreated) {
       throw new NotFoundError("Clinica não encontrada")
     }
-
-    clinicCreated.cnpj = decrypt(clinicCreated.cnpj)
 
     return GetClinicByidMapper.toResponse({
       ...clinicCreated,

@@ -10,6 +10,11 @@ export class GetClinicsByUserMapper {
       id: clinic.id,
       name: clinic.name,
       phone: clinic.phone,
+      neighborhood: clinic.neighborhood,
+      number: clinic.number,
+      road: clinic.road,
+      cep: clinic.cep,
+      complement: clinic.complement,
     }
   }
 }
@@ -22,6 +27,11 @@ export class GetClinicByidMapper {
       id: clinic.id,
       name: clinic.name,
       phone: clinic.phone,
+      neighborhood: clinic.neighborhood,
+      number: clinic.number,
+      road: clinic.road,
+      cep: clinic.cep,
+      complement: clinic.complement,
     }
   }
 }
