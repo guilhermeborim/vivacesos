@@ -29,11 +29,12 @@ export type GetSessionUserResponse = {
 }
 
 export type GetUserByIdResponse = {
+  clinicUserId: string
+  role: string
+  status: string
   user: {
     userId: string
     name: string
     email: string
   }
-  role: string
-  status: string
 }

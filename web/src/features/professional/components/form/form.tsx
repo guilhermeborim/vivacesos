@@ -17,11 +17,14 @@ export function FormProfessional({
   isEdit = false,
 }: FormProfessionalProps) {
   const { watch, control, reset } = useFormContext()
-  const type = watch("type")
+  const type = watch("professional.type")
 
   useEffect(() => {
     if (defaultValues) {
-      reset(defaultValues)
+      reset({
+        ...defaultValues,
+        ...defaultValues.professional,
+      })
     }
   }, [defaultValues, reset])
 

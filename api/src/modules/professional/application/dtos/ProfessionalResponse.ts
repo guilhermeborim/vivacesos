@@ -1,7 +1,7 @@
 import { ProfessionalType } from "../../../../infra/database/typeorm/sass/entities/Professional"
 
 export type ProfessionalResponse = {
-  id: string
+  professionalId: string
   userId: string
   clinicId: string
   type: ProfessionalType
@@ -14,7 +14,6 @@ export type ProfessionalResponse = {
 }
 
 export type GetProfessionalsByClinicResponse = {
-  id: string
   userId: string
   clinicId: string
   professional: {
@@ -23,5 +22,19 @@ export type GetProfessionalsByClinicResponse = {
     specialty: string
     crm: string
     active: boolean
+    professionalId: string
+  }
+}
+
+export type GetProfessionalByIdResponse = {
+  userId: string
+  clinicId: string
+  professional: {
+    type: ProfessionalType
+    name: string
+    specialty: string
+    crm: string
+    active: boolean
+    professionalId: string
   }
 }

@@ -1,6 +1,7 @@
 import { NotFoundError } from "../../../../shared/errors/not-found.error"
 import { ClinicUsersTypeormRepository } from "../../../clinicUser/database/repositories/ClinicUserTypeormRepository"
 import { UserTypeormRepository } from "../../database/repositories/UserTypeormRepository"
+import { GetUserByIdMapper } from "../mappers/UserMapper"
 
 export class GetUserByIdService {
   private userRepository: UserTypeormRepository
@@ -27,15 +28,11 @@ export class GetUserByIdService {
       throw new NotFoundError("Vínculo do usuário com a clínica não encontrado!")
     }
 
-    return {
-      id: user.id,
-      role: clinicUser.role,
+    return GetUserByIdMapper.toResponse({
+      user,
+      clinicUserId: clinicUser.id,
       status: clinicUser.status,
-      user: {
-        userId: user.id,
-        name: user.name,
-        email: user.email,
-      },
-    }
+      role: clinicUser.role,
+    })
   }
 }

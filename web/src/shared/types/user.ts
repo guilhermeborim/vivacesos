@@ -1,12 +1,12 @@
-import { Role } from "../enums";
+import { Role } from "../enums"
 
 export type User = {
-  id: string;
-  role: Role;
-  status: string;
+  id: string
+  role: Role
+  status: string
   user: {
-    userId: string;
-    name: string;
-    email: string;
-  };
-};
+    userId: string
+    name: string
+    email: string
+  }
+}
