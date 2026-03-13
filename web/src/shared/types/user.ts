@@ -1,12 +1,17 @@
-import { Role } from "../enums"
+import { ClinicUserStatus, Role } from "../enums"
 
 export type User = {
-  id: string
+  clinicUserId: string
   role: Role
-  status: string
+  status: ClinicUserStatus
   user: {
     userId: string
     name: string
     email: string
+  }
+  invite: {
+    email: string
+    accepted: boolean
+    expiresAt: Date
   }
 }

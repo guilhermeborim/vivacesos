@@ -1,3 +1,4 @@
+import { ClinicUserStatus } from "@/shared/enums"
 import z from "zod"
 
 export const createInviteSchema = z.object({
@@ -17,3 +18,9 @@ export const updateUserSchema = z.object({
 })
 
 export type UpdateUserTypeSchema = z.infer<typeof updateUserSchema>
+
+export const updateStatusUserSchema = z.object({
+  status: z.enum(ClinicUserStatus),
+})
+
+export type UpdateStatusUserSchema = z.infer<typeof updateStatusUserSchema>

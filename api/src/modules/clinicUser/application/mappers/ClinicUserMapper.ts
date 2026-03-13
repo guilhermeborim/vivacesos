@@ -1,4 +1,8 @@
-import { ClinicUser } from "../../../../infra/database/typeorm/sass/entities/ClinicUsers"
+import {
+  ClinicUser,
+  ClinicUserRole,
+  ClinicUserStatus,
+} from "../../../../infra/database/typeorm/sass/entities/ClinicUsers"
 import { decrypt } from "../../../../shared/utils/crypto"
 import {
   BindClinicUserResponse,
@@ -33,17 +37,41 @@ export class BindClinicUserMapper {
   }
 }
 
+type GetUsersByClinicRaw = {
+  clinicUserId: string
+  userId: string | null
+  role: ClinicUserRole
+  status: ClinicUserStatus
+  createdAt: Date
+  user: {
+    id: string
+    name: string
+    email: string
+  } | null
+  invite: {
+    email: string
+    token: string
+    accepted: boolean
+    expiresAt: Date
+  } | null
+}
+
 export class GetUsersByClinicMapper {
-  static toResponse(clinicUser: ClinicUser): GetUsersByClinicResponse {
+  static toResponse(raw: GetUsersByClinicRaw): GetUsersByClinicResponse {
     return {
-      clinicUserId: clinicUser.id,
-      role: clinicUser.role,
-      status: clinicUser.status,
-      user: {
-        email: clinicUser.user.email,
-        name: clinicUser.user.name,
-        userId: clinicUser.userId,
-      },
+      clinicUserId: raw.clinicUserId,
+      userId: raw.userId ?? null,
+      role: raw.role,
+      status: raw.status,
+      createdAt: raw.createdAt,
+      user: raw.user
+        ? {
+            userId: raw.user.id,
+            name: raw.user.name,
+            email: raw.user.email,
+          }
+        : null,
+      invite: raw.invite ?? null,
     }
   }
 }
