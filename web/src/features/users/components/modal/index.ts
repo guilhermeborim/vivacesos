@@ -1,3 +1,3 @@
 export * from "./ModalEditUser"
 export * from "./ModalInviteUser"
-export * from "./ModalToggleUser"
+export * from "./ModalStatusUser"

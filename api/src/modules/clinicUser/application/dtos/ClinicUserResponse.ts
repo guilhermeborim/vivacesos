@@ -28,13 +28,21 @@ export type ClinicUserResponse = {
 
 export type GetUsersByClinicResponse = {
   clinicUserId: string
+  userId: string | null
   role: ClinicUserRole
   status: ClinicUserStatus
+  createdAt: Date
   user: {
     userId: string
     name: string
     email: string
-  }
+  } | null
+  invite: {
+    email: string
+    token: string
+    accepted: boolean
+    expiresAt: Date
+  } | null
 }
 
 export type GetClinicsByUserResponse = {

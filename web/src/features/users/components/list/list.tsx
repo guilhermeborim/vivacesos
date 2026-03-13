@@ -1,7 +1,7 @@
 import { Loading } from "@/core/ui"
 import { TableList } from "@/core/ui/components/Table"
 import { useEditUser, useListUsers } from "@/features/users/hooks"
-import { ModalEditUser, ModalToggleUser } from "../modal"
+import { ModalEditUser, ModalStatusUser } from "../modal"
 
 export function ListUser() {
   const {
@@ -12,7 +12,7 @@ export function ListUser() {
     actions: {
       formUpdateUser,
       handleSubmitUpdate,
-      onSubmitInactive,
+      handleSubmitUpdateStatus,
       toggleModal,
       toggleModalInactive,
     },
@@ -37,11 +37,11 @@ export function ListUser() {
       )}
 
       {modalInactive && user && (
-        <ModalToggleUser
+        <ModalStatusUser
           isOpen={modalInactive}
           toggle={toggleModalInactive}
           user={user}
-          onSubmitInactive={onSubmitInactive}
+          handleSubmitStatus={handleSubmitUpdateStatus}
           isPending={isPending}
         />
       )}

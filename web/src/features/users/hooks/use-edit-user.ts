@@ -1,11 +1,22 @@
+import { Role } from "@/shared/enums"
+import { useAuth } from "@/shared/hooks"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { useMutationUpdateUser, useQueryUserById } from "../api"
+import {
+  useMutationUpdateStatusUser,
+  useMutationUpdateUser,
+  useQueryUserById,
+} from "../api"
 import { userColumns } from "../components"
-import { updateUserSchema, UpdateUserTypeSchema } from "../schemas"
+import {
+  UpdateStatusUserSchema,
+  updateUserSchema,
+  UpdateUserTypeSchema,
+} from "../schemas"
 
 export const useEditUser = () => {
+  const { session } = useAuth()
   const [editUserId, setEditUserId] = useState<string | null>(null)
   const { user, loadingUserById } = useQueryUserById(editUserId)
   const [modalOpen, setModalOpen] = useState<boolean>(false)
@@ -16,6 +27,7 @@ export const useEditUser = () => {
   })
 
   const mutationUpdateUser = useMutationUpdateUser(editUserId!)
+  const mutationUpdateStatusUser = useMutationUpdateStatusUser(editUserId!)
 
   const handleSubmitUpdate = formUpdateUser.handleSubmit(
     async (payload: UpdateUserTypeSchema) => {
@@ -28,9 +40,9 @@ export const useEditUser = () => {
     },
   )
 
-  const onSubmitInactive = async (payload: { active: boolean; id: string }) => {
+  const handleSubmitUpdateStatus = async (payload: UpdateStatusUserSchema) => {
     try {
-      await mutationUpdateUser.mutateAsync(payload)
+      await mutationUpdateStatusUser.mutateAsync(payload)
       toggleModalInactive()
     } catch {
       // Erro já tratado pelo onError do useMutationUpdateUser
@@ -61,13 +73,16 @@ export const useEditUser = () => {
   const columns = userColumns({
     onEdit: handleEdit,
     onInactive: handleInactive,
+    onBlock: () => console.log("bloqueou"),
+    isAdmin: session?.role === Role.ADMIN,
+    currentUserId: session!.user.id,
   })
 
   return {
     actions: {
       formUpdateUser,
       handleSubmitUpdate,
-      onSubmitInactive,
+      handleSubmitUpdateStatus,
       toggleModal,
       toggleModalInactive,
     },
