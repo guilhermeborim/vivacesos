@@ -1,4 +1,5 @@
-import { LoginFormTypeSchema, RegisterFormTypeSchema } from "@/features/auth/schemas"
+import { LoginFormTypeSchema } from "@/features/auth/schemas"
+import { RegisterFormTypeSchema } from "@/shared/schemas"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { useNavigate } from "react-router-dom"
