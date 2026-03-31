@@ -2,7 +2,7 @@ import { Repository } from "typeorm"
 import { SassDataSource } from "../../../../infra/database/typeorm/sass/data-source"
 import { Patient } from "../../../../infra/database/typeorm/sass/entities/Patient"
 import { DatabaseError } from "../../../../shared/errors/database.error"
-import { CreatePatientParams } from "../../application/types"
+import { CreatePatientParams, UpdatePatientParams } from "../../application/types"
 import { PatientRepositoryInterface } from "../interface/PatientRepositoryInterface"
 
 export class PatientTypeormRepository implements PatientRepositoryInterface {
@@ -88,6 +88,35 @@ export class PatientTypeormRepository implements PatientRepositoryInterface {
       return patientExist
     } catch (error) {
       throw new DatabaseError("Falha ao buscar paciente!", error)
+    }
+  }
+
+  async getPatientByIdInClinic(
+    clinicId: string,
+    patientId: string,
+  ): Promise<Patient | null> {
+    try {
+      const patientExist = await this.patientRepository.findOne({
+        where: {
+          clinicId,
+          id: patientId,
+        },
+      })
+
+      return patientExist
+    } catch (error) {
+      throw new DatabaseError("Falha ao buscar paciente!", error)
+    }
+  }
+
+  async updatePatientInClinic(
+    patientId: string,
+    data: UpdatePatientParams,
+  ): Promise<void> {
+    try {
+      await this.patientRepository.update(patientId, data)
+    } catch (error) {
+      throw new DatabaseError("Falha ao atualizar paciente!", error)
     }
   }
 }
