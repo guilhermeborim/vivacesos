@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs wc:*)",
+      "Bash(ls -la /c/sass/api/.env*)",
+      "Bash(ls -la /c/sass/web/.env*)"
+    ]
+  }
+}
