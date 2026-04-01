@@ -2,11 +2,10 @@ import { DropdownComponent, TableList } from "@/core/ui"
 import { Patient } from "@/shared/types"
 
 interface CreatePatientColumnsProps {
-  onEdit: (user: Patient) => void
-  onDelete: (user: Patient) => void
+  onEdit: (patientId: string) => void
 }
 
-export function createPatientColumns({ onEdit, onDelete }: CreatePatientColumnsProps) {
+export function createPatientColumns({ onEdit }: CreatePatientColumnsProps) {
   const baseColumns = [
     TableList.Column<Patient>({
       header: "Nome",
@@ -25,13 +24,7 @@ export function createPatientColumns({ onEdit, onDelete }: CreatePatientColumnsP
         <DropdownComponent.Item
           label="Editar"
           icon={<i className="mdi mdi-pencil-outline me-1" />}
-          onClick={() => onEdit(patient)}
-        />
-        <DropdownComponent.Item
-          label="Excluir"
-          icon={<i className="mdi mdi-delete-outline me-1" />}
-          variant="danger"
-          onClick={() => onDelete(patient)}
+          onClick={() => onEdit(patient.patients.patientId)}
         />
       </>
     ),

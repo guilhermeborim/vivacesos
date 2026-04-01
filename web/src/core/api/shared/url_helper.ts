@@ -34,4 +34,5 @@ export const GET_INVITE_BY_TOKEN = "/invite/:token"
 // PATIENT
 export const POST_PATIENT = "/clinic/patient"
 export const GET_PATIENTS = "/clinic/patients"
-export const GET_PATIENT_BY_ID = "/clinic/:patientId"
+export const GET_PATIENT_BY_ID = "/clinic/patients/:patientId"
+export const PUT_PATIENT_BY_ID = "/clinic/patients/:patientId"

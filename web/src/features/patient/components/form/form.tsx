@@ -14,7 +14,7 @@ export function FormPatient({ defaultValues }: FormPatientProps) {
 
   useEffect(() => {
     if (defaultValues) {
-      reset(defaultValues)
+      reset(defaultValues.patients)
     }
   }, [defaultValues, reset])
 
