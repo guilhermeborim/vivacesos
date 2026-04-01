@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { toast } from "react-toastify"
-import { CreatePatientTypeSchema } from "../schemas"
-import { postPatient } from "./"
+import { CreatePatientTypeSchema, UpdatePatientTypeSchema } from "../schemas"
+import { postPatient, putPatientById } from "./"
 
 export const useMutationPatient = () => {
   const queryClient = useQueryClient()
@@ -17,6 +17,24 @@ export const useMutationPatient = () => {
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message || "Erro ao cadastrar paciente")
+      }
+    },
+  })
+}
+
+export const useMutationUpdatePatient = (patientId: string) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (payload: UpdatePatientTypeSchema) =>
+      putPatientById(patientId, payload),
+    onSuccess: () => {
+      toast.success("Paciente atualizado com sucesso!")
+      queryClient.invalidateQueries({ queryKey: ["patients"] })
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message || "Erro ao atualizar paciente")
       }
     },
   })
