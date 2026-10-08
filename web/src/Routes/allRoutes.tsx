@@ -42,7 +42,6 @@ const authProtectedRoutes = [
 ]
 
 const publicRoutes = [
-  // Authentication Page
   { path: "/login", component: <LoginPage /> },
   { path: "/invite/accept", component: <InvitePage /> },
   { path: "/register", component: <RegisterPage /> },

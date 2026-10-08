@@ -1,8 +1,6 @@
 import { Path } from "react-hook-form"
 import { InputType } from "reactstrap/types/lib/Input"
 
-export * from "./clinic"
-
 export type FieldConfig<T> =
   | {
       name: Path<T>

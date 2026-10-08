@@ -1,5 +1,5 @@
 import crypto from "crypto"
-import { resend } from "../../../../infra/web/config/resend"
+// import { resend } from "../../../../infra/web/config/resend"
 import { ConflictError } from "../../../../shared/errors/conflict.error"
 import { ForbiddenError } from "../../../../shared/errors/forbidden.error"
 import { UnauthenticatedError } from "../../../../shared/errors/unauthenticated.error"
@@ -67,20 +67,20 @@ export class RegisterInviteService {
 
     const createInvite = await this.inviteRepository.invite(invite, clinicId, token)
 
-    await resend.emails.send({
-      from: "Vivace SOS <noreply@vivacesos.com.br>",
-      to: invite.email,
-      subject: "Você foi convidado para uma clínica",
-      html: `
-        <p>Você foi convidado para participar da clínica <b>${clinic.name}</b>.</p>
+    // await resend.emails.send({
+    //   from: "Vivace SOS <noreply@vivacesos.com.br>",
+    //   to: invite.email,
+    //   subject: "Você foi convidado para uma clínica",
+    //   html: `
+    //     <p>Você foi convidado para participar da clínica <b>${clinic.name}</b>.</p>
 
-        <a href="http://localhost:5173/invite/accept?token=${token}">
-          Aceitar convite
-        </a>
+    //     <a href="http://localhost:5173/invite/accept?token=${token}">
+    //       Aceitar convite
+    //     </a>
 
-        <p>Este convite expira em 24 horas.</p>
-      `,
-    })
+    //     <p>Este convite expira em 24 horas.</p>
+    //   `,
+    // })
 
     return createInvite
   }

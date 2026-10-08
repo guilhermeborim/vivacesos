@@ -1,8 +1,8 @@
 services:
-  sass:
-    image: bitnami/postgresql:17.6.0
+  vivacesos:
+    image: bitnami/postgresql:latest
     ports:
-      - 5434:5432
+      - 5433:5432
     environment:
       - POSTGRESQL_USERNAME=${DATABASE_USER}
       - POSTGRESQL_PASSWORD=${DATABASE_PASSWORD}

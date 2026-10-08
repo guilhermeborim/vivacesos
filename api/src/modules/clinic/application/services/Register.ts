@@ -1,8 +1,8 @@
+import type { Clinic } from "../../../../infra/database/typeorm/sass/entities/Clinic"
 import { ConflictError } from "../../../../shared/errors/conflict.error"
 import { encrypt, hash } from "../../../../shared/utils/crypto"
 import { replacePayloadString } from "../../../../shared/utils/format"
 import { ClinicTypeormRepository } from "../../database/repositories/ClinicTypeormRepository"
-import { ClinicResponse } from "../dtos/ClinicResponse"
 import { ClinicCreateParams } from "../types"
 
 export class RegisterClinicService {
@@ -12,7 +12,7 @@ export class RegisterClinicService {
     this.clinicRepository = new ClinicTypeormRepository()
   }
 
-  async execute(clinic: ClinicCreateParams): Promise<ClinicResponse> {
+  async execute(clinic: ClinicCreateParams): Promise<Clinic> {
     const cnpjHash = hash(replacePayloadString(clinic.cnpj))
     const phoneReplace = replacePayloadString(clinic.phone)
 

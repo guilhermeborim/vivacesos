@@ -1,12 +1,30 @@
 import crypto from "crypto";
 
 const algorithm = "aes-256-cbc";
-const secretKey = process.env.CRYPTO_SECRET_KEY!;
 const ivLength = 16;
+
+function getSecretKey(): Buffer {
+  const value = process.env.CRYPTO_SECRET_KEY;
+  if (!value) {
+    throw new Error("CRYPTO_SECRET_KEY não foi configurada.");
+  }
+
+  const key = /^[a-f0-9]{64}$/i.test(value)
+    ? Buffer.from(value, "hex")
+    : Buffer.from(value, "utf8");
+
+  if (key.length !== 32) {
+    throw new Error(
+      "CRYPTO_SECRET_KEY deve conter 32 bytes em UTF-8 ou 64 caracteres hexadecimais.",
+    );
+  }
+
+  return key;
+}
 
 export function encrypt(text: string) {
   const iv = crypto.randomBytes(ivLength);
-  const cipher = crypto.createCipheriv(algorithm, Buffer.from(secretKey), iv);
+  const cipher = crypto.createCipheriv(algorithm, getSecretKey(), iv);
 
   let encrypted = cipher.update(text, "utf8", "hex");
   encrypted += cipher.final("hex");
@@ -19,7 +37,7 @@ export function decrypt(encryptedText: string) {
 
   const decipher = crypto.createDecipheriv(
     algorithm,
-    Buffer.from(secretKey),
+    getSecretKey(),
     Buffer.from(ivHex, "hex"),
   );
 

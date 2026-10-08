@@ -12,12 +12,12 @@ const AuthProtected = ({ children }: AuthProtectedProps) => {
   if (loading) {
     return <Loading loading />
   }
+
   if (session?.clinics.length === 0) {
     console.log(`sem clinica`)
   }
 
   if (!session) {
-    console.log("sem session")
     return <Navigate to="/login" replace />
   }
 

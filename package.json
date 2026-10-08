@@ -16,42 +16,18 @@
     ]
   },
   "packageManager": "yarn@1.22.19",
-  "dependencies": {
-    "commitizen": "^4.3.1"
+  "scripts": {
+    "build": "turbo run build"
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.4.2",
-    "@commitlint/config-conventional": "^20.4.2",
     "@typescript-eslint/eslint-plugin": "^8.56.0",
     "@typescript-eslint/parser": "^8.56.0",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "8",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
     "prettier": "^3.8.1",
     "turbo": "^2.8.10"
-  },
-  "scripts": {
-    "lint": "eslint .",
-    "format": "prettier --write .",
-    "prepare": "husky",
-    "build": "turbo run build"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
-  "lint-staged": {
-    "api/**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
-    ],
-    "web/**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
-    ]
   }
 }

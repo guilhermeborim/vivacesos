@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx watch --include \"src/**/*.ts\" src/server.ts",
     "start": "node dist/server.js",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:run": "yarn typeorm migration:run -d src/infra/database/typeorm/sass/data-source.ts",

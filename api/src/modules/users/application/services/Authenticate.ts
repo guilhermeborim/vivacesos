@@ -38,14 +38,26 @@ export class AuthenticateService {
 
     const clinics = await this.clinicsUserRepository.getClinicsByUser(user.id)
 
-    if (
-      clinics[0].status === ClinicUserStatus.INATIVO ||
-      clinics[0].status === ClinicUserStatus.BLOQUEADO
-    ) {
-      throw new ForbiddenError(
-        `Este usuário está INATIVO na ${clinics[0].clinic.name}. Entre em contato com o Administrador!`,
+    if (clinics.length >= 1) {
+      const activeClinics = clinics.filter(
+        (clinic) => clinic.status === ClinicUserStatus.ATIVO,
       )
+
+      if (activeClinics.length === 0) {
+        throw new ForbiddenError(
+          `Este usuário não possui clínicas ATIVAS. Entre em contato com o Administrador!`,
+        )
+      }
     }
+
+    // if (
+    //   (clinics.length >= 1 && clinics[0].status === ClinicUserStatus.INATIVO) ||
+    //   clinics[0].status === ClinicUserStatus.BLOQUEADO
+    // ) {
+    //   throw new ForbiddenError(
+    //     `Este usuário está INATIVO na ${clinics[0].clinic.name}. Entre em contato com o Administrador!`,
+    //   )
+    // }
 
     await this.refreshTokenRepository.revokeByUserId(user.id)
 
@@ -53,7 +65,11 @@ export class AuthenticateService {
       id: user.id,
       email: user.email,
       clinicId:
-        clinics.length > 1 ? null : clinics.length === 1 ? clinics[0].clinicId : null,
+        clinics.length > 1
+          ? undefined
+          : clinics.length === 1
+            ? clinics[0].clinicId
+            : undefined,
     })
 
     await this.refreshTokenRepository.create({
@@ -63,8 +79,6 @@ export class AuthenticateService {
       token: refreshToken,
       expiresAt: this.jwtService.getRefreshTokenExpiryDate(),
     })
-
-    delete user.password
 
     return {
       token: accessToken,
