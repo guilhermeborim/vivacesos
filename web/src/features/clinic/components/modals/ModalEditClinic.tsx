@@ -1,5 +1,5 @@
 import { ButtonPrimitive, ModalComponent } from "@/core/ui"
-import { FormClinic } from "@/shared/forms"
+import { FormClinic } from "@/shared/forms/clinic"
 import { UpdateClinicFormTypeSchema } from "@/shared/schemas"
 import { Clinic } from "@/shared/types"
 import { UseFormReturn } from "react-hook-form"

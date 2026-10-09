@@ -1,5 +1,5 @@
 import { ButtonPrimitive, Loading, Nav, Tab } from "@/core/ui"
-import { FormClinic } from "@/shared/forms"
+import { FormClinic } from "@/shared/forms/clinic"
 import { useCreateClinic } from "@/shared/hooks"
 import { FormProvider } from "react-hook-form"
 import { Progress } from "reactstrap"
