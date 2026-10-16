@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
-import { getProfessionalById, getProfessionals } from "./routes"
+import { getAvailability, getProfessionalById, getProfessionals } from "./routes"
 
 export function useQueryProfessionals() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["professional"],
     queryFn: getProfessionals,
     retry: false,
@@ -10,6 +10,7 @@ export function useQueryProfessionals() {
 
   return {
     dataProfessionals: data?.data,
+    isLoadingProfessionals: isLoading,
   }
 }
 
@@ -25,4 +26,14 @@ export function useQueryProfessionalById(professionalId: string | null) {
     professional: dataProfessionalById?.data,
     loadingProfessionalById,
   }
+}
+
+export function useQueryAvailability(professionalId: string | null | undefined) {
+  const { data, isLoading } = useQuery({
+    queryKey: ["availability", professionalId],
+    queryFn: () => getAvailability(professionalId!),
+    retry: false,
+    enabled: !!professionalId,
+  })
+  return { availability: data?.data, loadingAvailability: isLoading }
 }

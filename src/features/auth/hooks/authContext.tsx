@@ -1,3 +1,4 @@
+import { SESSION_EXPIRED_EVENT } from "@/core/api/shared/api_helper"
 import { useQuerySession } from "@/core/api/shared/queries"
 import { RegisterFormTypeSchema } from "@/shared/schemas"
 import { ClinicAuthContext } from "@/shared/types"
@@ -51,6 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         "/login",
         "/register",
         "/invite/accept",
+        "/c/",
         "/error-404",
         "/error-403",
         "/error-500",
@@ -64,6 +66,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
   }, [isError, navigate])
+
+  // O refresh token também expirou: encerra a sessão local (AuthProtected leva ao login).
+  useEffect(() => {
+    const onExpired = () => queryClient.setQueryData(["session"], null)
+    window.addEventListener(SESSION_EXPIRED_EVENT, onExpired)
+    return () => window.removeEventListener(SESSION_EXPIRED_EVENT, onExpired)
+  }, [queryClient])
 
   async function login(payload: LoginFormTypeSchema) {
     try {

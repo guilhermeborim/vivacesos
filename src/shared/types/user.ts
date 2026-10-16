@@ -12,6 +12,6 @@ export type User = {
   invite: {
     email: string
     accepted: boolean
-    expiresAt: Date
+    expiresAt: string
   }
 }

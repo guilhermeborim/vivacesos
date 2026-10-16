@@ -1,0 +1,1 @@
+export { InfoRules } from "./InfoRules"

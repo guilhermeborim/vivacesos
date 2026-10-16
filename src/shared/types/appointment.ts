@@ -12,6 +12,7 @@ export type Appointment = {
     paid: boolean
     paidAt: string | null
     paymentMethod: PaymentMethod | null
+    payoutId: string | null
     patient: { patientId: string; name: string }
     professional: { professionalId: string; name: string | null; specialty: string }
   }

@@ -7,6 +7,10 @@ export type MenuItem = {
   children?: MenuItem[];
   /** Item visível só para quem tem a permissão. */
   permission?: string;
+  /** Item visível só para quem tem perfil de profissional ativo (inclui o ADMIN que atende). */
+  requiresProfessional?: boolean;
+  /** Item escondido para estes papéis (ex.: PROFISSIONAL não acessa Administração). */
+  hiddenForRoles?: string[];
 };
 
 const menuData: MenuItem[] = [
@@ -30,16 +34,25 @@ const menuData: MenuItem[] = [
     id: "medical_record",
     label: "Prontuários",
     icon: "ri-file-list-3-line",
+    permission: "RECORD_VIEW",
     children: [
       {
         id: "medical-record",
         label: "Todos os Prontuários",
         link: "/medical-record",
+        requiresProfessional: true,
       },
       {
         id: "medical-record-today",
         label: "Prontuários do Dia",
         link: "/medical-record/now",
+        requiresProfessional: true,
+      },
+      {
+        id: "medical-record-audit",
+        label: "Auditoria",
+        link: "/medical-record/audit",
+        permission: "AUDIT_VIEW",
       },
     ],
   },
@@ -64,6 +77,7 @@ const menuData: MenuItem[] = [
     id: "administration",
     label: "Administração",
     icon: "ri-lock-2-line",
+    hiddenForRoles: ["PROFISSIONAL"],
     children: [
       { id: "users", label: "Acessos", link: "/users" },
       {
@@ -79,9 +93,32 @@ const menuData: MenuItem[] = [
     id: "integrations",
     label: "Integrações",
     icon: "ri-compasses-2-line",
+    permission: "INTEGRATIONS_MANAGE",
     children: [
       { id: "whatsapp", label: "WhatsApp", link: "/whatsapp" },
       { id: "google", label: "Google", link: "/google" },
+    ],
+  },
+
+  {
+    id: "settings",
+    label: "Configurações",
+    icon: "ri-settings-3-line",
+    children: [
+      { id: "settings-general", label: "Geral", link: "/settings" },
+      {
+        id: "my-schedule",
+        label: "Minha agenda",
+        link: "/settings/my-schedule",
+        requiresProfessional: true,
+      },
+      {
+        id: "record-templates",
+        label: "Modelos de Ficha",
+        link: "/settings/record-templates",
+        permission: "RECORD_WRITE",
+        requiresProfessional: true,
+      },
     ],
   },
 ];

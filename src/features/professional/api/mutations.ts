@@ -2,7 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { toast } from "react-toastify"
 import { CreateProfessionalTypeSchema, UpdateProfessionalTypeSchema } from "../schemas"
-import { postCreateProfessional, putProfessionalById } from "./routes"
+import { Availability } from "@/shared/types"
+import { postCreateProfessional, putAvailability, putProfessionalById } from "./routes"
 
 export const useMutationCreateProfessional = () => {
   const queryClient = useQueryClient()
@@ -35,6 +36,25 @@ export const useMutationUpdateProfessional = (professionalId: string) => {
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message || "Erro ao atualizar Profissional")
+      }
+    },
+  })
+}
+
+export const useMutationAvailability = (professionalId: string) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (payload: Pick<Availability, "restricted" | "days">) =>
+      putAvailability(professionalId, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["availability", professionalId] })
+      queryClient.invalidateQueries({ queryKey: ["slots"] })
+      toast.success("Horários de atendimento atualizados!")
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message || "Erro ao atualizar horários")
       }
     },
   })
