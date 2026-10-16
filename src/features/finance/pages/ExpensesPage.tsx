@@ -3,6 +3,7 @@ import {
   ButtonPrimitive,
   DropdownComponent,
   FormModal,
+  InfoRules,
   ModalComponent,
   TableList,
 } from "@/core/ui"
@@ -16,17 +17,28 @@ import { useForm } from "react-hook-form"
 import { Badge } from "reactstrap"
 import {
   useMutationDeleteExpense,
+  useMutationDeletePayout,
+  useMutationStopRecurrence,
   useMutationExpense,
   useMutationExpensePayment,
   useMutationUpdateExpense,
 } from "../api/mutations"
 import { useQueryExpenses } from "../api/queries"
 import { ExpenseForm } from "../components/expense-form"
+import { UndoPayoutModal } from "../components/payout"
 import { Filters } from "../components/filters"
 import { PaymentModal } from "../components/payment-modal"
 import { Totals } from "../components/totals"
 import { expenseSchema, ExpenseTypeSchema, FinanceFilters } from "../schemas"
 import { currentMonthFilters, paymentMethodLabel, toPaymentPayload } from "../utils"
+
+const recurrenceLabel = {
+  NONE: "",
+  DAILY: "Diária",
+  WEEKLY: "Semanal",
+  BIWEEKLY: "Quinzenal",
+  MONTHLY: "Mensal",
+} as const
 
 export function ExpensesPage() {
   const { hasPermission } = useAuth()
@@ -37,6 +49,9 @@ export function ExpensesPage() {
   const [editing, setEditing] = useState<Expense | null>(null)
   const [paying, setPaying] = useState<Expense | null>(null)
   const [removing, setRemoving] = useState<Expense | null>(null)
+  const [undoing, setUndoing] = useState<Expense | null>(null)
+  const mutationUndo = useMutationDeletePayout()
+  const mutationStop = useMutationStopRecurrence()
 
   const mutationCreate = useMutationExpense()
   const create = useFormModal<ExpenseTypeSchema>(expenseSchema, mutationCreate.mutateAsync)
@@ -80,6 +95,26 @@ export function ExpensesPage() {
             accessorFn: (row) => formatCurrency(row.amount),
           }),
           TableList.Column<Expense>({
+            header: "Recorrência",
+            accessorFn: (row) =>
+              row.recurrence !== "NONE"
+                ? `${recurrenceLabel[row.recurrence]} · próxima ${row.recurrenceNextDate ? formatDate(row.recurrenceNextDate) : "-"}`
+                : row.isRecurrenceOccurrence
+                  ? "Recorrente (automática)"
+                  : "-",
+            cell: (row) =>
+              row.recurrence !== "NONE" ? (
+                <Badge color="info">
+                  {recurrenceLabel[row.recurrence]} · próxima{" "}
+                  {row.recurrenceNextDate ? formatDate(row.recurrenceNextDate) : "-"}
+                </Badge>
+              ) : row.isRecurrenceOccurrence ? (
+                <Badge color="secondary">RECORRENTE · AUTOMÁTICA</Badge>
+              ) : (
+                "-"
+              ),
+          }),
+          TableList.Column<Expense>({
             header: "Pagamento",
             accessorFn: (row) => (row.paid ? "Pago" : "Pendente"),
             cell: (row) =>
@@ -99,7 +134,25 @@ export function ExpensesPage() {
           }),
         ],
         renderActions: canManage
-          ? (row) => (
+          ? (row) =>
+            row.payoutId ? (
+              // Repasse a profissional: valor e remoção são controlados pelo lançamento do repasse.
+              <>
+                <DropdownComponent.Item
+                  label="Pagamento"
+                  icon={<i className="mdi mdi-eye-outline me-1" />}
+                  onClick={() => setPaying(row)}
+                />
+                {!row.paid && (
+                  <DropdownComponent.Item
+                    label="Desfazer repasse"
+                    variant="danger"
+                    icon={<i className="mdi mdi-eye-off-outline me-1" />}
+                    onClick={() => setUndoing(row)}
+                  />
+                )}
+              </>
+            ) : (
               <>
                 <DropdownComponent.Item
                   label="Editar"
@@ -111,6 +164,13 @@ export function ExpensesPage() {
                   icon={<i className="mdi mdi-eye-outline me-1" />}
                   onClick={() => setPaying(row)}
                 />
+                {(row.recurrence !== "NONE" || row.isRecurrenceOccurrence) && (
+                  <DropdownComponent.Item
+                    label="Encerrar recorrência"
+                    icon={<i className="mdi mdi-eye-off-outline me-1" />}
+                    onClick={() => mutationStop.mutate(row.expenseId)}
+                  />
+                )}
                 <DropdownComponent.Item
                   label="Remover"
                   variant="danger"
@@ -138,6 +198,15 @@ export function ExpensesPage() {
         </BaseLayout.Header>
         <BaseLayout.Body>
           <>
+            <InfoRules
+              rules={[
+                "Cadastrar uma despesa não a marca como paga: registre o pagamento na ação “Pagamento”.",
+                "Por padrão mostra o mês atual. Você pode filtrar pelo vencimento ou pela data do pagamento.",
+                "Despesas recorrentes (se o ADMIN ligar a opção em Configurações) criam sozinhas uma nova despesa pendente no dia de cada vencimento; a etiqueta mostra a periodicidade e a próxima data, e “Encerrar recorrência” interrompe a série.",
+                "Remover uma despesa é definitivo. Despesas de repasse (categoria Repasse) não são removidas nem editadas aqui: para corrigir, use “Desfazer repasse” (enquanto não estiver paga) e lance de novo em Receitas.",
+                "Somente quem tem acesso ao financeiro (ADMIN e recepcionista) vê esta tela.",
+              ]}
+            />
             <Filters
               value={filters}
               onChange={setFilters}
@@ -195,6 +264,22 @@ export function ExpensesPage() {
           initial={{ paid: paying.paid, paymentMethod: paying.paymentMethod }}
           onSubmit={(payload) => mutationPayment.mutateAsync(toPaymentPayload(payload))}
           isPending={mutationPayment.isPending}
+        />
+      )}
+
+      {undoing?.payoutId && (
+        <UndoPayoutModal
+          payout={undoing}
+          isPending={mutationUndo.isPending}
+          toggle={() => setUndoing(null)}
+          onConfirm={async () => {
+            try {
+              await mutationUndo.mutateAsync(undoing.payoutId!)
+              setUndoing(null)
+            } catch {
+              // Erro já tratado no onError da mutation
+            }
+          }}
         />
       )}
 

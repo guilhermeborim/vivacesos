@@ -4,6 +4,8 @@ import {
   Expense,
   ExpenseTotals,
   FinanceSummary,
+  PayoutItem,
+  PayoutPreview,
   Revenue,
   RevenueTotals,
 } from "@/shared/types"
@@ -32,6 +34,9 @@ export const postExpense = (payload: ExpenseTypeSchema) =>
 export const putExpenseById = (expenseId: string, payload: ExpenseTypeSchema) =>
   api.put(url.PUT_EXPENSE_BY_ID.replace(":expenseId", expenseId), {
     ...payload,
+    // A recorrência só é definida no cadastro.
+    recurrence: undefined,
+    recurrenceEndsAt: undefined,
     category: payload.category || null,
     notes: payload.notes || null,
   })
@@ -43,9 +48,34 @@ export const deleteExpenseById = (expenseId: string) =>
   api.delete(url.DELETE_EXPENSE_BY_ID.replace(":expenseId", expenseId))
 
 function normalizeExpense(payload: ExpenseTypeSchema) {
+  const { recurrence, recurrenceEndsAt, ...rest } = payload
   return {
-    ...payload,
+    ...rest,
     category: payload.category || undefined,
     notes: payload.notes || undefined,
+    // Só envia recorrência quando escolhida (o campo some com a opção desligada).
+    ...(recurrence &&
+      recurrence !== "NONE" && {
+        recurrence,
+        recurrenceEndsAt: recurrenceEndsAt || undefined,
+      }),
   }
 }
+
+export const getPayoutPreview = (params: { professionalId: string; percent?: number }) =>
+  api.get<PayoutPreview>(url.GET_PAYOUT_PREVIEW, { params })
+
+export const postPayout = (payload: { professionalId: string; percent?: number }) =>
+  api.post<{ payoutId: string; amount: number; grossAmount: number; count: number }>(
+    url.POST_PAYOUT,
+    payload,
+  )
+
+export const getPayouts = (params: { professionalId?: string }) =>
+  api.get<PayoutItem[]>(url.GET_PAYOUTS, { params })
+
+export const deletePayoutById = (payoutId: string) =>
+  api.delete(url.DELETE_PAYOUT_BY_ID.replace(":payoutId", payoutId))
+
+export const postStopExpenseRecurrence = (expenseId: string) =>
+  api.post(url.POST_STOP_EXPENSE_RECURRENCE.replace(":expenseId", expenseId))

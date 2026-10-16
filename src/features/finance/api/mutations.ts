@@ -4,8 +4,11 @@ import { toast } from "react-toastify"
 import { ExpenseTypeSchema } from "../schemas"
 import {
   deleteExpenseById,
+  deletePayoutById,
   patchExpensePayment,
   postExpense,
+  postStopExpenseRecurrence,
+  postPayout,
   putExpenseById,
 } from "./routes"
 
@@ -20,6 +23,7 @@ const useInvalidate = () => {
   return () => {
     queryClient.invalidateQueries({ queryKey: ["expenses"] })
     queryClient.invalidateQueries({ queryKey: ["summary"] })
+    queryClient.invalidateQueries({ queryKey: ["payouts"] })
   }
 }
 
@@ -73,5 +77,63 @@ export const useMutationDeleteExpense = (expenseId: string) => {
       toast.success("Despesa removida com sucesso!")
     },
     onError: onError("Erro ao remover despesa"),
+  })
+}
+
+/** Lançar ou desfazer um repasse muda receitas (marca “repassada”), despesas e dashboard. */
+const useInvalidatePayout = () => {
+  const queryClient = useQueryClient()
+  return () => {
+    for (const key of [
+      "payout-preview",
+      "payouts",
+      "revenues",
+      "expenses",
+      "summary",
+      "appointments",
+      "dashboard",
+      "dashboard-analytics",
+    ]) {
+      queryClient.invalidateQueries({ queryKey: [key] })
+    }
+  }
+}
+
+export const useMutationPayout = () => {
+  const invalidate = useInvalidatePayout()
+
+  return useMutation({
+    mutationFn: (payload: { professionalId: string; percent?: number }) => postPayout(payload),
+    onSuccess: () => {
+      invalidate()
+      toast.success("Repasse lançado! A despesa foi criada em Despesas.")
+    },
+    onError: onError("Erro ao lançar repasse"),
+  })
+}
+
+export const useMutationDeletePayout = () => {
+  const invalidate = useInvalidatePayout()
+
+  return useMutation({
+    mutationFn: (payoutId: string) => deletePayoutById(payoutId),
+    onSuccess: () => {
+      invalidate()
+      toast.success("Repasse desfeito!")
+    },
+    onError: onError("Erro ao desfazer repasse"),
+  })
+}
+
+export const useMutationStopRecurrence = () => {
+  const invalidate = useInvalidate()
+
+  return useMutation({
+    mutationFn: (expenseId: string) => postStopExpenseRecurrence(expenseId),
+    onSuccess: () => {
+      invalidate()
+      toast.success("Recorrência encerrada!")
+    },
+    onError: onError("Erro ao encerrar recorrência"),
   })
 }

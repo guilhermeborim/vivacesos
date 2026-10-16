@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { FinanceFilters } from "../schemas"
 import { periodParams } from "../utils"
-import { getExpenses, getFinanceSummary, getRevenues } from "./routes"
+import { getExpenses, getFinanceSummary, getPayoutPreview, getPayouts, getRevenues } from "./routes"
 
 const paidParam = (f: FinanceFilters) => (f.paid === "" ? undefined : f.paid === "true")
 
@@ -42,4 +42,25 @@ export function useQueryFinanceSummary(filters: FinanceFilters) {
   })
 
   return { summary: data?.data }
+}
+
+/** Quanto seria repassado agora (a API calcula; o período dos filtros não interfere). */
+export function useQueryPayoutPreview(professionalId: string | undefined, percent?: number) {
+  const { data } = useQuery({
+    queryKey: ["payout-preview", professionalId, percent],
+    queryFn: () => getPayoutPreview({ professionalId: professionalId!, percent }),
+    retry: false,
+    enabled: !!professionalId,
+  })
+  return { preview: data?.data }
+}
+
+export function useQueryPayouts(professionalId?: string, enabled = true) {
+  const { data } = useQuery({
+    queryKey: ["payouts", professionalId],
+    queryFn: () => getPayouts({ professionalId }),
+    retry: false,
+    enabled,
+  })
+  return { payouts: data?.data }
 }

@@ -1,19 +1,18 @@
-import { BaseLayout, DropdownComponent, FormModal, TableList } from "@/core/ui"
+import { BaseLayout, DropdownComponent, InfoRules, TableList } from "@/core/ui"
 import { useMutationAppointmentPayment } from "@/features/appointment/api/mutations"
-import { useAuth, useFormModal } from "@/shared/hooks"
+import { useQueryProfessionals } from "@/features/professional/api/queries"
+import { useAuth } from "@/shared/hooks"
 import { Revenue } from "@/shared/types"
 import { formatCurrency, formatDateTime } from "@/shared/utils"
 import { useMemo, useState } from "react"
 import { Badge } from "reactstrap"
-import { useMutationExpense } from "../api/mutations"
 import { useQueryRevenues } from "../api/queries"
-import { ExpenseForm } from "../components/expense-form"
 import { Filters } from "../components/filters"
 import { Payout } from "../components/payout"
 import { PaymentModal } from "../components/payment-modal"
 import { Totals } from "../components/totals"
 import { useProfessionalFilter } from "../hooks"
-import { expenseSchema, ExpenseTypeSchema, FinanceFilters } from "../schemas"
+import { FinanceFilters } from "../schemas"
 import { currentMonthFilters, paymentMethodLabel, toPaymentPayload } from "../utils"
 
 export function RevenuesPage() {
@@ -26,17 +25,10 @@ export function RevenuesPage() {
   const { options: professionals } = useProfessionalFilter()
   const professional = professionals?.find((p) => p.value === filters.professionalId)
 
-  const mutationExpense = useMutationExpense()
-  const expense = useFormModal<ExpenseTypeSchema>(expenseSchema, mutationExpense.mutateAsync)
-  const openPayoutExpense = (amount: number) => {
-    expense.toggleModal()
-    expense.form.reset({
-      description: `PAGAMENTO PROFISSIONAL ${professional?.label.toUpperCase()}`,
-      category: "Repasse profissional",
-      amount,
-      dueDate: new Date().toLocaleDateString("sv-SE"),
-    })
-  }
+  const { dataProfessionals } = useQueryProfessionals()
+  const defaultPercent = dataProfessionals?.find(
+    (p) => p.professional.professionalId === filters.professionalId,
+  )?.professional.payoutPercent
 
   const columns = useMemo(
     () =>
@@ -76,15 +68,22 @@ export function RevenuesPage() {
             header: "Pago em",
             accessorFn: (row) => (row.paidAt ? formatDateTime(row.paidAt) : "-"),
           }),
+          TableList.Column<Revenue>({
+            header: "Repasse",
+            accessorFn: (row) => (row.payoutId ? "Repassada" : "-"),
+            cell: (row) => (row.payoutId ? <Badge color="info">REPASSADA</Badge> : "-"),
+          }),
         ],
+        // Consulta repassada não muda de pagamento (desfaça o repasse antes).
         renderActions: canManage
-          ? (row) => (
-              <DropdownComponent.Item
-                label="Pagamento"
-                icon={<i className="mdi mdi-pencil-outline me-1" />}
-                onClick={() => setEditing(row)}
-              />
-            )
+          ? (row) =>
+              row.payoutId ? null : (
+                <DropdownComponent.Item
+                  label="Pagamento"
+                  icon={<i className="mdi mdi-pencil-outline me-1" />}
+                  onClick={() => setEditing(row)}
+                />
+              )
           : undefined,
       }),
     [canManage],
@@ -96,6 +95,16 @@ export function RevenuesPage() {
         <BaseLayout.Header isFilters={false} />
         <BaseLayout.Body>
           <>
+            <InfoRules
+              rules={[
+                "As receitas vêm das consultas. O valor da consulta não significa que foi pago: marque o pagamento na ação “Pagamento”.",
+                "Por padrão mostra o mês atual. Você pode filtrar pela data da consulta ou pela data do pagamento.",
+                "Total soma as consultas agendadas, confirmadas e concluídas; Recebido é o que já foi pago; A receber é o que falta pagar.",
+                "Com um profissional filtrado, o bloco Repasse mostra quanto repassar: o percentual sobre as consultas pagas que ainda não foram repassadas, de qualquer período. “Lançar repasse” cria a despesa em Despesas.",
+                "Consulta repassada fica marcada e não muda de valor nem de pagamento. Para alterá-la, desfaça o repasse (enquanto a despesa não estiver paga).",
+                "O profissional vê apenas as próprias consultas.",
+              ]}
+            />
             <Filters
               value={filters}
               onChange={setFilters}
@@ -105,15 +114,24 @@ export function RevenuesPage() {
             <Totals
               items={[
                 { label: "Total", value: totals?.total },
-                { label: "Recebido", value: totals?.received, color: "success" },
-                { label: "A receber", value: totals?.receivable, color: "warning" },
+                {
+                  label: "Recebido",
+                  value: totals?.received,
+                  color: "success",
+                },
+                {
+                  label: "A receber",
+                  value: totals?.receivable,
+                  color: "warning",
+                },
               ]}
             />
-            {professional && (
+            {professional && filters.professionalId && (
               <Payout
+                professionalId={filters.professionalId}
                 professionalName={professional.label}
-                totals={totals}
-                onCreateExpense={hasPermission("FINANCE_MANAGE") ? openPayoutExpense : undefined}
+                defaultPercent={defaultPercent}
+                canManage={canManage}
               />
             )}
             <div className="p-3">
@@ -122,21 +140,6 @@ export function RevenuesPage() {
           </>
         </BaseLayout.Body>
       </BaseLayout.Root>
-
-      {expense.modalOpen && (
-        <FormModal
-          size="lg"
-          title="Cadastro de despesa"
-          submitLabel="Salvar"
-          isOpen={expense.modalOpen}
-          toggle={expense.toggleModal}
-          form={expense.form}
-          onSubmit={expense.handleSubmit}
-          isPending={mutationExpense.isPending}
-        >
-          <ExpenseForm />
-        </FormModal>
-      )}
 
       {editing && (
         <PaymentModal

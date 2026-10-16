@@ -26,6 +26,9 @@ export const expenseSchema = z.object({
     .max(99999999.99, "Valor muito alto"),
   dueDate: z.iso.date("O vencimento é obrigatório"),
   notes: z.string().max(2000, "As observações devem ter no máximo 2000 caracteres").optional().nullable(),
+  /** Só no cadastro e com a opção ligada em Configurações. */
+  recurrence: z.enum(["NONE", "DAILY", "WEEKLY", "BIWEEKLY", "MONTHLY"]).optional(),
+  recurrenceEndsAt: z.string().optional().nullable(),
 })
 
 export type ExpenseTypeSchema = z.infer<typeof expenseSchema>
