@@ -6,7 +6,7 @@ import logoLg from "@/assets/images/logo_lg.png"
 
 //import Components
 
-import { LightDark, ProfileDropdown } from "@/core/ui"
+import { LightDark, NotificationDropdown, ProfileDropdown } from "@/core/ui"
 import { changeSidebarVisibility } from "@/slices/thunks"
 import { useDispatch, useSelector } from "react-redux"
 import { createSelector } from "reselect"
@@ -120,8 +120,8 @@ export const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }: any)
                 onChangeLayoutMode={onChangeLayoutMode}
               />
 
-              {/* NotificationDropdown */}
-              {/* <NotificationDropdown /> */}
+              {/* Notificações (por papel) */}
+              <NotificationDropdown />
 
               {/* ProfileDropdown */}
               <ProfileDropdown />
