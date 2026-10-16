@@ -1,5 +1,0 @@
-export enum ClinicUserRole {
-  ADMIN = "ADMIN",
-  PROFISSIONAL = "PROFESSIONAL",
-  RECEPCIONISTA = "RECEPCIONISTA",
-}
