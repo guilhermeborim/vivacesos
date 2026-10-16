@@ -19,8 +19,12 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
     isLoading: { isPendingClinic },
   } = useInitialStepClinic()
   const {
-    actions: { handleSubmitProfessionalOnboarding, formProfessionalOnboarding },
-    isLoading: { isPendingProfessionalOnboarding },
+    actions: {
+      handleSubmitProfessionalOnboarding,
+      handleSkipProfessional,
+      formProfessionalOnboarding,
+    },
+    isLoading: { isPendingProfessionalOnboarding, isSkipping },
   } = useInitialStepProfessional()
   const {
     actions: { handleSubmitFinishedOnboarding },
@@ -34,6 +38,7 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
     <>
       {loadingCep && <Loading loading={loadingCep} />}
       {isPendingClinic && <Loading loading={isPendingClinic} />}
+      {isSkipping && <Loading loading={isSkipping} />}
       {isPendingProfessionalOnboarding && (
         <Loading loading={isPendingProfessionalOnboarding} />
       )}
@@ -115,7 +120,13 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
                     Salvar Profissional e Continuar
                   </ButtonPrimitive>
                 </form>
-                <ButtonPrimitive type="button" variant="warning">
+                <ButtonPrimitive
+                  type="button"
+                  variant="warning"
+                  onClick={handleSkipProfessional}
+                  isLoading={isSkipping}
+                  disabled={isPendingProfessionalOnboarding}
+                >
                   Pular
                 </ButtonPrimitive>
               </div>
@@ -130,8 +141,9 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
                 <h5>Parábens, tudo pronto!</h5>
                 <div>
                   <p className="text-muted">
-                    Sua clínica já está cadastrada e seu perfil como profissional foi
-                    criado. <br /> A partir de agora, você já pode começar a usar o
+                    Sua clínica já está cadastrada. Se você atende pacientes, seu perfil
+                    de profissional também foi criado; caso contrário, você pode
+                    cadastrá-lo depois em Profissionais da Saúde. <br /> A partir de agora, você já pode começar a usar o
                     sistema e organizar sua rotina de forma mais simples e eficiente.
                   </p>
                 </div>
