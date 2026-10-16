@@ -5,9 +5,14 @@ import { Badge } from "reactstrap"
 interface ProfessionalColumnsProps {
   onEdit: (professionalId: string) => void
   onInactive: (professionalId: string) => void
+  onAvailability: (professional: Professional) => void
 }
 
-export function professionalColumns({ onEdit, onInactive }: ProfessionalColumnsProps) {
+export function professionalColumns({
+  onEdit,
+  onInactive,
+  onAvailability,
+}: ProfessionalColumnsProps) {
   const baseColumns = [
     TableList.Column<Professional>({
       header: "Nome",
@@ -22,6 +27,13 @@ export function professionalColumns({ onEdit, onInactive }: ProfessionalColumnsP
     TableList.Column<Professional>({
       header: "Especialidade",
       accessorFn: (row) => row.professional.specialty,
+    }),
+    TableList.Column<Professional>({
+      header: "Repasse",
+      accessorFn: (row) =>
+        row.professional.payoutPercent == null
+          ? "-"
+          : `${row.professional.payoutPercent.toLocaleString("pt-BR")}%`,
     }),
     TableList.Column<Professional>({
       header: "Status",
@@ -43,6 +55,11 @@ export function professionalColumns({ onEdit, onInactive }: ProfessionalColumnsP
           label="Editar"
           icon={<i className="mdi mdi-pencil-outline me-1" />}
           onClick={() => onEdit(professional.professional.professionalId)}
+        />
+        <DropdownComponent.Item
+          label="Horários de atendimento"
+          icon={<i className="mdi mdi-clock-outline me-1" />}
+          onClick={() => onAvailability(professional)}
         />
         <DropdownComponent.Item
           label={professional.professional.active ? "Inativar" : "Ativar"}

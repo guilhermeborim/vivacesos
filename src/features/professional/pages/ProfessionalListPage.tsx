@@ -1,4 +1,4 @@
-import { BaseLayout, ButtonPrimitive, FormModal } from "@/core/ui"
+import { BaseLayout, ButtonPrimitive, FormModal, InfoRules } from "@/core/ui"
 import { useFormModal } from "@/shared/hooks"
 import { toast } from "react-toastify"
 import { useMutationCreateProfessional } from "../api/mutations"
@@ -31,7 +31,19 @@ export function ProfessionalListPage() {
           </ButtonPrimitive>
         </BaseLayout.Header>
         <BaseLayout.Body>
-          <ListProfessional />
+          <>
+            <InfoRules
+              rules={[
+                "Quem atende pacientes, inclusive o ADMIN que também é médico, precisa estar cadastrado aqui como profissional ativo.",
+                "É o cadastro de profissional que permite ter consultas agendadas e acessar os prontuários.",
+                "Quem é convidado como PROFISSIONAL informa CRM e especialidade ao aceitar o convite e já aparece aqui. O botão “Vincular” serve para quem já tem acesso e ainda não tem perfil (por exemplo, o ADMIN que atende).",
+                "O CRM não pode se repetir na mesma clínica.",
+                "Cada profissional define seus horários de atendimento em Configurações → Minha agenda; o ADMIN também pode ajustar pela ação “Horários de atendimento”. Sem horários definidos, atende em qualquer horário.",
+                "Inativar o acesso do usuário também inativa o profissional.",
+              ]}
+            />
+            <ListProfessional />
+          </>
         </BaseLayout.Body>
       </BaseLayout.Root>
       {create.modalOpen && (
