@@ -6,17 +6,47 @@ import {
   UpdateStatusUserSchema,
   UpdateUserTypeSchema,
 } from "../schemas"
-import { PatchStatusByUserId, postINvite, putUserById } from "./routes"
+import { InviteResult, PatchStatusByUserId, postINvite, postResendInvite, putUserById } from "./routes"
+
+const notifyInvite = (result: InviteResult, successMessage: string) => {
+  if (result.emailSent) {
+    toast.success(successMessage)
+  } else {
+    toast.warning(
+      "O convite foi salvo, mas o e-mail não pôde ser enviado. Use “Reenviar convite” para tentar de novo.",
+    )
+  }
+}
 
 export const useMutationInvite = () => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: async (payload: CreateInviteTypeSchema) => postINvite(payload),
-    onSuccess: async () => {
-      toast.success("Convite enviado com sucesso!")
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] })
+      notifyInvite(data, "Convite enviado por e-mail com sucesso!")
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message || "Erro ao enviar convite")
+      }
+    },
+  })
+}
+
+export const useMutationResendInvite = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (inviteId: string) => postResendInvite(inviteId),
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] })
+      notifyInvite(data, "Convite reenviado por e-mail!")
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message || "Erro ao reenviar convite")
       }
     },
   })

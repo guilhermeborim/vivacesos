@@ -1,4 +1,4 @@
-import { BaseLayout, ButtonPrimitive, FormModal } from "@/core/ui"
+import { BaseLayout, ButtonPrimitive, FormModal, InfoRules } from "@/core/ui"
 import { TableProvider } from "@/core/ui/components/Table/TableContext"
 import { useFormModal } from "@/shared/hooks"
 import { useMutationInvite } from "../api/mutations"
@@ -23,7 +23,19 @@ export function UserListPage() {
             </ButtonPrimitive>
           </BaseLayout.Header>
           <BaseLayout.Body>
-            <ListUser />
+            <>
+              <InfoRules
+                rules={[
+                  "Somente o ADMIN convida usuários e inativa ou reativa acessos.",
+                  "O convite é enviado por e-mail e vale por 24 horas. Na coluna “Convite” você vê quanto tempo falta; se expirar, use “Reenviar convite” para gerar um novo link.",
+                  "O usuário convidado se cadastra pelo link do convite, usando o mesmo e-mail.",
+                  "O papel define o que a pessoa acessa: ADMIN gerencia a clínica, o financeiro e a auditoria; PROFISSIONAL atende e acessa prontuários; RECEPCIONISTA cuida da recepção e do financeiro, sem acesso a prontuários.",
+                  "Convidado como PROFISSIONAL, a pessoa informa CRM e especialidade ao aceitar e o perfil é criado sozinho. Convidado como ADMIN, ela pode marcar “Também atendo pacientes” no cadastro.",
+                  "Usuário inativo perde o acesso ao sistema; se for profissional, ele também é inativado.",
+                ]}
+              />
+              <ListUser />
+            </>
           </BaseLayout.Body>
         </BaseLayout.Root>
       </TableProvider>
@@ -40,8 +52,8 @@ export function UserListPage() {
         >
           <div className="mb-4">
             <h6>
-              Este convite tem duração de 24 horas, após isso é necessário um novo
-              convite.
+              Este convite será enviado por e-mail e tem duração de 24 horas. Após isso
+              é necessário reenviá-lo.
             </h6>
           </div>
           <FormUser />

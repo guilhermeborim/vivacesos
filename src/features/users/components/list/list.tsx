@@ -1,6 +1,7 @@
 import { ConfirmStatusModal, FormModal, Loading } from "@/core/ui"
 import { TableList } from "@/core/ui/components/Table"
 import { ClinicUserStatus } from "@/shared/enums"
+import { useMutationResendInvite } from "../../api/mutations"
 import { useQueryUsers } from "../../api/queries"
 import { useEditUser } from "../../hooks/use-edit-user"
 import { FormUser } from "../form/form"
@@ -9,10 +10,12 @@ import { userColumns } from "./columns"
 export function ListUser() {
   const { dataUsers } = useQueryUsers()
   const edit = useEditUser()
+  const resend = useMutationResendInvite()
   const { user } = edit
   const columns = userColumns({
     onEdit: edit.openEdit,
     onInactive: edit.openInactive,
+    onResend: resend.mutate,
     currentUserId: edit.currentUserId,
   })
   const isActive = user?.status === ClinicUserStatus.ATIVO

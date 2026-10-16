@@ -3,7 +3,7 @@ import { getInviteByToken } from "./routes"
 
 export const useQueryInviteByToken = (token: string) => {
   return useQuery({
-    queryKey: ["inviteToken"],
+    queryKey: ["inviteToken", token],
     queryFn: () => getInviteByToken(token),
   })
 }

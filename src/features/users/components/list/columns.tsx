@@ -2,16 +2,18 @@ import { DropdownComponent, TableList } from "@/core/ui"
 import { ClinicUserStatus } from "@/shared/enums"
 import { User } from "@/shared/types"
 import { Badge } from "reactstrap"
+import { InviteCountdown } from "./invite-countdown"
 
 interface UserColumnsProps {
   onEdit: (userId: string) => void
   onInactive: (userId: string) => void
+  onResend: (inviteId: string) => void
   currentUserId: string
 }
 
 type ColorStatus = "success" | "info" | "danger"
 
-export function userColumns({ onEdit, onInactive, currentUserId }: UserColumnsProps) {
+export function userColumns({ onEdit, onInactive, onResend, currentUserId }: UserColumnsProps) {
   const statusMap: Record<ClinicUserStatus, ColorStatus> = {
     INVITADO: "info",
     ATIVO: "success",
@@ -42,6 +44,11 @@ export function userColumns({ onEdit, onInactive, currentUserId }: UserColumnsPr
       filterType: "select",
       options: ["Ativo", "Inativo"],
     }),
+    TableList.Column<User>({
+      header: "Convite",
+      accessorFn: (row) => (row.invite ? row.invite.expiresAt : ""),
+      cell: (row) => (row.invite ? <InviteCountdown expiresAt={row.invite.expiresAt} /> : "-"),
+    }),
   ]
 
   return TableList.Columns<User>({
@@ -60,6 +67,13 @@ export function userColumns({ onEdit, onInactive, currentUserId }: UserColumnsPr
               label="Editar"
               icon={<i className="mdi mdi-pencil-outline me-1" />}
               onClick={() => onEdit(user.user.userId)}
+            />
+          )}
+          {isInvitado && (
+            <DropdownComponent.Item
+              label="Reenviar convite"
+              icon={<i className="mdi mdi-email-outline me-1" />}
+              onClick={() => onResend(user.clinicUserId)}
             />
           )}
           {(isAtivo || isInvitado) && !isSelf && (
