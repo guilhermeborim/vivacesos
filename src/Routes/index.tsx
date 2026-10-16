@@ -6,7 +6,7 @@ import Layout from "@/core/layouts/index";
 import NonAuthLayout from "@/core/layouts/NonAuthLayout";
 
 //routes
-import { authProtectedRoutes, publicRoutes } from "./allRoutes";
+import { authProtectedRoutes, openRoutes, publicRoutes } from "./allRoutes";
 import AuthProtected from "./AuthProtected";
 import PublicProtected from "./PublicProtected";
 
@@ -23,6 +23,16 @@ const Index = () => {
                   <NonAuthLayout>{route.component}</NonAuthLayout>
                 </PublicProtected>
               }
+              key={idx}
+            />
+          ))}
+        </Route>
+
+        <Route>
+          {openRoutes.map((route, idx) => (
+            <Route
+              path={route.path}
+              element={<NonAuthLayout>{route.component}</NonAuthLayout>}
               key={idx}
             />
           ))}

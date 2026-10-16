@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom"
+import { ForbidRoles } from "./ForbidRoles"
 
 // Errors
 import { LoginPage } from "@/features/auth/pages/LoginPage"
@@ -12,8 +13,19 @@ import { Error500Page } from "@/features/errors/pages/Error500Page"
 import { ExpensesPage } from "@/features/finance/pages/ExpensesPage"
 import { RevenuesPage } from "@/features/finance/pages/RevenuesPage"
 import { SummaryPage } from "@/features/finance/pages/SummaryPage"
+import { AppointmentLinkPage } from "@/features/public/pages/AppointmentLinkPage"
+import { GooglePage } from "@/features/integrations/pages/GooglePage"
+import { WhatsappPage } from "@/features/integrations/pages/WhatsappPage"
 import { InvitePage } from "@/features/invite/pages/InvitePage"
+import { MedicalRecordDayPage } from "@/features/medical-record/pages/MedicalRecordDayPage"
+import { MedicalRecordEntryPage } from "@/features/medical-record/pages/MedicalRecordEntryPage"
+import { MedicalRecordListPage } from "@/features/medical-record/pages/MedicalRecordListPage"
+import { SettingsPage } from "@/features/settings/pages/SettingsPage"
+import { RecordAuditPage } from "@/features/medical-record/pages/RecordAuditPage"
+import { RecordTemplatesPage } from "@/features/medical-record/pages/RecordTemplatesPage"
+import { MedicalRecordPage } from "@/features/medical-record/pages/MedicalRecordPage"
 import { PatientListPage } from "@/features/patient/pages/PatientListPage"
+import { MySchedulePage } from "@/features/professional/pages/MySchedulePage"
 import { ProfessionalListPage } from "@/features/professional/pages/ProfessionalListPage"
 import { UserListPage } from "@/features/users/pages/UserListPage"
 
@@ -29,15 +41,27 @@ const authProtectedRoutes = [
   },
   {
     path: "/clinics",
-    component: <ClinicListPage />,
+    component: (
+      <ForbidRoles roles={["PROFISSIONAL"]}>
+        <ClinicListPage />
+      </ForbidRoles>
+    ),
   },
   {
     path: "/professionals",
-    component: <ProfessionalListPage />,
+    component: (
+      <ForbidRoles roles={["PROFISSIONAL"]}>
+        <ProfessionalListPage />
+      </ForbidRoles>
+    ),
   },
   {
     path: "/users",
-    component: <UserListPage />,
+    component: (
+      <ForbidRoles roles={["PROFISSIONAL"]}>
+        <UserListPage />
+      </ForbidRoles>
+    ),
   },
   {
     path: "/patients",
@@ -46,6 +70,50 @@ const authProtectedRoutes = [
   {
     path: "/appointments",
     component: <AppointmentListPage />,
+  },
+  {
+    path: "/medical-record",
+    component: <MedicalRecordListPage />,
+  },
+  {
+    path: "/medical-record/now",
+    component: <MedicalRecordDayPage />,
+  },
+  {
+    path: "/google",
+    component: <GooglePage />,
+  },
+  {
+    path: "/whatsapp",
+    component: <WhatsappPage />,
+  },
+  {
+    path: "/settings/my-schedule",
+    component: <MySchedulePage />,
+  },
+  {
+    path: "/settings",
+    component: <SettingsPage />,
+  },
+  {
+    path: "/settings/recurring-expenses",
+    component: <Navigate to="/settings" replace />,
+  },
+  {
+    path: "/settings/record-templates",
+    component: <RecordTemplatesPage />,
+  },
+  {
+    path: "/medical-record/audit",
+    component: <RecordAuditPage />,
+  },
+  {
+    path: "/medical-record/:patientId/new",
+    component: <MedicalRecordEntryPage />,
+  },
+  {
+    path: "/medical-record/:patientId",
+    component: <MedicalRecordPage />,
   },
   {
     path: "/receitas",
@@ -70,4 +138,7 @@ const publicRoutes = [
   { path: "/error-500", component: <Error500Page /> },
 ]
 
-export { authProtectedRoutes, publicRoutes }
+/** Abertas a qualquer pessoa, logada ou não (ex.: paciente com o link da consulta). */
+const openRoutes = [{ path: "/c/:token", component: <AppointmentLinkPage /> }]
+
+export { authProtectedRoutes, publicRoutes, openRoutes }
