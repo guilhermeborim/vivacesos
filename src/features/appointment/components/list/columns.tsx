@@ -8,6 +8,8 @@ interface AppointmentColumnsProps {
   onEdit: (appointmentId: string) => void
   onChangeStatus: (appointmentId: string, status: AppointmentStatus) => void
   onPayment?: (appointment: Appointment) => void
+  /** Abre o WhatsApp com a mensagem pronta para o paciente. */
+  onWhatsapp?: (appointmentId: string) => void
 }
 
 const statusColor: Record<AppointmentStatus, string> = {
@@ -22,6 +24,7 @@ export function appointmentColumns({
   onEdit,
   onChangeStatus,
   onPayment,
+  onWhatsapp,
 }: AppointmentColumnsProps) {
   const baseColumns = [
     TableList.Column<Appointment>({
@@ -78,16 +81,28 @@ export function appointmentColumns({
         appointment.status === AppointmentStatus.CONFIRMADA
       const isDone = appointment.status === AppointmentStatus.CONCLUIDA
       if (!isOpen && !isDone) return null
+      // Concluída e paga sem ação de pagamento disponível: o menu ficaria vazio.
+      if (isDone && appointment.paid && (!onPayment || appointment.payoutId)) return null
 
       const id = appointment.appointmentId
       return (
         <>
-          <DropdownComponent.Item
-            label={isDone ? "Valor" : "Editar"}
-            icon={<i className="mdi mdi-pencil-outline me-1" />}
-            onClick={() => onEdit(id)}
-          />
-          {onPayment && (
+          {/* Concluída e paga: o valor está fechado (nada a editar). */}
+          {!(isDone && appointment.paid) && (
+            <DropdownComponent.Item
+              label={isDone ? "Valor" : "Editar"}
+              icon={<i className="mdi mdi-pencil-outline me-1" />}
+              onClick={() => onEdit(id)}
+            />
+          )}
+          {onWhatsapp && isOpen && (
+            <DropdownComponent.Item
+              label="Enviar no WhatsApp"
+              icon={<i className="mdi mdi-whatsapp me-1" />}
+              onClick={() => onWhatsapp(id)}
+            />
+          )}
+          {onPayment && !appointment.payoutId && (
             <DropdownComponent.Item
               label="Pagamento"
               icon={<i className="mdi mdi-eye-outline me-1" />}

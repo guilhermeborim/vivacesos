@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getAppointmentById, getAppointments } from "./routes"
+import { getAppointmentById, getAppointments, getSlots } from "./routes"
 
 export function useQueryAppointments() {
   const { data } = useQuery({
@@ -25,4 +25,15 @@ export function useQueryAppointmentById(appointmentId: string | null) {
     appointment: data?.data,
     loadingAppointmentById: isLoading,
   }
+}
+
+/** Horas livres do profissional na data (só quando ele tem horários restritos). */
+export function useQuerySlots(professionalId: string | undefined, date: string, enabled: boolean) {
+  const { data, isFetching } = useQuery({
+    queryKey: ["slots", professionalId, date],
+    queryFn: () => getSlots({ professionalId: professionalId!, date }),
+    retry: false,
+    enabled: enabled && !!professionalId && !!date,
+  })
+  return { slots: data?.data.slots ?? [], loadingSlots: isFetching }
 }

@@ -4,11 +4,12 @@ import {
   SelectController,
 } from "@/core/ui"
 import { useQueryPatients } from "@/features/patient/api/queries"
-import { useQueryProfessionals } from "@/features/professional/api/queries"
+import { useQueryAvailability, useQueryProfessionals } from "@/features/professional/api/queries"
 import { Appointment, Patient, Professional } from "@/shared/types"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
-import { Col, Row } from "reactstrap"
+import { Col, Input, Label, Row } from "reactstrap"
+import { useQuerySlots } from "../../api/queries"
 import { addOneHour, toLocalInput } from "../../utils"
 
 interface FormAppointmentProps {
@@ -27,6 +28,36 @@ export function FormAppointment({
   const startsAt = watch("startsAt")
   const { dataPatients } = useQueryPatients()
   const { dataProfessionals } = useQueryProfessionals()
+
+  // Profissional com horários restritos: escolhe data + horário livre em vez de digitar a hora.
+  const professionalId: string | undefined = isEdit
+    ? defaultValues?.appointment.professional.professionalId
+    : watch("professionalId")
+  const { availability } = useQueryAvailability(professionalId)
+  const restricted = !!availability?.restricted
+  const [slotDate, setSlotDate] = useState("")
+  const [slotValue, setSlotValue] = useState("")
+  const { slots, loadingSlots } = useQuerySlots(professionalId, slotDate, restricted)
+
+  // Trocar de profissional descarta data/horário escolhidos para o anterior.
+  useEffect(() => {
+    if (isEdit) return
+    setSlotDate("")
+    setSlotValue("")
+    setValue("startsAt", "")
+    setValue("endsAt", "")
+  }, [professionalId, isEdit, setValue])
+
+  const timeLabel = (iso: string) =>
+    new Date(iso).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
+
+  const pickSlot = (startsAtIso: string) => {
+    setSlotValue(startsAtIso)
+    const slot = slots.find((s) => s.startsAt === startsAtIso)
+    if (!slot) return
+    setValue("startsAt", toLocalInput(slot.startsAt), { shouldValidate: true })
+    setValue("endsAt", toLocalInput(slot.endsAt), { shouldValidate: true })
+  }
 
   useEffect(() => {
     if (defaultValues) {
@@ -82,7 +113,58 @@ export function FormAppointment({
           </Col>
         </>
       )}
-      {!billingOnly && (
+      {!billingOnly && restricted && (
+        <>
+          <Col lg={6}>
+            <Label className="form-label" htmlFor="slot-date">
+              Data
+            </Label>
+            <Input
+              id="slot-date"
+              type="date"
+              min={new Date().toLocaleDateString("sv-SE")}
+              value={slotDate}
+              onChange={(e) => {
+                setSlotDate(e.target.value)
+                setSlotValue("")
+              }}
+            />
+          </Col>
+          <Col lg={6}>
+            <Label className="form-label" htmlFor="slot-time">
+              Horário
+            </Label>
+            <Input
+              id="slot-time"
+              type="select"
+              value={slotValue}
+              disabled={!slotDate || loadingSlots}
+              onChange={(e) => pickSlot(e.target.value)}
+            >
+              <option value="">
+                {!slotDate
+                  ? "Escolha a data primeiro"
+                  : loadingSlots
+                    ? "Buscando horários..."
+                    : slots.length
+                      ? isEdit
+                        ? "Manter o horário atual"
+                        : "Selecione o horário"
+                      : "Sem horários livres nesta data"}
+              </option>
+              {slots.map((s) => (
+                <option key={s.startsAt} value={s.startsAt}>
+                  {timeLabel(s.startsAt)} – {timeLabel(s.endsAt)}
+                </option>
+              ))}
+            </Input>
+            <small className="text-muted">
+              Só aparecem os horários em que o profissional atende e que ainda estão livres.
+            </small>
+          </Col>
+        </>
+      )}
+      {!billingOnly && !restricted && (
         <>
           <Col lg={6}>
             <InputController

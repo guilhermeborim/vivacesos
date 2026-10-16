@@ -1,6 +1,6 @@
 import { api } from "@/core/api/shared/api_helper"
 import * as url from "@/core/api/shared/url_helper"
-import { Appointment } from "@/shared/types"
+import { Appointment, AppointmentSlots } from "@/shared/types"
 import {
   CreateAppointmentTypeSchema,
   UpdateAppointmentStatusPayload,
@@ -42,3 +42,6 @@ export const patchAppointmentPayment = (
   payload: { paid: boolean; paymentMethod?: string },
 ) =>
   api.patch(url.PATCH_APPOINTMENT_PAYMENT.replace(":appointmentId", appointmentId), payload)
+
+export const getSlots = (params: { professionalId: string; date: string }) =>
+  api.get<AppointmentSlots>(url.GET_APPOINTMENT_SLOTS, { params })
