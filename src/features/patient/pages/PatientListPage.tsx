@@ -1,4 +1,4 @@
-import { BaseLayout, ButtonPrimitive, FormModal } from "@/core/ui"
+import { BaseLayout, ButtonPrimitive, FormModal, InfoRules } from "@/core/ui"
 import { useFormModal } from "@/shared/hooks"
 import { useMutationPatient } from "../api/mutations"
 import { FormPatient } from "../components/form/form"
@@ -21,7 +21,17 @@ export function PatientListPage() {
           </ButtonPrimitive>
         </BaseLayout.Header>
         <BaseLayout.Body>
-          <ListPatient />
+          <>
+            <InfoRules
+              rules={[
+                "CPF, telefone e e-mail não podem se repetir entre pacientes da mesma clínica.",
+                "O CPF aparece parcialmente oculto na tela.",
+                "Ao cadastrar o paciente, o prontuário dele é aberto automaticamente.",
+                "Paciente inativo não pode receber novas consultas.",
+              ]}
+            />
+            <ListPatient />
+          </>
         </BaseLayout.Body>
       </BaseLayout.Root>
 
