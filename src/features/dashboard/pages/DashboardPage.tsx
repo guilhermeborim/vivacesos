@@ -1,6 +1,7 @@
 import { BaseLayout } from "@/core/ui"
 import {
   InitialSteps,
+  Overview,
   ModalSelectClinic,
   ModalWelcome,
 } from "@/features/dashboard/components"
@@ -17,6 +18,11 @@ export function DashboardPage() {
       {(session?.clinics.length === 0 || session?.user.onboardingStep !== "FINISHED") && (
         <BaseLayout.Body>
           <InitialSteps step={session!.user.onboardingStep} />
+        </BaseLayout.Body>
+      )}
+      {session?.activeClinic && session.user.onboardingStep === "FINISHED" && (
+        <BaseLayout.Body>
+          <Overview />
         </BaseLayout.Body>
       )}
       {session?.clinics.length === 0 &&

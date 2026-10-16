@@ -1,0 +1,105 @@
+/* Paleta de gráficos validada (slots 1–3 do categórico) com tokens de claro e escuro. */
+.viz-root {
+  --viz-s1: #2a78d6;
+  --viz-s2: #eb6834;
+  --viz-s3: #1baf7a;
+  --viz-neutral: #898781;
+  --viz-ink: #0b0b0b;
+  --viz-ink-2: #52514e;
+  --viz-grid: #e1e0d9;
+  --viz-axis: #c3c2b7;
+  --viz-surface: var(--vz-card-bg, #ffffff);
+}
+
+html[data-bs-theme="dark"] .viz-root {
+  --viz-s1: #3987e5;
+  --viz-s2: #d95926;
+  --viz-s3: #199e70;
+  --viz-ink: #f0efec;
+  --viz-ink-2: #c3c2b7;
+  --viz-grid: #2c2c2a;
+  --viz-axis: #383835;
+}
+
+.viz-root .recharts-text,
+.viz-root .recharts-cartesian-axis-tick-value {
+  fill: var(--viz-neutral);
+  font-size: 12px;
+}
+
+.viz-tooltip {
+  background: var(--viz-surface);
+  border: 1px solid var(--viz-grid);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  color: var(--viz-ink);
+  font-size: 12px;
+  min-width: 150px;
+  padding: 8px 12px;
+}
+
+.viz-tooltip-title {
+  color: var(--viz-ink-2);
+  margin-bottom: 4px;
+}
+
+.viz-tooltip-row {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.viz-tooltip-key {
+  align-items: center;
+  color: var(--viz-ink-2);
+  display: flex;
+  gap: 6px;
+}
+
+.viz-tooltip-value {
+  color: var(--viz-ink);
+  font-weight: 600;
+}
+
+/* Chave de série: traço curto (linhas) ou quadrado (barras); a cor nunca vai no texto. */
+.viz-key-line {
+  border-radius: 1px;
+  display: inline-block;
+  height: 2px;
+  width: 14px;
+}
+
+.viz-key-box {
+  border-radius: 2px;
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+}
+
+.viz-legend {
+  color: var(--viz-ink-2);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.viz-legend-item {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.viz-segment {
+  height: 24px;
+  transition: opacity 0.15s;
+}
+
+.viz-segment:hover,
+.viz-segment:focus-visible {
+  opacity: 0.8;
+  outline: 2px solid var(--viz-ink);
+  outline-offset: 1px;
+}
