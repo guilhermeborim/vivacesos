@@ -88,6 +88,10 @@ export const PATCH_NOTIFICATION_READ = "/clinic/notifications/:notificationId/re
 export const GET_CLINICAL_PROFILE = "/clinic/medical-records/:patientId/profile"
 export const PUT_CLINICAL_PROFILE = "/clinic/medical-records/:patientId/profile"
 
+// TRIAGEM (sinais vitais da consulta)
+export const GET_TRIAGE = "/clinic/medical-records/appointments/:appointmentId/triage"
+export const PUT_TRIAGE = "/clinic/medical-records/appointments/:appointmentId/triage"
+
 // SETTINGS
 export const GET_SETTINGS = "/clinic/settings"
 export const PUT_SETTINGS = "/clinic/settings"
@@ -97,6 +101,8 @@ export const POST_STOP_EXPENSE_RECURRENCE = "/clinic/finance/expenses/:expenseId
 export const GET_PROFESSIONAL_AVAILABILITY = "/clinic/professionals/:professionalId/availability"
 export const PUT_PROFESSIONAL_AVAILABILITY = "/clinic/professionals/:professionalId/availability"
 export const GET_APPOINTMENT_SLOTS = "/clinic/appointments/slots"
+export const GET_APPOINTMENT_AGENDA = "/clinic/appointments/agenda"
+export const GET_APPOINTMENT_AGENDA_DAYS = "/clinic/appointments/agenda/days"
 
 // INTEGRATIONS / MENSAGENS AO PACIENTE
 export const GET_INTEGRATIONS = "/clinic/integrations"

@@ -8,7 +8,7 @@ import {
   RecordAuditResponse,
   RecordTemplate,
 } from "@/shared/types"
-import { CancelEntryTypeSchema, CreateEntryTypeSchema, TemplateTypeSchema } from "../schemas"
+import { CancelEntryTypeSchema, CreateEntryPayload, TemplateTypeSchema } from "../schemas"
 
 export const getMedicalRecords = () => api.get<MedicalRecordListItem[]>(url.GET_MEDICAL_RECORDS)
 
@@ -18,7 +18,7 @@ export const getMedicalRecordsDay = (params: { from: string; to: string }) =>
 export const getMedicalRecordByPatient = (patientId: string) =>
   api.get<MedicalRecordTimeline>(url.GET_MEDICAL_RECORD_BY_PATIENT.replace(":patientId", patientId))
 
-export const postEntry = (patientId: string, payload: CreateEntryTypeSchema) =>
+export const postEntry = (patientId: string, payload: CreateEntryPayload) =>
   api.post(url.POST_MEDICAL_RECORD_ENTRY.replace(":patientId", patientId), payload)
 
 export const postCancelEntry = (entryId: string, payload: CancelEntryTypeSchema) =>

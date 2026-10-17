@@ -1,4 +1,4 @@
-import { ConfirmStatusModal, FormModal, Loading } from "@/core/ui"
+import { ConfirmStatusModal, FormModal } from "@/core/ui"
 import { TableList } from "@/core/ui/components/Table"
 import { ClinicUserStatus } from "@/shared/enums"
 import { useMutationResendInvite } from "../../api/mutations"
@@ -22,7 +22,6 @@ export function ListUser() {
 
   return (
     <>
-      {edit.loadingUserById && <Loading loading={edit.loadingUserById} />}
       <TableList.Root columns={columns} data={dataUsers || []} />
 
       {edit.modalOpen && user && (

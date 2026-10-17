@@ -37,11 +37,6 @@ export function InitialSteps(step: CreateNextStepTypeSchema) {
   return (
     <>
       {loadingCep && <Loading loading={loadingCep} />}
-      {isPendingClinic && <Loading loading={isPendingClinic} />}
-      {isSkipping && <Loading loading={isSkipping} />}
-      {isPendingProfessionalOnboarding && (
-        <Loading loading={isPendingProfessionalOnboarding} />
-      )}
       <div>
         <div className="progress-nav mb-4 mt-3">
           <Progress value={progressBarValue} style={{ height: "1px" }} />

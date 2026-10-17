@@ -32,7 +32,11 @@ export const updateAppointmentSchema = z
     startsAt: z.string().min(1, "O início é obrigatório").optional(),
     endsAt: z.string().min(1, "O fim é obrigatório").optional(),
     price: price.optional(),
-    notes: z.string().max(2000, "As observações devem ter no máximo 2000 caracteres").nullable().optional(),
+    notes: z
+      .string()
+      .max(2000, "As observações devem ter no máximo 2000 caracteres")
+      .nullable()
+      .optional(),
   })
   .refine(endAfterStart, endAfterStartError)
 

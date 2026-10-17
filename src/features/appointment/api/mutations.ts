@@ -70,8 +70,11 @@ export const useMutationAppointmentPayment = () => {
     mutationFn: ({
       appointmentId,
       ...payload
-    }: { appointmentId: string; paid: boolean; paymentMethod?: string }) =>
-      patchAppointmentPayment(appointmentId, payload),
+    }: {
+      appointmentId: string
+      paid: boolean
+      paymentMethod?: string
+    }) => patchAppointmentPayment(appointmentId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["appointments"] })
       queryClient.invalidateQueries({ queryKey: ["revenues"] })

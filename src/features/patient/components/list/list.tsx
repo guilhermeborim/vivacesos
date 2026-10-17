@@ -1,4 +1,4 @@
-import { FormModal, Loading } from "@/core/ui"
+import { FormModal } from "@/core/ui"
 import { TableList } from "@/core/ui/components/Table"
 import { useQueryPatients } from "../../api/queries"
 import { useEditPatient } from "../../hooks/use-edit-patient"
@@ -12,7 +12,6 @@ export function ListPatient() {
 
   return (
     <>
-      {edit.loadingPatientById && <Loading loading={edit.loadingPatientById} />}
       <TableList.Root columns={columns} data={dataPatients || []} />
 
       {edit.modalOpen && edit.patient && (

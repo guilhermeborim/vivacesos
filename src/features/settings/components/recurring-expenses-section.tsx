@@ -11,7 +11,6 @@ export function RecurringExpensesSection() {
 
   return (
     <Card className="border">
-      {loadingSettings && <Loading loading />}
       <CardBody>
         <div className="d-flex align-items-start justify-content-between gap-3">
           <div>

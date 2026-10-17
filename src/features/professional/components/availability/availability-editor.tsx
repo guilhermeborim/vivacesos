@@ -1,4 +1,4 @@
-import { ButtonPrimitive, InfoRules, Loading } from "@/core/ui"
+import { ButtonPrimitive, InfoRules } from "@/core/ui"
 import { useEffect, useState } from "react"
 import { Card, CardBody, Input, Label } from "reactstrap"
 import { useMutationAvailability } from "../../api/mutations"
@@ -77,10 +77,9 @@ export function AvailabilityEditor({ professionalId, onSaved }: AvailabilityEdit
 
   return (
     <>
-      {loadingAvailability && <Loading loading />}
       <InfoRules
         rules={[
-          "Marque as horas em que você atende nesta clínica. Cada hora marcada vale 1 h de atendimento (ex.: 08:00 = 08:00 às 09:00).",
+          "Marque as horas em que você atende nesta clínica. Cada hora marcada é dividida em consultas do tempo definido em “Tempo de consulta” (ex.: 08:00 com 30 min = 08:00 e 08:30).",
           "O que não estiver marcado é tratado como horário em que você não atende: o cadastro de consulta só oferece as horas marcadas.",
           "Com “Atendo em qualquer horário” ligado, nenhuma restrição é aplicada.",
           "Consultas que já estão marcadas fora do novo horário não são alteradas.",

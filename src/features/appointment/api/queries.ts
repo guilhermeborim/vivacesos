@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getAppointmentById, getAppointments, getSlots } from "./routes"
+import { getAgenda, getAgendaDays, getAppointmentById, getAppointments, getSlots } from "./routes"
 
 export function useQueryAppointments() {
   const { data } = useQuery({
@@ -36,4 +36,27 @@ export function useQuerySlots(professionalId: string | undefined, date: string, 
     enabled: enabled && !!professionalId && !!date,
   })
   return { slots: data?.data.slots ?? [], loadingSlots: isFetching }
+}
+
+/** Grade e consultas do profissional num dia (AAAA-MM-DD, fuso da clínica). */
+export function useQueryAgenda(professionalId: string | undefined, date: string) {
+  const { data, isLoading } = useQuery({
+    // Prefixo "appointments": qualquer mutation de consulta invalida a agenda também.
+    queryKey: ["appointments", "agenda", professionalId, date],
+    queryFn: () => getAgenda({ professionalId: professionalId!, date }),
+    retry: false,
+    enabled: !!professionalId && !!date,
+  })
+  return { agenda: data?.data, loadingAgenda: isLoading }
+}
+
+/** Dias do mês (AAAA-MM) com horário livre. */
+export function useQueryAgendaDays(professionalId: string | undefined, month: string) {
+  const { data } = useQuery({
+    queryKey: ["appointments", "agenda-days", professionalId, month],
+    queryFn: () => getAgendaDays({ professionalId: professionalId!, month }),
+    retry: false,
+    enabled: !!professionalId,
+  })
+  return { agendaDays: data?.data.days ?? [] }
 }

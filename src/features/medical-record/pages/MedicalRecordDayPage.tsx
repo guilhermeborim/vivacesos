@@ -1,4 +1,5 @@
-import { BaseLayout, DropdownComponent, InfoRules, TableList } from "@/core/ui"
+import { BaseLayout, ButtonPrimitive, DropdownComponent, InfoRules, TableList } from "@/core/ui"
+import { ColumnDef } from "@tanstack/react-table"
 import { useAuth, useMyProfessional } from "@/shared/hooks"
 import { MedicalRecordDayItem } from "@/shared/types"
 import { AppointmentStatus } from "@/shared/enums"
@@ -16,6 +17,7 @@ type DayPatient = {
 const statusColor: Record<AppointmentStatus, string> = {
   AGENDADA: "info",
   CONFIRMADA: "primary",
+  CHEGOU: "secondary",
   CONCLUIDA: "success",
   CANCELADA: "danger",
   FALTOU: "warning",
@@ -47,7 +49,14 @@ export function MedicalRecordDayPage() {
   const navigate = useNavigate()
   const range = useMemo(todayRange, [])
   const { dataDay } = useQueryMedicalRecordsDay(range)
-  const patients = useMemo(() => groupByPatient(dataDay ?? []), [dataDay])
+  // Sala de espera: só quem a recepção já marcou como CHEGOU.
+  const patients = useMemo(
+    () =>
+      groupByPatient(
+        (dataDay ?? []).filter((i) => i.appointment.status === AppointmentStatus.CHEGOU),
+      ),
+    [dataDay],
+  )
 
   // Prontuários são de quem atende: ADMIN sem perfil de profissional não acessa.
   if (!hasPermission("RECORD_VIEW") || (!loadingProfessional && !isProfessional)) {
@@ -76,37 +85,73 @@ export function MedicalRecordDayPage() {
         ),
       }),
     ],
-    renderActions: (row) => (
-      <DropdownComponent.Item
-        label="Abrir prontuário"
-        icon={<i className="mdi mdi-eye-outline me-1" />}
-        onClick={() => navigate(`/medical-record/${row.patient.patientId}`)}
-      />
-    ),
   })
 
+  // Ação principal em verde; o resto no menu de três pontinhos.
+  const columnsWithActions: ColumnDef<DayPatient>[] = [
+    ...columns,
+    {
+      header: "AÇÃO",
+      enableSorting: false,
+      enableColumnFilter: false,
+      cell: ({ row }) => {
+        const { patient, appointments } = row.original
+        const next = appointments.find((a) => a.status === AppointmentStatus.CHEGOU)
+        return (
+          <div className="d-flex align-items-center gap-2">
+            {next && (
+              <ButtonPrimitive
+                size="sm"
+                variant="success"
+                onClick={() =>
+                  navigate(
+                    `/medical-record/${patient.patientId}/new?appointmentId=${next.appointmentId}`,
+                  )
+                }
+              >
+                <i className="ri-stethoscope-line me-1" />
+                Iniciar atendimento
+              </ButtonPrimitive>
+            )}
+            <DropdownComponent.Root>
+              <DropdownComponent.Toggle variant="light" aria-label="Mais ações" />
+              <DropdownComponent.Menu>
+                <DropdownComponent.Item
+                  label="Abrir prontuário"
+                  icon={<i className="mdi mdi-eye-outline me-1" />}
+                  onClick={() => navigate(`/medical-record/${patient.patientId}`)}
+                />
+              </DropdownComponent.Menu>
+            </DropdownComponent.Root>
+          </div>
+        )
+      },
+    },
+  ]
+
   return (
-    <BaseLayout.Root title="Prontuários do Dia" pageTitle="Prontuários">
+    <BaseLayout.Root title="Sala de Espera" pageTitle="Atendimento">
       <BaseLayout.Header isFilters={false} />
       <BaseLayout.Body>
         <>
           <InfoRules
             rules={[
               <>
-                Aparecem aqui os pacientes que têm consulta <strong>confirmada hoje</strong> com
-                você.
+                Aparecem aqui os pacientes que <strong>já chegaram hoje</strong> para consulta com
+                você (a recepção marca “Chegou” em Agendas).
               </>,
               "Cada paciente aparece uma única vez, mesmo com mais de uma consulta no dia.",
+              "“Iniciar atendimento” abre a ficha já com a consulta escolhida: ficha, prescrição, exames, atestados, encaminhamentos e a triagem feita pela recepção.",
               <>
-                A ficha só pode ser criada para consulta <strong>confirmada</strong>, e cada
-                consulta tem uma ficha ativa. Para complementar, use o <strong>adendo</strong>.
+                A ficha só pode ser criada para consulta <strong>confirmada</strong> ou com o
+                paciente <strong>presente</strong>, e cada consulta tem uma ficha ativa.
               </>,
               "Uma ficha não pode ser editada nem apagada. Se houver erro, cancele com uma justificativa e crie outra.",
               "Ao concluir uma consulta sem ficha, o sistema avisa antes de concluir.",
               "Toda abertura de prontuário e toda criação ou cancelamento de ficha ficam registradas na auditoria.",
             ]}
           />
-          <TableList.Root columns={columns} data={patients} />
+          <TableList.Root columns={columnsWithActions} data={patients} />
         </>
       </BaseLayout.Body>
     </BaseLayout.Root>

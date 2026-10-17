@@ -83,6 +83,23 @@ export function FormProfessional({
         <Col lg={12}>
           <InputController
             control={control}
+            name="appointmentDurationMinutes"
+            label="Duração da consulta (min)"
+            type="number"
+            min={5}
+            max={240}
+            step={5}
+            placeholder="Ex.: 30"
+          />
+          <small className="text-muted">
+            Tamanho de cada horário na agenda e fim sugerido ao agendar. De 5 em 5 minutos.
+          </small>
+        </Col>
+      )}
+      {isEdit && hasPermission("PROFESSIONAL_UPDATE") && (
+        <Col lg={12}>
+          <InputController
+            control={control}
             name="payoutPercent"
             label="Percentual do repasse (%)"
             type="number"

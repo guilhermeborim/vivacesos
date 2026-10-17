@@ -3,6 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./assets/scss/themes.scss";
 
 import { AuthProvider } from "@/features/auth/hooks/authContext";
+import { GlobalLoading } from "@/core/ui";
 import { ToastContainer } from "react-toastify";
 import Route from "./Routes";
 
@@ -30,6 +31,7 @@ function App() {
           pauseOnHover
           theme="light"
         />
+        <GlobalLoading />
         <Route />
       </AuthProvider>
     </QueryClientProvider>

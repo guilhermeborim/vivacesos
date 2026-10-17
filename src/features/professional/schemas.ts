@@ -28,6 +28,17 @@ export const updateProfessionalSchema = createProfessionalSchema
           .nullable(),
       )
       .optional(),
+    appointmentDurationMinutes: z
+      .preprocess(
+        (v) => (v === undefined || v === "" || v === null ? undefined : Number(v)),
+        z
+          .number("A duração deve ser um número")
+          .int("A duração deve ser inteira")
+          .min(5, "A duração mínima é de 5 minutos")
+          .max(240, "A duração máxima é de 240 minutos")
+          .multipleOf(5, "A duração deve ser múltipla de 5 minutos"),
+      )
+      .optional(),
   })
 
 export type UpdateProfessionalTypeSchema = z.infer<typeof updateProfessionalSchema>

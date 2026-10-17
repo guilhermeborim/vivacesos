@@ -26,33 +26,27 @@ const menuData: MenuItem[] = [
     icon: "ri-contacts-book-line",
     children: [
       { id: "patient", label: "Pacientes", link: "/patients" },
-      { id: "appointment", label: "Consultas", link: "/appointments" },
+      { id: "agenda", label: "Agendas", link: "/schedule" },
     ],
   },
 
   {
     id: "medical_record",
-    label: "Prontuários",
-    icon: "ri-file-list-3-line",
+    label: "Atendimento",
+    icon: "ri-stethoscope-line",
     permission: "RECORD_VIEW",
     children: [
+      {
+        id: "waiting-room",
+        label: "Sala de Espera",
+        link: "/medical-record/now",
+        requiresProfessional: true,
+      },
       {
         id: "medical-record",
         label: "Todos os Prontuários",
         link: "/medical-record",
         requiresProfessional: true,
-      },
-      {
-        id: "medical-record-today",
-        label: "Prontuários do Dia",
-        link: "/medical-record/now",
-        requiresProfessional: true,
-      },
-      {
-        id: "medical-record-audit",
-        label: "Auditoria",
-        link: "/medical-record/audit",
-        permission: "AUDIT_VIEW",
       },
     ],
   },
@@ -86,6 +80,12 @@ const menuData: MenuItem[] = [
         link: "/professionals",
       },
       { id: "clinics", label: "Clínica", link: "/clinics" },
+      {
+        id: "medical-record-audit",
+        label: "Auditoria",
+        link: "/medical-record/audit",
+        permission: "AUDIT_VIEW",
+      },
     ],
   },
 

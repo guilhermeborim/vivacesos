@@ -42,7 +42,7 @@ export function MedicalRecordListPage() {
   })
 
   return (
-    <BaseLayout.Root title="Todos os Prontuários" pageTitle="Prontuários">
+    <BaseLayout.Root title="Todos os Prontuários" pageTitle="Atendimento">
       <BaseLayout.Header />
       <BaseLayout.Body>
         <>

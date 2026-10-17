@@ -7,6 +7,9 @@ export type Appointment = {
     startsAt: string
     endsAt: string
     status: AppointmentStatus
+    arrivedAt: string | null
+    /** Só vem na agenda do dia: a consulta já tem triagem registrada. */
+    hasTriage?: boolean
     notes: string | null
     price: number
     paid: boolean

@@ -9,6 +9,6 @@ export const toLocalInput = (iso: string) => {
 /** Valor de <input type="datetime-local"> -> ISO com offset exigido pela API. */
 export const toIso = (local: string) => new Date(local).toISOString()
 
-/** Soma 1 hora a um valor de <input type="datetime-local">. */
-export const addOneHour = (local: string) =>
-  toLocalInput(new Date(new Date(local).getTime() + 60 * 60 * 1000).toISOString())
+/** Soma minutos a um valor de <input type="datetime-local">. */
+export const addMinutes = (local: string, minutes: number) =>
+  toLocalInput(new Date(new Date(local).getTime() + minutes * 60 * 1000).toISOString())

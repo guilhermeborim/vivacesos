@@ -1,4 +1,5 @@
 import { formatCurrency, formatDate } from "@/shared/utils"
+import { escapeHtml, printHtml } from "@/shared/utils/print-html"
 import { FinanceFilters } from "./schemas"
 
 export interface ReportRow {
@@ -24,9 +25,6 @@ interface ReportPdfData {
   professionalName?: string
   sections: ReportSection[]
 }
-
-const escapeHtml = (text: string) =>
-  text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
 const renderValue = (value: number | string) =>
   typeof value === "number" ? formatCurrency(value) : escapeHtml(value)
@@ -87,18 +85,5 @@ export function printReportPdf({ filters, professionalName, sections }: ReportPd
   ${body}
 </body></html>`
 
-  const iframe = document.createElement("iframe")
-  iframe.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0"
-  document.body.appendChild(iframe)
-  const doc = iframe.contentDocument
-  if (!doc || !iframe.contentWindow) {
-    iframe.remove()
-    return
-  }
-  doc.open()
-  doc.write(html)
-  doc.close()
-  iframe.contentWindow.onafterprint = () => iframe.remove()
-  iframe.contentWindow.focus()
-  iframe.contentWindow.print()
+  printHtml(html)
 }

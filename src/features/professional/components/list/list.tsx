@@ -1,4 +1,4 @@
-import { ConfirmStatusModal, FormModal, Loading, ModalComponent } from "@/core/ui"
+import { ConfirmStatusModal, FormModal, ModalComponent } from "@/core/ui"
 import { TableList } from "@/core/ui/components/Table"
 import { Professional } from "@/shared/types"
 import { useState } from "react"
@@ -21,7 +21,6 @@ export function ListProfessional() {
 
   return (
     <>
-      {edit.loadingProfessionalById && <Loading loading={edit.loadingProfessionalById} />}
       <TableList.Root columns={columns} data={dataProfessionals || []} />
 
       {edit.modalOpen && (

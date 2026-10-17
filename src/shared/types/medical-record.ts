@@ -19,6 +19,37 @@ export type MedicalRecordDayItem = {
   patient: { patientId: string; name: string }
 }
 
+export type Prescription = {
+  itemId?: string
+  medication: string
+  dose?: string
+  unit?: string
+  frequency?: string
+  duration?: string
+  instructions?: string
+}
+
+export type ExamRequest = {
+  itemId?: string
+  name: string
+  notes?: string
+}
+
+export type Certificate = {
+  itemId?: string
+  /** Dias de afastamento; vazio = atestado de comparecimento. */
+  days?: number
+  /** CID-10 (opcional). */
+  cid?: string
+  text: string
+}
+
+export type Referral = {
+  itemId?: string
+  specialty: string
+  reason?: string
+}
+
 export type MedicalRecordEntry = {
   entryId: string
   parentEntryId: string | null
@@ -27,6 +58,10 @@ export type MedicalRecordEntry = {
   cancelReason: string | null
   canceledAt: string | null
   createdAt: string
+  prescriptions: Prescription[]
+  exams: ExamRequest[]
+  certificates: Certificate[]
+  referrals: Referral[]
   appointment: { appointmentId: string; startsAt: string }
   professional: { professionalId: string; name: string | null }
 }
@@ -52,6 +87,8 @@ export type RecordAuditAction =
   | "VIEW_AUDIT"
   | "VIEW_PROFILE"
   | "UPDATE_PROFILE"
+  | "VIEW_TRIAGE"
+  | "SAVE_TRIAGE"
 
 export type RecordAuditItem = {
   auditId: string
@@ -76,6 +113,24 @@ export type ClinicalProfile = {
     diabetes: Diabetes | null
     drugAllergies: string | null
     otherInfo: string | null
+  }
+  updatedAt: string | null
+  updatedBy: { userId: string; name: string } | null
+}
+
+/** Triagem da consulta (só o valor atual). */
+export type Triage = {
+  appointmentId: string
+  triage: {
+    systolic: number | null
+    diastolic: number | null
+    heartRate: number | null
+    respiratoryRate: number | null
+    temperatureC: number | null
+    spo2: number | null
+    weightKg: number | null
+    heightCm: number | null
+    notes: string | null
   }
   updatedAt: string | null
   updatedBy: { userId: string; name: string } | null

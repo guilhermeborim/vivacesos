@@ -4,7 +4,7 @@ import { ForbidRoles } from "./ForbidRoles"
 // Errors
 import { LoginPage } from "@/features/auth/pages/LoginPage"
 import { RegisterPage } from "@/features/auth/pages/RegisterPage"
-import { AppointmentListPage } from "@/features/appointment/pages/AppointmentListPage"
+import { AgendaPage } from "@/features/agenda/pages/AgendaPage"
 import { ClinicListPage } from "@/features/clinic/pages/ClinicListPage"
 import { DashboardPage } from "@/features/dashboard/pages/DashboardPage"
 import { Error403Page } from "@/features/errors/pages/Error403Page"
@@ -68,8 +68,12 @@ const authProtectedRoutes = [
     component: <PatientListPage />,
   },
   {
+    path: "/schedule",
+    component: <AgendaPage />,
+  },
+  {
     path: "/appointments",
-    component: <AppointmentListPage />,
+    component: <Navigate to="/schedule" replace />,
   },
   {
     path: "/medical-record",

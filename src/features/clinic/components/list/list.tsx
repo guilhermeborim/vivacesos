@@ -1,4 +1,4 @@
-import { FormModal, Loading } from "@/core/ui"
+import { FormModal } from "@/core/ui"
 import { TableList } from "@/core/ui/components/Table"
 import { useQueryClinic } from "../../api/queries"
 import { useEditClinic } from "../../hooks/use-edit-clinic"
@@ -15,7 +15,6 @@ export function ListClinic() {
 
   return (
     <>
-      {edit.loadingClinicById && <Loading loading={edit.loadingClinicById} />}
       <TableList.Root columns={columns} data={dataClinics || []} />
 
       {edit.modalOpen && (

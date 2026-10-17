@@ -10,6 +10,7 @@ import { getPublicAppointment, postPublicCancel, postPublicConfirm } from "../ap
 const statusText: Record<string, string> = {
   AGENDADA: "Agendada",
   CONFIRMADA: "Confirmada",
+  CHEGOU: "Paciente presente",
   CANCELADA: "Cancelada",
   CONCLUIDA: "Concluída",
   FALTOU: "Não compareceu",

@@ -1,8 +1,4 @@
-import {
-  InputController,
-  PriceController,
-  SelectController,
-} from "@/core/ui"
+import { InputController, PriceController, SelectController } from "@/core/ui"
 import { useQueryPatients } from "@/features/patient/api/queries"
 import { useQueryAvailability, useQueryProfessionals } from "@/features/professional/api/queries"
 import { Appointment, Patient, Professional } from "@/shared/types"
@@ -10,7 +6,7 @@ import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { Col, Input, Label, Row } from "reactstrap"
 import { useQuerySlots } from "../../api/queries"
-import { addOneHour, toLocalInput } from "../../utils"
+import { addMinutes, toLocalInput } from "../../utils"
 
 interface FormAppointmentProps {
   defaultValues?: Appointment
@@ -75,11 +71,15 @@ export function FormAppointment({
     }
   }, [defaultValues, billingOnly, reset])
 
+  // Fim sugerido = início + duração padrão do profissional (1 h se ainda não escolheu).
+  const durationMinutes =
+    dataProfessionals?.find((p: Professional) => p.professional.professionalId === professionalId)
+      ?.professional.appointmentDurationMinutes ?? 60
   useEffect(() => {
     if (!isEdit && startsAt && !isNaN(new Date(startsAt).getTime())) {
-      setValue("endsAt", addOneHour(startsAt), { shouldValidate: true })
+      setValue("endsAt", addMinutes(startsAt, durationMinutes), { shouldValidate: true })
     }
-  }, [startsAt, isEdit, setValue])
+  }, [startsAt, durationMinutes, isEdit, setValue])
 
   return (
     <Row className="gap-3">
@@ -175,12 +175,7 @@ export function FormAppointment({
             />
           </Col>
           <Col lg={6}>
-            <InputController
-              control={control}
-              name="endsAt"
-              label="Fim"
-              type="datetime-local"
-            />
+            <InputController control={control} name="endsAt" label="Fim" type="datetime-local" />
           </Col>
         </>
       )}

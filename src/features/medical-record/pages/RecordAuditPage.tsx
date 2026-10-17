@@ -16,6 +16,8 @@ const actionLabel: Record<RecordAuditAction, { label: string; color: string }> =
   VIEW_AUDIT: { label: "Consultou a auditoria", color: "secondary" },
   VIEW_PROFILE: { label: "Leu os dados básicos", color: "info" },
   UPDATE_PROFILE: { label: "Alterou os dados básicos", color: "primary" },
+  VIEW_TRIAGE: { label: "Leu a triagem", color: "info" },
+  SAVE_TRIAGE: { label: "Registrou a triagem", color: "primary" },
 }
 
 const roleLabel: Record<string, string> = {
@@ -76,7 +78,7 @@ export function RecordAuditPage() {
   if (!hasPermission("AUDIT_VIEW")) return <Navigate to="/error-403" />
 
   return (
-    <BaseLayout.Root title="Auditoria" pageTitle="Prontuários">
+    <BaseLayout.Root title="Auditoria" pageTitle="Administração">
       <BaseLayout.Header isFilters={false} />
       <BaseLayout.Body>
         <>

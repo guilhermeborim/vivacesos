@@ -1,6 +1,11 @@
 import { api } from "@/core/api/shared/api_helper"
 import * as url from "@/core/api/shared/url_helper"
-import { Appointment, AppointmentSlots } from "@/shared/types"
+import {
+  Appointment,
+  AppointmentAgenda,
+  AppointmentAgendaDays,
+  AppointmentSlots,
+} from "@/shared/types"
 import {
   CreateAppointmentTypeSchema,
   UpdateAppointmentStatusPayload,
@@ -20,10 +25,7 @@ export const postAppointment = (payload: CreateAppointmentTypeSchema) =>
     notes: payload.notes || undefined,
   })
 
-export const putAppointmentById = (
-  appointmentId: string,
-  payload: UpdateAppointmentTypeSchema,
-) =>
+export const putAppointmentById = (appointmentId: string, payload: UpdateAppointmentTypeSchema) =>
   api.put(url.PUT_APPOINTMENT_BY_ID.replace(":appointmentId", appointmentId), {
     startsAt: payload.startsAt ? toIso(payload.startsAt) : undefined,
     endsAt: payload.endsAt ? toIso(payload.endsAt) : undefined,
@@ -34,14 +36,18 @@ export const putAppointmentById = (
 export const patchAppointmentStatus = (
   appointmentId: string,
   payload: UpdateAppointmentStatusPayload,
-) =>
-  api.patch(url.PATCH_APPOINTMENT_STATUS.replace(":appointmentId", appointmentId), payload)
+) => api.patch(url.PATCH_APPOINTMENT_STATUS.replace(":appointmentId", appointmentId), payload)
 
 export const patchAppointmentPayment = (
   appointmentId: string,
   payload: { paid: boolean; paymentMethod?: string },
-) =>
-  api.patch(url.PATCH_APPOINTMENT_PAYMENT.replace(":appointmentId", appointmentId), payload)
+) => api.patch(url.PATCH_APPOINTMENT_PAYMENT.replace(":appointmentId", appointmentId), payload)
 
 export const getSlots = (params: { professionalId: string; date: string }) =>
   api.get<AppointmentSlots>(url.GET_APPOINTMENT_SLOTS, { params })
+
+export const getAgenda = (params: { professionalId: string; date: string }) =>
+  api.get<AppointmentAgenda>(url.GET_APPOINTMENT_AGENDA, { params })
+
+export const getAgendaDays = (params: { professionalId: string; month: string }) =>
+  api.get<AppointmentAgendaDays>(url.GET_APPOINTMENT_AGENDA_DAYS, { params })

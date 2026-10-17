@@ -26,6 +26,7 @@ const percent = (value: number | null | undefined) =>
 const statusLabel: Record<string, string> = {
   AGENDADA: "agendadas",
   CONFIRMADA: "confirmadas",
+  CHEGOU: "presentes",
   CONCLUIDA: "concluídas",
   CANCELADA: "canceladas",
   FALTOU: "faltas",

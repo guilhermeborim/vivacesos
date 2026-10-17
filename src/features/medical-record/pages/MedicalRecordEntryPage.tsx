@@ -1,10 +1,8 @@
 import {
   BaseLayout,
   ButtonPrimitive,
-  CheckController,
   InfoRules,
   InputController,
-  Loading,
   SelectController,
 } from "@/core/ui"
 import { useQueryAppointments } from "@/features/appointment/api/queries"
@@ -13,18 +11,31 @@ import { AppointmentStatus } from "@/shared/enums"
 import { useAuth, useMyProfessional } from "@/shared/hooks"
 import { formatDateTime } from "@/shared/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useMemo, useRef } from "react"
-import { useForm } from "react-hook-form"
+import { usePrintContext } from "../hooks/use-print-context"
+import { printCertificates, printExams, printPrescriptions, printReferrals } from "../print"
+import { TriagePanel } from "@/features/triage/components/triage-panel"
+import { TriageSummary } from "@/features/triage/components/triage-summary"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { useForm, useWatch } from "react-hook-form"
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { Card, CardBody, Col, Input, Label, Row } from "reactstrap"
+import { Card, CardBody, Col, Input, Label, Nav, NavItem, NavLink, Row } from "reactstrap"
 import { useMutationEntry } from "../api/mutations"
 import { useQueryMedicalRecordByPatient, useQueryRecordTemplates } from "../api/queries"
 import { ClinicalProfileCard } from "../components/clinical-profile-card"
-import { createEntrySchema, CreateEntryTypeSchema } from "../schemas"
+import { CertificatesTab, ExamsTab, PrescriptionsTab, ReferralsTab } from "../components/order-tabs"
+import { RecordTimeline } from "../components/record-timeline"
+import {
+  CertificateFormOutput,
+  createEntrySchema,
+  CreateEntryTypeSchema,
+  ExamFormOutput,
+  PrescriptionFormOutput,
+  ReferralFormOutput,
+} from "../schemas"
 import { applyTemplate } from "../utils"
 
 /**
- * Nova ficha (ou adendo) em tela dividida: à esquerda a consulta, o modelo e os dados básicos
+ * Atendimento em tela dividida: à esquerda a consulta, o modelo e os dados básicos
  * para consulta rápida; à direita o texto da ficha; no rodapé, concluir a consulta e registrar.
  */
 export function MedicalRecordEntryPage() {
@@ -43,26 +54,48 @@ export function MedicalRecordEntryPage() {
   const { templates } = useQueryRecordTemplates()
   const mutation = useMutationEntry(patientId ?? "")
   const mutationStatus = useMutationUpdateAppointmentStatus()
+  const buildPrintContext = usePrintContext()
 
-  const parentEntryId = params.get("parentEntryId") ?? undefined
-  const parent = timeline?.entries.find((e) => e.entryId === parentEntryId)
-  const isAddendum = !!parentEntryId
+  const [tab, setTab] = useState<"ficha" | "triagem" | "historico">("ficha")
+  const [subTab, setSubTab] = useState<"prescricao" | "exames" | "atestados" | "encaminhamentos">(
+    "prescricao",
+  )
+  const [prescriptions, setPrescriptions] = useState<PrescriptionFormOutput[]>([])
+  const [exams, setExams] = useState<ExamFormOutput[]>([])
+  const [certificates, setCertificates] = useState<CertificateFormOutput[]>([])
+  const [referrals, setReferrals] = useState<ReferralFormOutput[]>([])
+  /** Modal de item aberto (um por vez). */
+  const [adding, setAdding] = useState<typeof subTab | null>(null)
 
   const form = useForm<CreateEntryTypeSchema>({
     resolver: zodResolver(createEntrySchema),
     defaultValues: {
       appointmentId: params.get("appointmentId") ?? undefined,
-      parentEntryId,
-      concludeAppointment: false,
     },
   })
 
-  // Consulta ativa já tem ficha: não aparece de novo (cancelar a ficha libera; adendo complementa).
+  // Consulta ativa já tem ficha: não aparece de novo (cancelar a ficha libera a consulta).
   const usedAppointmentIds = useMemo(
     () =>
       new Set(
         (timeline?.entries ?? [])
           .filter((e) => e.status === "ATIVA")
+          .map((e) => e.appointment.appointmentId),
+      ),
+    [timeline],
+  )
+
+  const activeEntries = useMemo(
+    () => (timeline?.entries ?? []).filter((e) => e.status === "ATIVA"),
+    [timeline],
+  )
+
+  // Consulta concluída só volta a receber ficha para corrigir uma ficha cancelada.
+  const canceledAppointmentIds = useMemo(
+    () =>
+      new Set(
+        (timeline?.entries ?? [])
+          .filter((e) => e.status === "CANCELADA" && !e.parentEntryId)
           .map((e) => e.appointment.appointmentId),
       ),
     [timeline],
@@ -75,7 +108,10 @@ export function MedicalRecordEntryPage() {
           (a) =>
             a.appointment.patient.patientId === patientId &&
             a.appointment.professional.professionalId === professionalId &&
-            a.appointment.status === AppointmentStatus.CONFIRMADA &&
+            (a.appointment.status === AppointmentStatus.CONFIRMADA ||
+              a.appointment.status === AppointmentStatus.CHEGOU ||
+              (a.appointment.status === AppointmentStatus.CONCLUIDA &&
+                canceledAppointmentIds.has(a.appointment.appointmentId))) &&
             !usedAppointmentIds.has(a.appointment.appointmentId),
         )
         .map((a) => ({
@@ -83,17 +119,19 @@ export function MedicalRecordEntryPage() {
           value: a.appointment.appointmentId,
           startsAt: a.appointment.startsAt,
         })),
-    [dataAppointments, patientId, professionalId, usedAppointmentIds],
+    [dataAppointments, patientId, professionalId, usedAppointmentIds, canceledAppointmentIds],
   )
 
-  // Consulta da URL que não está mais disponível (já tem ficha, não é sua...) é descartada.
-  const selectedAppointment = form.watch("appointmentId")
+  // useWatch (e não form.watch) garante a nova renderização também quando o valor é preenchido
+  // por código (consulta vinda da URL ou escolhida por padrão).
+  const selectedAppointment = useWatch({ control: form.control, name: "appointmentId" })
+  const content = useWatch({ control: form.control, name: "content" })
 
   // Consulta padrão (uma vez, sem sobrescrever a escolha): se só há uma, ela; se há várias, a de
   // hoje; se nenhuma é de hoje, o campo fica vazio.
   const defaultApplied = useRef(false)
   useEffect(() => {
-    if (defaultApplied.current || isAddendum || !dataAppointments || !timeline) return
+    if (defaultApplied.current || !dataAppointments || !timeline) return
     if (!professionalId) return
     defaultApplied.current = true
     if (form.getValues("appointmentId")) return // veio pela URL
@@ -105,18 +143,20 @@ export function MedicalRecordEntryPage() {
             .filter((o) => new Date(o.startsAt).toLocaleDateString("sv-SE") === today)
             .sort((a, b) => a.startsAt.localeCompare(b.startsAt))[0]
     if (pick) form.setValue("appointmentId", pick.value, { shouldValidate: true })
-  }, [isAddendum, dataAppointments, timeline, professionalId, appointmentOptions, form])
+  }, [dataAppointments, timeline, professionalId, appointmentOptions, form])
   useEffect(() => {
+    // Consulta da URL que não está mais disponível (já tem ficha, não é sua...) é descartada, mas só
+    // depois de carregar o perfil do profissional (antes disso a lista de consultas vem vazia).
     if (
-      !isAddendum &&
       selectedAppointment &&
       dataAppointments &&
       timeline &&
+      professionalId &&
       !appointmentOptions.some((o) => o.value === selectedAppointment)
     ) {
       form.setValue("appointmentId", undefined)
     }
-  }, [isAddendum, selectedAppointment, dataAppointments, timeline, appointmentOptions, form])
+  }, [selectedAppointment, dataAppointments, timeline, professionalId, appointmentOptions, form])
 
   if (!hasPermission("RECORD_WRITE") || (!loadingProfessional && !isProfessional)) {
     return <Navigate to="/error-403" replace />
@@ -136,19 +176,23 @@ export function MedicalRecordEntryPage() {
   }
 
   const handleSubmit = form.handleSubmit(async (payload) => {
-    if (!isAddendum && !payload.appointmentId) {
+    if (!payload.appointmentId) {
       form.setError("appointmentId", { message: "Selecione a consulta" })
       return
     }
-    const { concludeAppointment, ...entry } = payload
+    const entry = payload
     try {
-      await mutation.mutateAsync(entry)
+      await mutation.mutateAsync({ ...entry, prescriptions, exams, certificates, referrals })
     } catch {
       // Erro já tratado no onError da mutation
       return
     }
+    // Registrar a ficha conclui a consulta (exceto na correção de uma consulta já concluída).
     // A ficha já foi registrada; falha ao concluir não a desfaz (erro tratado na mutation).
-    if (concludeAppointment && entry.appointmentId) {
+    const alreadyDone =
+      dataAppointments?.find((a) => a.appointment.appointmentId === entry.appointmentId)
+        ?.appointment.status === AppointmentStatus.CONCLUIDA
+    if (entry.appointmentId && !alreadyDone) {
       try {
         await mutationStatus.mutateAsync({
           appointmentId: entry.appointmentId,
@@ -162,32 +206,27 @@ export function MedicalRecordEntryPage() {
   })
 
   const pending = mutation.isPending || mutationStatus.isPending
+  // Obrigatórios: consulta escolhida e texto da ficha (a API exige os dois).
+  const canRegister = !!selectedAppointment && !!content?.trim() && content.length <= 20000
+  const printContext = () =>
+    buildPrintContext({ patientName: patient?.name ?? "", professionalId, professionalName: name })
 
   return (
-    <BaseLayout.Root title={isAddendum ? "Novo adendo" : "Nova ficha"} pageTitle="Prontuários">
-      <BaseLayout.Header isFilters={false}>
-        <Link to={backTo} className="btn btn-light">
-          Voltar
-        </Link>
-      </BaseLayout.Header>
+    <BaseLayout.Root title="Atendimento" pageTitle="Atendimento">
+      <BaseLayout.Header isFilters={false} />
       <BaseLayout.Body>
         <>
-          {loadingTimeline && <Loading loading />}
           <InfoRules
-            rules={
-              isAddendum
-                ? [
-                    "O adendo complementa a ficha original e usa a mesma consulta.",
-                    "Depois de registrado, não pode ser editado ou apagado; só cancelado, com justificativa.",
-                  ]
-                : [
-                    "Só aparecem consultas confirmadas, suas, deste paciente e que ainda não têm ficha ativa.",
-                    "O modelo é apenas um texto inicial: você pode editar tudo antes de registrar.",
-                    "Os dados básicos à esquerda são para consulta rápida; edite-os pelo botão Editar.",
-                    "Depois de registrada, a ficha não pode ser editada nem apagada; só cancelada, com justificativa.",
-                    "Com “Concluir consulta” ligado, a consulta vira CONCLUÍDA logo após registrar a ficha.",
-                  ]
-            }
+            rules={[
+              "O atendimento tem as abas Ficha, Triagem (sinais vitais da consulta escolhida) e Histórico (fichas anteriores do paciente). Abaixo do texto da ficha ficam Prescrição, Exames, Atestados e Encaminhamentos, sem sair da tela. O que você digitou continua ao trocar de aba.",
+              "Prescrições, exames, atestados e encaminhamentos adicionados são gravados junto com a ficha, ao Registrar, e passam a fazer parte dela: não podem ser editados nem apagados (só se a ficha for cancelada). Dá para imprimir cada um.",
+              "Só aparecem consultas confirmadas ou com o paciente presente, suas, deste paciente e que ainda não têm ficha ativa (mais as concluídas cuja ficha foi cancelada).",
+              "O botão Registrar só é liberado com a consulta escolhida e o texto da ficha preenchido.",
+              "O modelo é apenas um texto inicial: você pode editar tudo antes de registrar.",
+              "Os dados básicos à esquerda são para consulta rápida; edite-os pelo botão Editar.",
+              "Depois de registrada, a ficha não pode ser editada nem apagada; só cancelada, com justificativa. Se registrou algo errado, cancele e registre de novo.",
+              "Ao registrar a ficha, a consulta é concluída automaticamente. Se a ficha for cancelada por erro, a consulta concluída volta a aceitar uma nova ficha.",
+            ]}
           />
 
           {patient && (
@@ -197,107 +236,210 @@ export function MedicalRecordEntryPage() {
             </h5>
           )}
 
-          <form onSubmit={handleSubmit} id="entry-form">
+          <Nav tabs className="mb-3">
+            {(
+              [
+                ["ficha", "Ficha"],
+                ["triagem", "Triagem"],
+                ["historico", "Histórico"],
+              ] as [typeof tab, string][]
+            ).map(([key, label]) => (
+              <NavItem key={key}>
+                <NavLink
+                  href="#"
+                  active={tab === key}
+                  onClick={(e: React.MouseEvent) => {
+                    e.preventDefault()
+                    setTab(key)
+                  }}
+                >
+                  {label}
+                </NavLink>
+              </NavItem>
+            ))}
+          </Nav>
+
+          {tab === "triagem" && (
+            <div className="mb-3">
+              {selectedAppointment ? (
+                <TriagePanel appointmentId={selectedAppointment} />
+              ) : (
+                <p className="text-muted">Escolha a consulta na aba Ficha para ver a triagem.</p>
+              )}
+            </div>
+          )}
+
+          {tab === "historico" && (
+            <RecordTimeline
+              timeline={timeline}
+              canWrite={hasPermission("RECORD_WRITE")}
+              professionalId={professionalId}
+            />
+          )}
+
+          {/* Sem <form>: os modais de prescrição etc. propagariam o submit para a ficha. */}
+          <div className={tab === "ficha" ? "" : "d-none"}>
             <Row className="g-3">
               <Col lg={4}>
                 <Card className="border mb-3">
                   <CardBody>
-                    {isAddendum ? (
-                      <>
-                        <h6 className="mb-2">Ficha original</h6>
-                        {parent ? (
-                          <>
-                            <small className="text-muted d-block mb-1">
-                              {formatDateTime(parent.createdAt)} · {parent.professional.name ?? "-"}
-                            </small>
-                            <p className="mb-0 fs-13" style={{ whiteSpace: "pre-wrap" }}>
-                              {parent.content}
-                            </p>
-                          </>
-                        ) : (
-                          <p className="text-muted mb-0">Carregando…</p>
-                        )}
-                      </>
-                    ) : (
-                      <Row className="gap-3">
+                    <Row className="gap-3">
+                      <Col lg={12}>
+                        <SelectController
+                          control={form.control}
+                          name="appointmentId"
+                          label="Consulta"
+                          options={appointmentOptions}
+                          placeholder={
+                            appointmentOptions.length
+                              ? "Selecione a consulta..."
+                              : "Nenhuma consulta confirmada sem ficha"
+                          }
+                        />
+                      </Col>
+                      {!!templates?.length && (
                         <Col lg={12}>
-                          <SelectController
-                            control={form.control}
-                            name="appointmentId"
-                            label="Consulta"
-                            options={appointmentOptions}
-                            placeholder={
-                              appointmentOptions.length
-                                ? "Selecione a consulta..."
-                                : "Nenhuma consulta confirmada sem ficha"
-                            }
-                          />
+                          <Label className="form-label" htmlFor="template-select">
+                            Modelo (opcional)
+                          </Label>
+                          <Input
+                            id="template-select"
+                            type="select"
+                            defaultValue=""
+                            onChange={(e) => handleTemplate(e.target.value)}
+                          >
+                            <option value="">Texto livre</option>
+                            {templates.map((t) => (
+                              <option key={t.templateId} value={t.templateId}>
+                                {t.name}
+                              </option>
+                            ))}
+                          </Input>
                         </Col>
-                        {!!templates?.length && (
-                          <Col lg={12}>
-                            <Label className="form-label" htmlFor="template-select">
-                              Modelo (opcional)
-                            </Label>
-                            <Input
-                              id="template-select"
-                              type="select"
-                              defaultValue=""
-                              onChange={(e) => handleTemplate(e.target.value)}
-                            >
-                              <option value="">Texto livre</option>
-                              {templates.map((t) => (
-                                <option key={t.templateId} value={t.templateId}>
-                                  {t.name}
-                                </option>
-                              ))}
-                            </Input>
-                          </Col>
-                        )}
-                      </Row>
-                    )}
+                      )}
+                    </Row>
                   </CardBody>
                 </Card>
 
+                {selectedAppointment && <TriageSummary appointmentId={selectedAppointment} />}
                 {patientId && <ClinicalProfileCard patientId={patientId} canEdit compact />}
               </Col>
 
               <Col lg={8}>
-                <Card className="border h-100">
+                <Card className="border mb-3">
                   <CardBody>
                     <InputController
                       control={form.control}
                       name="content"
-                      label={isAddendum ? "Adendo" : "Ficha"}
+                      label="Ficha"
                       type="textarea"
-                      rows={18}
-                      placeholder={
-                        isAddendum
-                          ? "Escreva o complemento da ficha original"
-                          : "Escreva a ficha da consulta"
-                      }
+                      rows={14}
+                      placeholder="Escreva a ficha da consulta"
                     />
+                  </CardBody>
+                </Card>
+
+                <Card className="border">
+                  <CardBody>
+                    <Nav pills className="mb-3 gap-1">
+                      {(
+                        [
+                          ["prescricao", "Prescrição", prescriptions.length],
+                          ["exames", "Exames", exams.length],
+                          ["atestados", "Atestados", certificates.length],
+                          ["encaminhamentos", "Encaminhamentos", referrals.length],
+                        ] as [typeof subTab, string, number][]
+                      ).map(([key, label, count]) => (
+                        <NavItem key={key}>
+                          <NavLink
+                            href="#"
+                            active={subTab === key}
+                            onClick={(e: React.MouseEvent) => {
+                              e.preventDefault()
+                              setSubTab(key)
+                            }}
+                          >
+                            {label}
+                            {count > 0 && (
+                              <span className="badge bg-primary-subtle text-primary ms-1">
+                                {count}
+                              </span>
+                            )}
+                          </NavLink>
+                        </NavItem>
+                      ))}
+                    </Nav>
+
+                    {subTab === "prescricao" && (
+                      <PrescriptionsTab
+                        items={prescriptions}
+                        onAdd={(item) => setPrescriptions((prev) => [...prev, item])}
+                        onRemove={(i) =>
+                          setPrescriptions((prev) => prev.filter((_, idx) => idx !== i))
+                        }
+                        history={activeEntries}
+                        adding={adding === "prescricao"}
+                        setAdding={(open) => setAdding(open ? "prescricao" : null)}
+                        onPrint={() => printPrescriptions(printContext(), prescriptions)}
+                      />
+                    )}
+                    {subTab === "exames" && (
+                      <ExamsTab
+                        items={exams}
+                        onAdd={(item) => setExams((prev) => [...prev, item])}
+                        onRemove={(i) => setExams((prev) => prev.filter((_, idx) => idx !== i))}
+                        history={activeEntries}
+                        adding={adding === "exames"}
+                        setAdding={(open) => setAdding(open ? "exames" : null)}
+                        onPrint={() => printExams(printContext(), exams)}
+                      />
+                    )}
+                    {subTab === "atestados" && (
+                      <CertificatesTab
+                        items={certificates}
+                        onAdd={(item) => setCertificates((prev) => [...prev, item])}
+                        onRemove={(i) =>
+                          setCertificates((prev) => prev.filter((_, idx) => idx !== i))
+                        }
+                        history={activeEntries}
+                        adding={adding === "atestados"}
+                        setAdding={(open) => setAdding(open ? "atestados" : null)}
+                        onPrint={() => printCertificates(printContext(), certificates)}
+                      />
+                    )}
+                    {subTab === "encaminhamentos" && (
+                      <ReferralsTab
+                        items={referrals}
+                        onAdd={(item) => setReferrals((prev) => [...prev, item])}
+                        onRemove={(i) => setReferrals((prev) => prev.filter((_, idx) => idx !== i))}
+                        history={activeEntries}
+                        adding={adding === "encaminhamentos"}
+                        setAdding={(open) => setAdding(open ? "encaminhamentos" : null)}
+                        onPrint={() => printReferrals(printContext(), referrals)}
+                      />
+                    )}
                   </CardBody>
                 </Card>
               </Col>
             </Row>
-          </form>
+          </div>
 
           <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 border-top mt-3 pt-3">
-            <div>
-              {!isAddendum && (
-                <CheckController
-                  control={form.control}
-                  name="concludeAppointment"
-                  label="Concluir consulta"
-                  variant="switch"
-                />
-              )}
+            <div className="text-muted">
+              <i className="ri-information-line me-1" />
+              Ao registrar a ficha, a consulta é <strong>concluída automaticamente</strong> e sai da
+              Sala de Espera.
             </div>
             <div className="d-flex gap-2">
               <Link to={backTo} className="btn btn-light">
                 Cancelar
               </Link>
-              <ButtonPrimitive type="submit" form="entry-form" isLoading={pending}>
+              <ButtonPrimitive
+                type="button"
+                onClick={handleSubmit}
+                isLoading={pending}
+                disabled={!canRegister}
+              >
                 Registrar
               </ButtonPrimitive>
             </div>

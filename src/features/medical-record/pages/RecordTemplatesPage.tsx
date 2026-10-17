@@ -97,7 +97,7 @@ export function RecordTemplatesPage() {
 
   return (
     <>
-      <BaseLayout.Root title="Modelos de Ficha" pageTitle="Prontuários">
+      <BaseLayout.Root title="Modelos de Ficha" pageTitle="Configurações">
         <BaseLayout.Header>
           <ButtonPrimitive variant="primary" onClick={create.toggleModal}>
             Novo modelo

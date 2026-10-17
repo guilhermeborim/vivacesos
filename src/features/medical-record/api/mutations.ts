@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 import { toast } from "react-toastify"
-import { CancelEntryTypeSchema, CreateEntryTypeSchema, TemplateTypeSchema } from "../schemas"
+import { CancelEntryTypeSchema, CreateEntryPayload, TemplateTypeSchema } from "../schemas"
 import {
   deleteRecordTemplate,
   postCancelEntry,
@@ -21,7 +21,7 @@ export const useMutationEntry = (patientId: string) => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (payload: CreateEntryTypeSchema) => postEntry(patientId, payload),
+    mutationFn: (payload: CreateEntryPayload) => postEntry(patientId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["medical-record", patientId],

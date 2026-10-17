@@ -18,6 +18,7 @@ export enum ClinicUserStatus {
 export enum AppointmentStatus {
   AGENDADA = "AGENDADA",
   CONFIRMADA = "CONFIRMADA",
+  CHEGOU = "CHEGOU",
   CONCLUIDA = "CONCLUIDA",
   CANCELADA = "CANCELADA",
   FALTOU = "FALTOU",

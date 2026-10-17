@@ -16,7 +16,7 @@ interface User {
 }
 
 export interface activeClinic {
-  id: string
+  clinicId: string
   name: string
 }
 
