@@ -1,7 +1,7 @@
 import { BaseLayout, InfoRules } from "@/core/ui"
-import { useQueryAgenda, useQueryAgendaDays } from "@/features/appointment/api/queries"
-import { AppointmentModals } from "@/features/appointment/components/appointment-modals"
-import { useAppointmentActions } from "@/features/appointment/hooks/use-appointment-actions"
+import { useQueryAgenda, useQueryAgendaDays } from "../api/queries"
+import { AppointmentModals } from "../components/appointment-modals"
+import { useAppointmentActions } from "../hooks/use-appointment-actions"
 import { useQueryProfessionals } from "@/features/professional/api/queries"
 import { useAuth, useMyProfessional } from "@/shared/hooks"
 import { TriageModal } from "@/features/triage/components/triage-modal"
@@ -65,7 +65,7 @@ export function AgendaPage() {
               "Clique num horário livre para agendar. Cada horário tem o tamanho da duração de consulta do profissional (Profissionais da Saúde → Editar).",
               "Horário cinza escrito “Horário fechado” está fora do atendimento do profissional (Minha agenda); nele não se agenda.",
               "Borda azul: consulta marcada. Verde: paciente que já chegou. Cinza com “Concluída”: consulta feita, que continua ocupando o horário.",
-              "Passe o mouse na consulta para marcar Chegou ou fazer a Triagem. O menu ⋯ tem Editar/Valor, Enviar no WhatsApp, Pagamento, Confirmar, Concluir, Faltou e Cancelar.",
+              "Passe o mouse na consulta para ver as ações. Agendada: Confirmou ou Cancelou. Confirmada: Chegou, Cancelou ou Faltou. Chegou: Triagem, Concluir ou Cancelou. O menu ⋯ tem Editar e WhatsApp (agendada), Editar (confirmada) e Valor e Pagamento (chegou ou concluída).",
               "Cancelar ou marcar Faltou libera o horário. Quem já chegou não pode ser marcado como Faltou.",
               "Em consulta concluída só o valor e o pagamento mudam, e o valor só enquanto não estiver pago.",
               "“Triagem” registra pressão, batimentos, temperatura e outros sinais da consulta; o profissional vê tudo na hora de atender. Cada leitura e alteração fica na auditoria.",

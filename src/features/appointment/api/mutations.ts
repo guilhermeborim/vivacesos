@@ -7,8 +7,10 @@ import {
   UpdateAppointmentTypeSchema,
 } from "../schemas"
 import {
+  AgendaBookingPayload,
   patchAppointmentPayment,
   patchAppointmentStatus,
+  postAgendaBooking,
   postAppointment,
   putAppointmentById,
 } from "./routes"
@@ -82,5 +84,19 @@ export const useMutationAppointmentPayment = () => {
       toast.success("Pagamento da consulta atualizado!")
     },
     onError: onError("Erro ao atualizar pagamento da consulta"),
+  })
+}
+
+export const useMutationAgendaBooking = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (payload: AgendaBookingPayload) => postAgendaBooking(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["appointments"] })
+      queryClient.invalidateQueries({ queryKey: ["slots"] })
+      toast.success("Consulta agendada com sucesso!")
+    },
+    onError: onError("Erro ao agendar consulta"),
   })
 }

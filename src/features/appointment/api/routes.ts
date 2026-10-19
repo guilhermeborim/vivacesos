@@ -51,3 +51,15 @@ export const getAgenda = (params: { professionalId: string; date: string }) =>
 
 export const getAgendaDays = (params: { professionalId: string; month: string }) =>
   api.get<AppointmentAgendaDays>(url.GET_APPOINTMENT_AGENDA_DAYS, { params })
+
+export interface AgendaBookingPayload {
+  patientId: string
+  professionalId: string
+  /** ISO do início; o fim vem da duração padrão do profissional. */
+  startsAt: string
+  price: number
+  notes?: string
+}
+
+export const postAgendaBooking = (payload: AgendaBookingPayload) =>
+  api.post(url.POST_APPOINTMENT, { ...payload, notes: payload.notes || undefined })

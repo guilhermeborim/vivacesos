@@ -1,5 +1,5 @@
 import { ButtonPrimitive, DropdownComponent } from "@/core/ui"
-import { AppointmentActions } from "@/features/appointment/hooks/use-appointment-actions"
+import { AppointmentActions } from "../hooks/use-appointment-actions"
 import { AppointmentStatus } from "@/shared/enums"
 import { Appointment } from "@/shared/types"
 import { formatCurrency } from "@/shared/utils"
@@ -51,7 +51,7 @@ export function AppointmentCard({
     run: () => void
   }[] = []
   const go = (to: AppointmentStatus) => () => changeStatus(appointment, to)
-  if (isScheduled || isConfirmed) {
+  if (isConfirmed) {
     quick.push({
       label: "Chegou",
       icon: "ri-user-follow-line",
@@ -83,7 +83,7 @@ export function AppointmentCard({
       run: go(AppointmentStatus.CONCLUIDA),
     })
   }
-  if (isConfirmed || isArrived) {
+  if (isScheduled || isConfirmed || isArrived) {
     quick.push({
       label: "Cancelou",
       icon: "ri-close-circle-line",
@@ -91,7 +91,7 @@ export function AppointmentCard({
       run: go(AppointmentStatus.CANCELADA),
     })
   }
-  if (isScheduled || isConfirmed) {
+  if (isConfirmed) {
     quick.push({
       label: "Faltou",
       icon: "ri-user-unfollow-line",
@@ -178,14 +178,6 @@ export function AppointmentCard({
                   label="Pagamento"
                   icon={<i className="mdi mdi-cash me-1" />}
                   onClick={() => setPaying(appointment)}
-                />
-              )}
-              {isScheduled && (
-                <DropdownComponent.Item
-                  label="Cancelar"
-                  variant="danger"
-                  icon={<i className="mdi mdi-close-circle-outline me-1" />}
-                  onClick={go(AppointmentStatus.CANCELADA)}
                 />
               )}
             </DropdownComponent.Menu>

@@ -1,4 +1,4 @@
-import { AppointmentActions } from "@/features/appointment/hooks/use-appointment-actions"
+import { AppointmentActions } from "../hooks/use-appointment-actions"
 import { Appointment, AppointmentAgenda } from "@/shared/types"
 import { fromDateKey, minutesLabel, minutesOfDay } from "../utils"
 import { AppointmentCard } from "./appointment-card"
