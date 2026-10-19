@@ -1,6 +1,6 @@
 # Vivace SOS — Web
 
-Front-end do **Vivace SOS**, um sistema de gestão para clínicas (multi-tenant): agenda, pacientes, prontuário eletrônico, financeiro com repasse a profissionais e integrações. Este repositório é o cliente web; a API está em [`vivacesos-api`](../vivacesos-api).
+Front-end do **Vivace SOS**, um sistema de gestão para clínicas (multi-tenant): agenda, pacientes, prontuário eletrônico, financeiro com repasse a profissionais e integrações. Este repositório é o cliente web; a API está em [`vivacesos-api`](https://github.com/guilhermeborim/vivacesos-api).
 
 > Projeto autoral, construído de ponta a ponta (front, API, banco e modelagem de domínio) a partir de um problema real: o dia a dia de uma clínica.
 
