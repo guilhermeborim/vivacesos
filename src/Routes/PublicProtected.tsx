@@ -1,6 +1,6 @@
 import { Loading } from "@/core/ui"
 import { useAuth } from "@/shared/hooks"
-import { Navigate } from "react-router-dom"
+import { HomeRedirect } from "./HomeRedirect"
 
 interface PublicProtectedProps {
   children: React.ReactNode
@@ -13,7 +13,7 @@ const PublicProtected = ({ children }: PublicProtectedProps) => {
     return <Loading loading />
   }
 
-  if (session) return <Navigate to="/dashboard" replace />
+  if (session) return <HomeRedirect />
 
   return <>{children}</>
 }

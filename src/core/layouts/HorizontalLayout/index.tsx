@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Collapse } from "reactstrap";
 import { useAuth, useMyProfessional } from "@/shared/hooks";
 import menuData, { MenuItem } from "../LayoutMenuData";
+import { isMenuItemVisible } from "../menu-visibility";
 
 /** Todos os links do menu (inclusive os de grupos). */
 const collectLinks = (items: MenuItem[]): string[] =>
@@ -36,11 +37,8 @@ const HorizontalLayout = () => {
     }));
   };
 
-  const isVisible = (item: MenuItem): boolean =>
-    (!item.permission || hasPermission(item.permission)) &&
-    (!item.requiresProfessional || isProfessional) &&
-    !(session && item.hiddenForRoles?.includes(session.role)) &&
-    (!item.children || item.children.some(isVisible));
+  const viewer = { hasPermission, isProfessional, role: session?.role };
+  const isVisible = (item: MenuItem): boolean => isMenuItemVisible(item, viewer);
 
   const renderMenuItems = (items: MenuItem[], level = 0) => {
     return items

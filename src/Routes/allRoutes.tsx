@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom"
+import { HomeRedirect } from "./HomeRedirect"
 import { ForbidRoles } from "./ForbidRoles"
 
 // Errors
@@ -37,7 +38,7 @@ const authProtectedRoutes = [
   },
   {
     path: "/",
-    component: <Navigate to={"/dashboard"} />,
+    component: <HomeRedirect />,
   },
   {
     path: "/clinics",

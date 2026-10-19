@@ -1,3 +1,4 @@
+import { HomePageModal } from "@/features/settings/components/home-page-modal"
 import { useAuth } from "@/shared/hooks"
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
@@ -7,6 +8,7 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "reactstrap
 export const ProfileDropdown = () => {
   const { signOut, session } = useAuth()
   // const [openSelectClinic, setOpenSelectClinic] = useState(false);
+  const [homeOpen, setHomeOpen] = useState(false)
 
   //Dropdown Toggle
   const [isProfileDropdown, setIsProfileDropdown] = useState(false)
@@ -28,9 +30,7 @@ export const ProfileDropdown = () => {
                 {session?.user.name}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text text-center">
-                {session?.activeClinic
-                  ? `${session.activeClinic.name}`
-                  : "Nenhuma clínica ativa"}
+                {session?.activeClinic ? `${session.activeClinic.name}` : "Nenhuma clínica ativa"}
               </span>
             </span>
           </span>
@@ -48,6 +48,12 @@ export const ProfileDropdown = () => {
               </button>
             </DropdownItem>
           )}
+          <DropdownItem className="p-0">
+            <button className="dropdown-item" onClick={() => setHomeOpen(true)}>
+              <i className="mdi mdi-home-outline text-muted fs-16 align-middle me-1"></i>
+              <span className="align-middle">Tela inicial</span>
+            </button>
+          </DropdownItem>
           <div className="dropdown-divider"></div>
           <DropdownItem className="p-0">
             <Link to="#" className="dropdown-item" onClick={signOut}>
@@ -59,6 +65,7 @@ export const ProfileDropdown = () => {
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
+      {homeOpen && <HomePageModal onClose={() => setHomeOpen(false)} />}
     </React.Fragment>
   )
 }
